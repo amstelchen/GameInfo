@@ -10,6 +10,7 @@ from tkinter import ttk
 import os, sys
 import sysconfig
 from subprocess import PIPE, Popen, check_output
+import subprocess
 import json
 from xml.dom import minidom
 import string
@@ -17,6 +18,8 @@ from PIL import Image, ImageTk
 
 from os import listdir
 from os.path import isfile, join
+
+import gettext
 
 __appname__ = "GameInfo"
 __version__ = "1.0.2"
@@ -30,6 +33,10 @@ __licence__ = \
 
 #print(f'{__appname__} {__version__}')
 
+gettextobj = gettext.translation('gameinfo', localedir='locales', languages=['de'])
+gettextobj.install()
+_ = gettextobj.gettext
+    
 def cmdline(command):
     process = Popen(args=command, stdout=PIPE, shell=True, universal_newlines=True) #text_mode = True
     #process.text_mode = True
@@ -80,7 +87,7 @@ menuGameInfo = ["Help", "About"]
 
 #print(cmdline("cat /etc/services"))
 
-print("Fetching system info, this can take a second...")
+print(_("Fetching system info, this can take a second..."))
 outputALLE = cmdline('wine --version ; echo -n "winetricks-" && winetricks --version ; '
     'protontricks --version | sed "s/\ (/-/;s/)//" ; ' #lutris --version ; '
     'echo -n "minigalaxy-" && minigalaxy --version ; echo quit | steamcmd | grep version | '
@@ -93,7 +100,14 @@ outputALLE = cmdline('wine --version ; echo -n "winetricks-" && winetricks --ver
 class Application(tk.Frame):
     def __init__(self, master=None):
         tk.Frame.__init__(self, master)
+        #tt = tk.Tk()
         a = tk.Frame()
+
+        myimage_16 = tk.PhotoImage(file="GameInfo.png")  
+        #tt.iconbitmap = tk.PhotoImage(file='GameInfo.png')
+        #tt.iconbitmap('GameInfo.png')
+        #icon = tk.Tk().iconbitmap('GameInfo.png')
+        #tk.Tk().call('wm', 'iconphoto', self._root.w, tk.PhotoImage(file='GameInfo.png'))
 
         #self.grid()               
         self.createWidgets(textPane="System")
@@ -112,7 +126,9 @@ class Application(tk.Frame):
         # set the dimensions of the screen 
         # and where it is placed
         a.master.geometry('%dx%d+%d+%d' % (w, h, x, y))
-        print("debug")
+        #a.master.iconbitmap(myimage_16)
+        a.master.iconphoto(False, myimage_16) # finally works now :-)
+        #print("debug")
     
     def print_element(self, event):
         tree = event.widget
@@ -185,7 +201,7 @@ class Application(tk.Frame):
             splitChar = "="
             linesIgnore = 2
         if selection == "Distro": #"Linux Distro"
-            returnString+= self.get_desktop_environment()
+            returnString+= "$DESKTOP_SESSION=" + self.get_desktop_environment()
             splitChar = "="
             #linesIgnore = 1000
         if selection == "CPU":
@@ -202,6 +218,7 @@ class Application(tk.Frame):
         if selection == "Vulkan":
             returnString= returnString.replace('\t', "  ")
         if selection == "VA-API":
+            returnString= returnString.replace("   ", " ")
             linesIgnore = 3
         if selection == "VDPAU":
             splitChar = "\t"
@@ -223,9 +240,9 @@ class Application(tk.Frame):
             for prefix in prefixes:
                 returnString += str(prefix) + ":"
                 if os.path.isdir(os.path.expanduser(str(prefix))):
-                    returnString += "Yes\n"
+                    returnString += _("Yes") + "\n"
                 else:
-                    returnString += "No\n"
+                    returnString += _("No") + "\n"
                 #returnString += str(prefix) + ":" + print("Yes") if os.path.isdir(str(prefix)) == True else print("No") + "\n"
 
         if selection == "Proton":
@@ -238,24 +255,24 @@ class Application(tk.Frame):
         if selection == "DOSBox":
             returnString += cmdline("dosbox --version | head -n 2 | tail -n 1 | sed 's/ox/ox:/'; echo")
             mypath = os.path.expanduser("~/.dosbox/")
-            returnString += "Config files"
+            returnString += _("Config files")
             onlyfiles = [f for f in listdir(mypath) if isfile(join(mypath, f))]
             for file in onlyfiles:
                 returnString += ": " + str(file) + "\n"
             splitChar = ": "
 
         if selection in ("Lutris", "GOG", "Epic Games", "Battle.net"):
-            returnString = str(selection) + " not yet implemented, sorry."
+            returnString = str(selection) + " " + _("not yet implemented, sorry.")
 
         if selection == "Help":
-            returnString = "Not yet implemented"
+            returnString = _("Not yet implemented.")
             #splitChar = "---"
         if selection == "About":
             returnString = f'{__appname__} {__version__}:\n\n{__licence__}' #{__author__}
             splitChar = "---"
 
         if selection in ("System", "Platforms", "GameInfo"):
-            returnString = "Please select a sub-category."
+            returnString = _("Please select a sub-category.")
 
         l = 1
         #for line in selectedSet.splitlines():
@@ -279,7 +296,17 @@ class Application(tk.Frame):
             l += 1
 
         #if selection == "Distro":
-            returnString+= self.get_desktop_environment()
+            #returnString+= "$DESKTOP_SESSION:" + self.get_desktop_environment()
+
+    def mycallback(self, event):
+ 
+        _iid = self.treeLeft.identify_row(event.y)
+ 
+        if _iid != self.last_focus:
+            if self.last_focus:
+                self.tree.item(self.last_focus, tags=[])
+            self.tree.item(_iid, tags=['focus'])
+            self.last_focus = _iid
 
     def createWidgets(self, textPane):
 
@@ -289,6 +316,9 @@ class Application(tk.Frame):
         #i = './icon/Home-icon_16.gif'
         #root_pic1 = Image.open(i)
         #self.root_pic2 = ImageTk.PhotoImage(root_pic1)  
+
+        myimage_16=tk.PhotoImage(file="GameInfo.png")
+        #,iconbitmap=myimage_16 # does not work with TV
 
         style = ttk.Style()
         style.configure("mystyle.Treeview", highlightthickness=0, bd=0, font=('Monospace', 10)) # Modify the font of the body
@@ -300,18 +330,19 @@ class Application(tk.Frame):
         m1.pack(fill=tk.X, expand=1)
 
         #left = tk.Label(m1, text="left pane")
-        tree = ttk.Treeview(style="mystyle.Treeview")
+        treeLeft = ttk.Treeview(style="mystyle.Treeview")
 
-        tree.bind("<<TreeviewSelect>>", self.print_element)
+        treeLeft.bind("<<TreeviewSelect>>", self.print_element)
+        #treeLeft.bind("<Motion>", self.mycallback)
 
         #tree["columns"]=("one") #,"two","three")
-        tree.column("#0", width=150, minwidth=150, stretch=tk.NO)
-        tree.pack(side=tk.LEFT,fill=tk.X)
+        treeLeft.column("#0", width=150, minwidth=150, stretch=tk.NO)
+        treeLeft.pack(side=tk.LEFT,fill=tk.X)
         # Level 1
-        folder1=tree.insert("", 0, 0, text="System", open=True) #, values=("23-Jun-17 11:05","File folder",""))
+        folder1=treeLeft.insert("", 0, 0, text="System", open=True) #, values=("23-Jun-17 11:05","File folder",""))
         cnt = 0
         #for entry in menuSystem:
-            #tree.insert(0, cnt + 1, text=entry) #, values=("23-Jun-17 11:25","TXT file","1 KB"))
+            #treeLeft.insert(0, cnt + 1, text=entry) #, values=("23-Jun-17 11:25","TXT file","1 KB"))
             #cnt += 1
         #    pass
         menuitems = file.getElementsByTagName('menuitem')
@@ -321,28 +352,28 @@ class Application(tk.Frame):
             #print(menuitem.attributes['value'].value)
             pixbuf = Gtk.IconTheme.get_default().load_icon(icons[0], 64, 0) 
 
-            item = tree.insert(0, cnt + 1, text=menuitem.attributes['value'].value) #,image=ImageTk.PhotoImage(pixbuf))
+            item = treeLeft.insert(0, cnt + 1, text=menuitem.attributes['value'].value) #,image=ImageTk.PhotoImage(pixbuf))
             #image_show_2.set_from_pixbuf(pixbuf)
             cnt += 1
         cnt = 100
-        folder2=tree.insert("", cnt, 100, text="Platforms", open=True) #, values=("23-Jun-17 11:05","File folder",""))
+        folder2=treeLeft.insert("", cnt, 100, text="Platforms", open=True) #, values=("23-Jun-17 11:05","File folder",""))
         for entry in menuPlatforms:
-            tree.insert(100, cnt + 1, text=entry) #, values=("23-Jun-17 11:25","TXT file","1 KB"))
+            treeLeft.insert(100, cnt + 1, text=entry) #, values=("23-Jun-17 11:25","TXT file","1 KB"))
             cnt += 1
 
         #x1 = tree.insert("", 1, "1", text="hallo")
         #m1.add(left)
-        m1.add(tree)
+        m1.add(treeLeft)
 
-        folder2=tree.insert("", cnt, 200, text="GameInfo", open=True) #, values=("23-Jun-17 11:05","File folder",""))
+        folder2=treeLeft.insert("", cnt, 200, text="GameInfo", open=True) #, values=("23-Jun-17 11:05","File folder",""))
         for entry in menuGameInfo:
-            tree.insert(200, cnt + 1, text=entry) #, values=("23-Jun-17 11:25","TXT file","1 KB"))
+            treeLeft.insert(200, cnt + 1, text=entry) #, values=("23-Jun-17 11:25","TXT file","1 KB"))
             cnt += 1
 
         m2 = tk.PanedWindow(m1, orient=tk.VERTICAL, width=1000,height=600)
         m1.add(m2, minsize=100)
 
-        top = tk.Label(m2, text=textPane, font="Times 20 italic bold")
+        #top = tk.Label(m2, text=textPane, font="Sans 20")
         tree = ttk.Treeview(style="mystyle.Treeview")
         
         tree["columns"]=("one") #,"two", "three")
@@ -358,7 +389,7 @@ class Application(tk.Frame):
 
         self.fillTreeview(tree, "Distro")
 
-        m2.add(top)
+        #m2.add(top)
         m2.add(tree, minsize=100)
 
         #bottom = tk.Label(m2, text="bottom pane", font="Times 20 italic bold")
