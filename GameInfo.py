@@ -447,10 +447,10 @@ class Application(tk.Frame):
                 if not "deprecated" in os.environ.get('GNOME_DESKTOP_SESSION_ID'):
                     return "gnome2"
             #From http://ubuntuforums.org/showthread.php?t=652320
-            elif self.is_running("xfce-mcs-manage"):
-                return "xfce4"
-            elif self.is_running("ksmserver"):
-                return "kde"
+            #elif self.is_running("xfce-mcs-manage"):
+                #return "xfce4"
+            #elif self.is_running("ksmserver"):
+                #return "kde"
         return "unknown"
 
     def is_running(self, process):
@@ -460,9 +460,9 @@ class Application(tk.Frame):
             s = subprocess.Popen(["ps", "axw"],stdout=subprocess.PIPE)
         except: #Windows
             s = subprocess.Popen(["tasklist", "/v"],stdout=subprocess.PIPE)
-        for x in s.stdout:
-            if re.search(process, x):
-                return True
+        #for x in s.stdout:
+        #    if re.search(process, x):
+        #        return True
         return False
 
 def main():
