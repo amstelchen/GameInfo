@@ -15,9 +15,18 @@ from xml.dom import minidom
 import string
 from PIL import Image, ImageTk
 
+from os import listdir
+from os.path import isfile, join
+
 __appname__ = "GameInfo"
-__version__ = "1.0.1"
+__version__ = "1.0.2"
 __author__ = "Michael John"
+__licence__ = \
+'Copyright © 2022 Michael John <michael.john@gmx.at>\n' \
+'Lizenz GPLv3: GNU GPL Version 3 oder neuer <https://gnu.org/licenses/gpl.html>\n' \
+'Dies ist freie Software; es steht Ihnen frei, sie zu verändern und weiterzugeben.\n' \
+'Es gibt KEINE GARANTIE, soweit als vom Gesetz erlaubt.\n' \
+'Geschrieben von Michael John.'
 
 #print(f'{__appname__} {__version__}')
 
@@ -28,7 +37,7 @@ def cmdline(command):
 
 #menuSystem = ["Linux Kernel", "Linux Distro", "CPU", "GPU", "Vulkan", "OpenGL", "VDPAU", "VA-API"]
 
-menuReturn = []
+#menuReturn = []
 
 #with open('GameInfo.json') as json_file:
 #    data = json.load(json_file)
@@ -55,7 +64,9 @@ for menuitem in menuitems:
     menuitem.attributes['command'].value = cmdline(menuitem.attributes['command'].value)
     pass
 
-menuPlatforms = ["Alle", "Steam", "Proton", "Wine", "Dosbox", "Lutris", "GOG", "Epic Games", "..."]
+menuPlatforms = ["Alle", "Steam", "Proton", "Wine", "DOSBox", "Lutris", "GOG", "Epic Games", "Battle.net"]
+
+menuGameInfo = ["Help", "About"]
 
 #print(sysconfig.get_python_version())
 #print(sys.version)
@@ -105,14 +116,13 @@ class Application(tk.Frame):
     def print_element(self, event):
         tree = event.widget
         selection = [tree.item(item)["text"] for item in tree.selection()]
-        print("selected items:", str(selection))
+        print("Selected item:", str(selection))
 
         #m2.add(tree)       
         #app.master.m2.add(tree)
         self.updateWidgets(selection)
 
         #self.createWidgets()
-
 
     def updateWidgets(self, selection):
         #for label in filter(lambda w:isinstance(w,Label), frame.children.itervalues()):
@@ -176,7 +186,6 @@ class Application(tk.Frame):
         if selection == "Distro": #"Linux Distro"
             splitChar = "="
             #linesIgnore = 1000
-
         if selection == "CPU":
             splitChar = ":"
             #linesIgnore = 1000
@@ -204,6 +213,47 @@ class Application(tk.Frame):
             returnString = outputALLE
             splitChar = "-"
             linesIgnore = 0
+
+        if selection == "Wine":
+            returnString = "WINE version:" + cmdline("wine --version ; echo")
+            #prefixes = ["$HOME/.wine", "$HOME/.wine32", "$HOME/.config/wine/prefixes"]
+            prefixes = ["~/.wine", "~/.wine32", "~/.config/wine/prefixes"]
+            for prefix in prefixes:
+                returnString += str(prefix) + ":"
+                if os.path.isdir(os.path.expanduser(str(prefix))):
+                    returnString += "Yes\n"
+                else:
+                    returnString += "No\n"
+                #returnString += str(prefix) + ":" + print("Yes") if os.path.isdir(str(prefix)) == True else print("No") + "\n"
+
+        if selection == "Proton":
+            proton_dir = cmdline("grep _proton= `which proton`")
+            returnString = proton_dir
+            proton_ver = cmdline("grep CURRENT_PREFIX_VERSION= " + proton_dir.replace("_proton=",""))
+            returnString += proton_ver
+            splitChar = "="
+
+        if selection == "DOSBox":
+            returnString += cmdline("dosbox --version | head -n 2 | tail -n 1 | sed 's/ox/ox:/'; echo")
+            mypath = os.path.expanduser("~/.dosbox/")
+            returnString += "Config files"
+            onlyfiles = [f for f in listdir(mypath) if isfile(join(mypath, f))]
+            for file in onlyfiles:
+                returnString += ": " + str(file) + "\n"
+            splitChar = ": "
+
+        if selection in ("Lutris", "GOG", "Epic Games", "Battle.net"):
+            returnString = str(selection) + " not yet implemented, sorry."
+
+        if selection == "Help":
+            returnString = "Not yet implemented"
+            #splitChar = "---"
+        if selection == "About":
+            returnString = f'{__appname__} {__version__}:\n\n{__licence__}' #{__author__}
+            splitChar = "---"
+
+        if selection in ("System", "Platforms", "GameInfo"):
+            returnString = "Please select a sub-category."
 
         l = 1
         #for line in selectedSet.splitlines():
@@ -263,7 +313,7 @@ class Application(tk.Frame):
         for menuitem in sorted(menuitems, key=lambda menuitem: menuitem.attributes['id'].value):
         #for menuitem in menuitems:
         #print(menu.firstChild.data)
-            print(menuitem.attributes['value'].value)
+            #print(menuitem.attributes['value'].value)
             pixbuf = Gtk.IconTheme.get_default().load_icon(icons[0], 64, 0) 
 
             item = tree.insert(0, cnt + 1, text=menuitem.attributes['value'].value) #,image=ImageTk.PhotoImage(pixbuf))
@@ -279,6 +329,11 @@ class Application(tk.Frame):
         #m1.add(left)
         m1.add(tree)
 
+        folder2=tree.insert("", cnt, 200, text="GameInfo", open=True) #, values=("23-Jun-17 11:05","File folder",""))
+        for entry in menuGameInfo:
+            tree.insert(200, cnt + 1, text=entry) #, values=("23-Jun-17 11:25","TXT file","1 KB"))
+            cnt += 1
+
         m2 = tk.PanedWindow(m1, orient=tk.VERTICAL, width=1000,height=600)
         m1.add(m2, minsize=100)
 
@@ -287,11 +342,11 @@ class Application(tk.Frame):
         
         tree["columns"]=("one") #,"two", "three")
         tree.column("#0", width=400, minwidth=200, stretch=tk.NO)
-        tree.heading("#0",text="Name",anchor=tk.W)
+        tree.heading("#0",text="",anchor=tk.W) #text="Name"
         if True: #selection == "Alle":
-            tree.heading("one", text="Version",anchor=tk.W)
+            tree.heading("one", text="",anchor=tk.W) #text="Wert"
         else:
-            tree.heading("one", text="Wert",anchor=tk.W)
+            tree.heading("one", text="",anchor=tk.W)
         #tree.heading("two", text="Type",anchor=tk.W)
         #tree.heading("three", text="Size",anchor=tk.W)
         tree.pack(side=tk.TOP,fill=tk.BOTH)
