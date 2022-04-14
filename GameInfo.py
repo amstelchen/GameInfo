@@ -7,7 +7,7 @@ from gi.repository.GdkPixbuf import Pixbuf
 
 import tkinter as tk
 from tkinter import ttk
-import os, sys
+import os, sys, re
 import sysconfig
 from subprocess import PIPE, Popen, check_output
 import subprocess
