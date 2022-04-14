@@ -43,7 +43,7 @@ def cmdline(command):
 #    data = json.load(json_file)
 #    print(data)
 
-file = minidom.parse("GameInfo.xml")
+file = minidom.parse(os.path.join(os.path.dirname(__file__), "GameInfo.xml"))
 menus = file.getElementsByTagName('menu')
 for menu in menus:
     pass
@@ -85,7 +85,7 @@ outputALLE = cmdline('wine --version ; echo -n "winetricks-" && winetricks --ver
     'protontricks --version | sed "s/\ (/-/;s/)//" ; ' #lutris --version ; '
     'echo -n "minigalaxy-" && minigalaxy --version ; echo quit | steamcmd | grep version | '
     'sed "s/\-\ /-/" ; echo -n "steam_cli-" ; steam-cli --version')
-#print(type(outputVAAPI))
+#print(outputALLE)
 
 #stringy = outputVAAPI.decode('utf-8')
 #print(type(stringy))
@@ -112,6 +112,7 @@ class Application(tk.Frame):
         # set the dimensions of the screen 
         # and where it is placed
         a.master.geometry('%dx%d+%d+%d' % (w, h, x, y))
+        print("debug")
     
     def print_element(self, event):
         tree = event.widget
@@ -374,6 +375,10 @@ class Application(tk.Frame):
             command=self.quit)            
         #self.quitButton.grid()            
 
-app = Application()           
-app.master.title(f'{__appname__} {__version__}')
-app.mainloop()        
+def main():
+    app = Application()           
+    app.master.title(f'{__appname__} {__version__}')
+    app.mainloop()        
+
+if __name__ == "__main__":
+    main()

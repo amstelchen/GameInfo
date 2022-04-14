@@ -1,0 +1,17 @@
+[Desktop Entry]
+Version=1.0
+Name=GameInfo
+GenericName=System info tool for gamers.
+Type=Application
+Comment=A system info tool for gamers.
+Comment[ru]=Инструмент системной информации для геймеров, написанная на Python
+Comment[fr]=Un outil d'informations système pour les joueurs écrit en Python
+Comment[de]=Ein Systeminfo-Tool für Gamer, geschrieben in Python
+Icon=GoalFM
+Exec=python -m /home/mic/GameInfo
+Terminal=false
+StartupNotify=false
+StartupWMClass=GameInfo
+Keywords=game;
+Categories=Game;
+Path=/home/mic/GameInfo
