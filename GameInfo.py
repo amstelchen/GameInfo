@@ -88,11 +88,29 @@ menuGameInfo = ["Help", "About"]
 #print(cmdline("cat /etc/services"))
 
 print(_("Fetching system info, this can take a second..."))
-outputALLE = cmdline('wine --version ; echo -n "winetricks-" && winetricks --version ; '
+'''outputALLE = cmdline('wine --version ; echo -n "winetricks-" && winetricks --version ; '
     'protontricks --version | sed "s/\ (/-/;s/)//" ; ' #lutris --version ; '
     'echo -n "minigalaxy-" && minigalaxy --version ; echo quit | steamcmd | grep version | '
-    'sed "s/\-\ /-/" ; echo -n "steam_cli-" ; steam-cli --version')
-#print(outputALLE)
+    'sed "s/\-\ /-/" ; echo -n "steam_cli-" ; steam-cli --version')'''
+
+toolitems = file.getElementsByTagName('toolitem')
+outputALLE = str("")
+for toolitem in toolitems:
+    command = toolitem.attributes["command"].value
+    version = toolitem.attributes["version"].value
+    if command.find("!") == -1:
+        toolResult = cmdline(str(command + " " + version))
+    else:
+        toolResult = cmdline(str(version))
+    #toolResult = toolResult.decode('utf-8')
+    #splitChar = item.attributes["splitChar"].value
+    #outputALLE += command + "-" + toolResult + "\n"
+    if toolResult.find(command.replace('!','')) == -1:
+        outputALLE += command.replace('!','') + "-" + toolResult
+    else:
+        outputALLE += toolResult
+
+print(outputALLE)
 
 #stringy = outputVAAPI.decode('utf-8')
 #print(type(stringy))
@@ -208,7 +226,9 @@ class Application(tk.Frame):
             splitChar = ":"
             #linesIgnore = 1000
         if selection == "GPU":
-            splitChar = ": "
+            returnString = returnString.replace(': ','|')
+            returnString = returnString.replace(' at','|at')
+            splitChar = "|"
             #linesIgnore = 1000
         #if selection == "PCI":
         #    splitChar = ": "
@@ -246,10 +266,20 @@ class Application(tk.Frame):
                 #returnString += str(prefix) + ":" + print("Yes") if os.path.isdir(str(prefix)) == True else print("No") + "\n"
 
         if selection == "Proton":
-            proton_dir = cmdline("grep _proton= `which proton`")
-            returnString = proton_dir
+            proton_dir = (cmdline("grep _proton= `which proton`")).replace('\n','')
+            proton_bin = (cmdline("which proton")).replace('\n','')
             proton_ver = cmdline("grep CURRENT_PREFIX_VERSION= " + proton_dir.replace("_proton=",""))
+
+            returnString = proton_dir + "\n(set in " + proton_bin + ")\n"
             returnString += proton_ver
+
+            #mypath = os.path.dirname(proton_dir.replace("_proton=","").replace("\n",""))
+            mypath = "compatibilitytools.d"
+            returnString += "\nOther tools in " + mypath
+            mypath = "/usr/share/steam/compatibilitytools.d"
+            onlyfiles = [f for f in listdir(mypath)]
+            for file in onlyfiles:
+                returnString += "=" + str(file) + "\n"
             splitChar = "="
 
         if selection == "DOSBox":
