@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 
-import gi
-gi.require_version("Gtk", "3.0")
-from gi.repository import Gtk
-from gi.repository.GdkPixbuf import Pixbuf
+#import gi
+#gi.require_version("Gtk", "3.0")
+#from gi.repository import Gtk
+#from gi.repository.GdkPixbuf import Pixbuf
 
 import tkinter as tk
 from tkinter import ttk
@@ -14,12 +14,14 @@ import subprocess
 import json
 from xml.dom import minidom
 import string
-from PIL import Image, ImageTk
+#from PIL import Image, ImageTk
 
 from os import listdir
 from os.path import isfile, join
 
 import gettext
+
+VERSION = "1.0.2"
 
 __appname__ = "GameInfo"
 __version__ = "1.0.2"
@@ -380,7 +382,7 @@ class Application(tk.Frame):
         #for menuitem in menuitems:
         #print(menu.firstChild.data)
             #print(menuitem.attributes['value'].value)
-            pixbuf = Gtk.IconTheme.get_default().load_icon(icons[0], 64, 0) 
+            #pixbuf = Gtk.IconTheme.get_default().load_icon(icons[0], 64, 0) 
 
             item = treeLeft.insert(0, cnt + 1, text=menuitem.attributes['value'].value) #,image=ImageTk.PhotoImage(pixbuf))
             #image_show_2.set_from_pixbuf(pixbuf)
