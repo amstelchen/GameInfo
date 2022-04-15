@@ -2,5 +2,7 @@
 
 <h1>GameInfo</h1>
 
+A system info tool for gamers.
+
 [![https://imgur.com/WSYuRij.png](https://imgur.com/WSYuRij.png)](https://imgur.com/WSYuRij.png)
 
