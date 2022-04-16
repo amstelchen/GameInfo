@@ -1,2 +1,4 @@
-#import GameInfo.main
-#from .GameInfo import *
+import GameInfo
+
+if __name__ == '__main__':
+    main()

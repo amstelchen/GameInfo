@@ -1,0 +1,36 @@
+<menus>
+    <menu id="system" value="System">
+        <menuitem id="1" value="Distro" splitChar="=" linesIgnore="0" command="cat /etc/os-release ; echo ; echo -n 'Desktop-Umgebung=' ; xfce4-panel --version | head -n 1" />
+        <menuitem id="2" value="Kernel" splitChar="=" linesIgnore="2" command="uname -a ; echo ; zcat /proc/config.gz" />
+        <menuitem id="3" value="CPU" splitChar=":" linesIgnore="" command="grep 'model name' /proc/cpuinfo | uniq | sed 's/model name/CPU Model/g' ; echo -n 'Number of CPUs: ' ; nproc ; echo ; cat /proc/cpuinfo ; echo ; echo" />
+        <menuitem id="4" value="GPU" splitChar="" linesIgnore="" command="lspci -vnn | grep VGA -A 10" />
+        <menuitem id="4" value="PCI" splitChar=": " linesIgnore="" command="lspci -nn" />
+        <menuitem id="4" value="USB" splitChar=": " linesIgnore="" command="lsusb" />
+        <menuitem id="5" value="Vulkan" splitChar=":" linesIgnore="" command="vulkaninfo | tail -n +5 | uniq" />
+        <menuitem id="6" value="OpenGL" splitChar=":" linesIgnore="" command="glxinfo | grep OpenGL" />
+        <menuitem id="6" value="OpenCL" splitChar=":" linesIgnore="" command="clinfo | sed 's/   */:/g;s/^://'" />
+        <menuitem id="7" value="VDPAU" splitChar=":" linesIgnore="" command="vdpauinfo" />
+        <menuitem id="8" value="VA-API" splitChar=":" linesIgnore="" command="vainfo" />
+        <menuitem id="8" value="Pulse" splitChar=":" linesIgnore="" command="pactl info" />
+        <menuitem id="9" value="cpupower" splitChar=":" linesIgnore="" command="cpupower frequency-info | egrep --invert-match 'range|decide|Bereich|entscheid' | sed 's/GHz\./GHz sein./'" />
+    </menu>
+    <menu id="tools" value="Tools">
+        <toolitem command="wine" version="--version" />  
+        <toolitem command="winetricks" version="--version" />  
+        <toolitem command="!protontricks" version="protontricks --version | sed 's/\ (/-/;s/)//'" />  
+        <toolitem command="lutris" version="--version" />  
+        <toolitem command="minigalaxy" version="--version" />  
+        <toolitem command="!steamcmd" version="echo quit | steamcmd --version | grep version | sed 's/\-\ /-/'" />  
+        <toolitem command="steam-cli" version="--version" />  
+        <toolitem command="!mangohud" version="pacman -Q mangohud | sed 's/ /-/'" />  
+        <toolitem command="lutris" version="--version" /> 
+        <toolitem command="!pavucontrol" version="pacman -Q pavucontrol | sed 's/ /-/'" />  
+        <toolitem command="pipewire" version="--version | tail -n 1 | cut -f 4 -d ' '" /> 
+        <toolitem command="legendary" version="--version | sed '0,/ /s//-/'" /> 
+        <toolitem command="!pulseffects" version="pacman -Q pulseeffects | sed 's/ /-/'" />  
+        <toolitem command="openrgb" version="--version | head -n 1" /> 
+        <toolitem command="corectrl" version="--version | sed 's/ /-/'" /> 
+        <toolitem command="truckersmp-cli" version="--version" /> 
+        <toolitem command="!vibrantLinux" version="pacman -Q vibrantlinux | sed 's/ /-/'" /> 
+    </menu>
+</menus>

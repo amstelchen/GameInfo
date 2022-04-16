@@ -28,7 +28,7 @@ repository = "https://github.com/amstelchen/GameInfo"
 documentation = "https://github.com/MartinThoma/infer_pyproject"
 
 [project.scripts]
-my-script = "GameInfo.GameInfo:main"
+gameinfo = "GameInfo.GameInfo:main"
 
 [tool.setuptools.dynamic]
 version = {attr = "GameInfo.VERSION"}
