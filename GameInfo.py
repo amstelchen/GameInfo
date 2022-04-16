@@ -24,10 +24,10 @@ from os.path import isfile, join
 
 import gettext
 
-VERSION = "1.0.2"
+VERSION = "1.0.3"
 
 __appname__ = "GameInfo"
-__version__ = "1.0.2"
+__version__ = VERSION # "1.0.3"
 __author__ = "Michael John"
 __licence__ = \
 'Copyright © 2022 Michael John <michael.john@gmx.at>\n' \
