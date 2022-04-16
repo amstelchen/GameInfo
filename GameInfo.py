@@ -6,7 +6,10 @@
 #from gi.repository.GdkPixbuf import Pixbuf
 
 import tkinter as tk
-from tkinter import ttk
+#from tkinter import ttk
+import tkinter.ttk as ttk
+from ttkthemes import ThemedTk
+
 import os, sys, re
 import sysconfig
 from subprocess import PIPE, Popen, check_output
@@ -117,11 +120,23 @@ print(outputALLE)
 #stringy = outputVAAPI.decode('utf-8')
 #print(type(stringy))
 
-class Application(tk.Frame):
+class Application(ttk.Frame):
     def __init__(self, master=None):
-        tk.Frame.__init__(self, master)
+        ttk.Frame.__init__(self, master)
         #tt = tk.Tk()
-        a = tk.Frame()
+        #a = ttk.Frame()
+
+        #theme = ThemedTk.themes('ubuntu')
+        #self.master.theme_use('ubuntu')
+        #t = thtk.ThemedTk()
+
+        s = ttk.Style(self.master)
+        s.theme_use('clam')
+        print(s.theme_names())
+
+        #style = ttk.Style()
+        #style.theme_use('yaru')
+        #self.master.style = style
 
         myimage_16 = tk.PhotoImage(file="GameInfo.png")  
         #tt.iconbitmap = tk.PhotoImage(file='GameInfo.png')
@@ -145,9 +160,9 @@ class Application(tk.Frame):
 
         # set the dimensions of the screen 
         # and where it is placed
-        a.master.geometry('%dx%d+%d+%d' % (w, h, x, y))
+        self.master.geometry('%dx%d+%d+%d' % (w, h, x, y))
         #a.master.iconbitmap(myimage_16)
-        a.master.iconphoto(False, myimage_16) # finally works now :-)
+        self.master.iconphoto(False, myimage_16) # finally works now :-)
         #print("debug")
     
     def print_element(self, event):
