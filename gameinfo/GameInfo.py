@@ -28,7 +28,8 @@ from os.path import isfile, join
 import gettext
 import cairosvg
 
-from AppDebug import AppDebug
+from .AppDebug import AppDebug
+#import AppDebug
 #from AboutDialog import AboutDialog
 
 VERSION = "1.0.5"
@@ -46,9 +47,11 @@ __licence__ = \
 AppDebug.debug_print(f'{__appname__} {__version__}')
 
 try:
-    gettextobj = gettext.translation('gameinfo', localedir=os.path.dirname(__file__) + '/locales', languages=['de'])
-    gettextobj.install()
-    _ = gettextobj.gettext
+    # localedir=os.path.dirname(__file__) + '/locales'
+    #gettext = gettext.translation('gameinfo', localedir='/usr/share/locale', languages=['de'])
+    gettext = gettext.translation('gameinfo', languages=['de'])
+    gettext.install("gameinfo")
+    _ = gettext.gettext
 except FileNotFoundError as e:
     debug_print(e)
     
@@ -102,7 +105,7 @@ for menuitem in menuitems:
 
 menuPlatforms = ["Tools", "Steam", "Proton", "Wine", "DOSBox", "Lutris", "GOG", "Epic Games", "Battle.net"]
 
-menuGameInfo = ["Help", "About"]
+menuGameInfo = [_("Help"), _("About")]
 
 #print(sysconfig.get_python_version())
 #print(sys.version)
@@ -113,6 +116,7 @@ outputALLE = str("")
 for toolitem in toolitems:
     command = toolitem.attributes["command"].value
     version = toolitem.attributes["version"].value
+    AppDebug.debug_print(_("Checking for") + " " + command)
     if command.find("!") == -1:
         toolResult = cmdline(str(command + " " + version))
     else:
@@ -138,15 +142,17 @@ class Application(ttk.Window):
         return imgs
     
     def callback(self):
-        AppDeug.debug_print("called the callback!")
+        AppDebug.debug_print("called the callback!")
             
     def __init__(self, master=None):
 
         winSize = (1024, 768)
-        ttk.Window.__init__(self, master, size=winSize, minsize=winSize, iconphoto = "GameInfo.png")
+        ttk.Window.__init__(self, master, size=winSize, minsize=winSize, iconphoto = os.path.join(os.path.dirname(__file__), "GameInfo.png"))
+
+        self.title(f'{__appname__} {__version__}')
 
         #self.themename = "flatly"
-        self.iconphoto = "GameInfo.png"
+        #self.iconphoto = "GameInfo.png"
 
         self.size = winSize
 
@@ -162,7 +168,7 @@ class Application(ttk.Window):
         themes = ""
         for theme in style.theme_names():
             themes += str(theme) + " "
-        AppDebug.debug_print("Themes loaded: " + themes)
+        AppDebug.debug_print(_("Themes loaded") + ": " + themes)
 
         #tt = tk.Tk()
         #master = ttk.Frame(size=winSize)
@@ -214,7 +220,7 @@ class Application(ttk.Window):
     def print_element(self, event):
         tree = event.widget
         selection = [tree.item(item)["text"] for item in tree.selection()]
-        AppDebug.debug_print("Selected item: " + str(selection))
+        AppDebug.debug_print(_("Selected entry") + ": " + str(selection))
 
         #m2.add(tree)       
         #app.master.m2.add(tree)
@@ -364,16 +370,16 @@ class Application(ttk.Window):
         if selection in ("Lutris", "GOG", "Epic Games", "Battle.net", "Steam"):
             returnString = str(selection) + " " + _("not yet implemented, sorry.")
 
-        if selection == "Help":
+        if selection == _("Help"):
             returnString = _("Not yet implemented.")
             #splitChar = "---"
-        if selection == "About":
+        if selection == _("About"):
             returnString = f'{__appname__} {__version__}:\n\n{__licence__}' #{__author__}
             splitChar = "---"
             #treeRight["columns"]=("#0") #,"two", "three")
             treeView.column("#0", width=900, minwidth=350, stretch=ttk.NO)
 
-        if selection in ("System", "Platforms", "GameInfo"):
+        if selection in (_("System"), _("Platforms"), "GameInfo"):
             returnString = _("Please select a sub-category.") + ":"
 
         treeView.tag_configure("evenrow",background='white smoke',foreground='black')
@@ -512,13 +518,13 @@ class Application(ttk.Window):
         #b1 = ttk.Button(self, text="Submit", bootstyle="success")
         #b1.pack(side=LEFT, padx=5, pady=10)
 
-        b2 = ttk.Button(f, text="Refresh", bootstyle="warning", width=10, command=refresh) #self.createWidgets("Distro"))
+        b2 = ttk.Button(f, text=_("Refresh"), bootstyle="warning", width=10, command=refresh) #self.createWidgets("Distro"))
         b2.pack(side=RIGHT, padx=5, pady=10, anchor=ttk.SE)
 
-        b3 = ttk.Button(f, text="Info...", bootstyle="info", width=10, command=open_info)
+        b3 = ttk.Button(f, text=_("About"), bootstyle="info", width=10, command=open_info)
         b3.pack(side=RIGHT, padx=5, pady=10, anchor=ttk.SE)
 
-        b4 = ttk.Button(f, text="Quit", bootstyle="danger", width=10, command=self.quit)
+        b4 = ttk.Button(f, text=_("Quit"), bootstyle="danger", width=10, command=self.quit)
         b4.pack(side=RIGHT, padx=5, pady=10, anchor=ttk.SE)
 
         #self.quitButton = ttk.Button(self, text='Quit', command=self.quit)
@@ -560,7 +566,7 @@ class Application(ttk.Window):
             #image_show_2.set_from_pixbuf(pixbuf)
             cnt += 1
         cnt = 100
-        folder2=treeLeft.insert("", cnt, 100, text="Platforms", open=True) #, values=("23-Jun-17 11:05","File folder",""))
+        folder2=treeLeft.insert("", cnt, 100, text=_("Platforms"), open=True) #, values=("23-Jun-17 11:05","File folder",""))
         for entry in menuPlatforms:
             treeLeft.insert(100, cnt + 1, text=entry) #, values=("23-Jun-17 11:25","TXT file","1 KB"))
             cnt += 1
@@ -694,11 +700,3 @@ class Application(ttk.Window):
         #    if re.search(process, x):
         #        return True
         return False
-
-def main():
-    app = Application()           
-    app.title(f'{__appname__} {__version__}')
-    app.mainloop()        
-
-if __name__ == "__main__":
-    main()
