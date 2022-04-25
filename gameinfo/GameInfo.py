@@ -30,6 +30,8 @@ from os.path import isfile, join
 import gettext
 import cairosvg
 
+import sqlite3
+
 from .AppDebug import AppDebug
 #import AppDebug
 #from AboutDialog import AboutDialog
@@ -105,7 +107,7 @@ for menuitem in menuitems:
     menuitem.attributes['command'].value = cmdline(menuitem.attributes['command'].value)
     pass
 
-menuPlatforms = ["Tools", "Steam", "Proton", "Wine", "DOSBox", "Lutris", "GOG", "Epic Games", "Battle.net"]
+menuPlatforms = ["Tools", "Steam", "Proton", "Wine", "DOSBox", "Lutris", "GOG", "ScummVM", "Epic Games", "Battle.net"]
 
 menuGameInfo = [_("Help"), _("About")]
 
@@ -369,7 +371,57 @@ class Application(ttk.Window):
                 returnString += ": " + str(file) + "\n"
             splitChar = ": "
 
-        if selection in ("Lutris", "GOG", "Epic Games", "Battle.net", "Steam"):
+        if selection == "Lutris":
+            returnString += "Lutris " + cmdline("lutris --version | sed 's/lutris-//'; echo")
+            #mypath = os.path.expanduser("~/.config/lutris/games/")
+            returnString += _("Games")
+            #onlyfiles = [f for f in listdir(mypath) if isfile(join(mypath, f))]
+            #for file in onlyfiles:
+            #    returnString += ": " + os.path.splitext(file)[0] + "\n"
+            #splitChar = ": "
+            conn = sqlite3.connect('/home/mic/.local/share/lutris/pga.db')
+            cursor = conn.execute("SELECT id, name from games")
+            for row in cursor:
+                returnString += ": " + row[1] + "\n"
+            conn.close()
+
+        if selection == "GOG":
+            returnString += "Minigalaxy " + cmdline("minigalaxy --version; echo")
+            mypath = os.path.expanduser("~/.config/minigalaxy/games/")
+            returnString += _("Games")
+            onlyfiles = [f for f in listdir(mypath) if isfile(join(mypath, f))]
+            for file in onlyfiles:
+                returnString += ": " + os.path.splitext(file)[0] + "\n"
+            splitChar = ": "
+
+        if selection == "ScummVM":
+            returnString += cmdline("scummvm --version | head -n 1; echo")
+            mypath = os.path.expanduser("~/.config/scummvm/scummvm.ini")
+            returnString += _("Games")
+            INIfile = open(mypath, 'r')
+            lines = INIfile.readlines()
+            count = 0
+            for line in lines:
+                count += 1
+                if "description" in line:
+                    #print("Line{}: {}".format(count, line.strip())
+                    returnString += line.strip("description") # + "\n"
+            cutString = cmdline("scummvm --version | tail -n 1")
+            #print(cutString)
+            returnString += '\n' + cutString.split(':')[0].rstrip('\n')
+            wordCount = 0
+            #returnString += "="
+            for word in cutString.split(':')[1].split(' '):
+                returnString += word + ' '
+                #if wordCount == 3:
+                    #returnString += "\n"
+                if wordCount % 8 == 0:
+                    returnString += "\n="
+                wordCount += 1
+            #print(returnString)
+            splitChar = "="
+
+        if selection in ("Epic Games", "Battle.net", "Steam"):
             returnString = str(selection) + " " + _("not yet implemented, sorry.")
 
         if selection == _("Help"):
