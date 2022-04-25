@@ -8,6 +8,6 @@
 :heavy_check_mark: openrgb  
 :heavy_check_mark: corectrl  
 
-:white_check_mark: Rework TKinter to use <strike>ThemedTk</strike> ttkbootstrap. :tired_face:
-:white_check_mark: Use App's icons in Tools list - tedious with TK.
-:white_check_mark: Switch from setuptools to poetry.
+:white_check_mark: Rework TKinter to use <strike>ThemedTk</strike> ttkbootstrap. :tired_face:  
+:white_check_mark: Use App's icons in Tools list - tedious with TK.  
+:white_check_mark: Switch from setuptools to poetry.  
