@@ -2,6 +2,7 @@
 
 sudo cp -v GameInfo.png /usr/share/pixmaps/GameInfo.png
 sudo cp -v GameInfo.desktop /usr/share/applications/
+sudo cp ~/.local/bin/GameInfo /usr/bin/GameInfo
 cp -v GameInfo.desktop ~/Desktop/GameInfo.desktop
 
 xgettext -d gameinfo -o gameinfo/locales/gameinfo.pot gameinfo/*.py
