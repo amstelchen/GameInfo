@@ -26,7 +26,7 @@
         <toolitem command="!pavucontrol" version="pacman -Q pavucontrol | sed 's/ /-/'" />  
         <toolitem command="pipewire" version="--version | tail -n 1 | cut -f 4 -d ' '" /> 
         <toolitem command="legendary" version="--version | sed '0,/ /s//-/'" /> 
-        <toolitem command="!pulseffects" version="pacman -Q pulseeffects | sed 's/ /-/'" />  
+        <toolitem command="!pulseeffects" version="pacman -Q pulseeffects | sed 's/ /-/'" />  
         <toolitem command="openrgb" version="--version | head -n 1" /> 
         <toolitem command="corectrl" version="--version | sed 's/ /-/'" /> 
         <toolitem command="truckersmp-cli" version="--version" /> 
