@@ -25,7 +25,7 @@ dynamic = ["version"]
 [project.urls]
 homepage = "https://github.com/amstelchen/GameInfo"
 repository = "https://github.com/amstelchen/GameInfo"
-documentation = "https://github.com/MartinThoma/infer_pyproject"
+documentation = "https://github.com/amstelchen/GameInfo"
 
 [project.scripts]
 gameinfo = "GameInfo.GameInfo:main"
