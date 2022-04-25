@@ -1,0 +1,83 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: GameInfo\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-04-25 12:56+0200\n"
+"PO-Revision-Date: 2022-04-25 12:56+0200\n"
+"Last-Translator: \n"
+"Language-Team: Michael John\n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.0.1\n"
+
+#: gameinfo/GameInfo.py:108 gameinfo/GameInfo.py:373
+msgid "Help"
+msgstr "Hilfe"
+
+#: gameinfo/GameInfo.py:108 gameinfo/GameInfo.py:376 gameinfo/GameInfo.py:524
+msgid "About"
+msgstr "Info"
+
+#: gameinfo/GameInfo.py:113
+msgid "Fetching system info, this can take a second..."
+msgstr "Hole Systeminfo, dies kann einen Moment dauern..."
+
+#: gameinfo/GameInfo.py:119
+msgid "Checking for"
+msgstr "Prüfe auf"
+
+#: gameinfo/GameInfo.py:171
+msgid "Themes loaded"
+msgstr "Themen geladen"
+
+#: gameinfo/GameInfo.py:223
+msgid "Selected entry"
+msgstr "Gewählter Eintrag"
+
+#: gameinfo/GameInfo.py:339
+msgid "Yes"
+msgstr "Ja"
+
+#: gameinfo/GameInfo.py:341
+msgid "No"
+msgstr "Nein"
+
+#: gameinfo/GameInfo.py:364
+msgid "Config files"
+msgstr "Konfigurationsdateien"
+
+#: gameinfo/GameInfo.py:371
+msgid "not yet implemented, sorry."
+msgstr "noch nicht implementiert, sorry."
+
+#: gameinfo/GameInfo.py:374
+msgid "Not yet implemented."
+msgstr "Noch nicht implementiert."
+
+#: gameinfo/GameInfo.py:382
+msgid "System"
+msgstr "System"
+
+#: gameinfo/GameInfo.py:382 gameinfo/GameInfo.py:569
+msgid "Platforms"
+msgstr "Plattformen"
+
+#: gameinfo/GameInfo.py:383
+msgid "Please select a sub-category."
+msgstr "Bitte eine Unterkategorie auswählen."
+
+#: gameinfo/GameInfo.py:521
+msgid "Refresh"
+msgstr "Auffrischen"
+
+#: gameinfo/GameInfo.py:527
+msgid "Quit"
+msgstr "Beenden"
