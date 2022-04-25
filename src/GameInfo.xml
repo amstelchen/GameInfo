@@ -1,6 +1,6 @@
 <menus>
     <menu id="system" value="System">
-        <menuitem id="1" value="Distro" splitChar="=" linesIgnore="0" command="cat /etc/os-release ; echo ; echo -n 'Desktop-Umgebung=' ; xfce4-panel --version | head -n 1" />
+        <menuitem id="1" value="Distro" splitChar="=" linesIgnore="0" command="cat /etc/os-release ; echo -n 'Desktop-Umgebung=' ; xfce4-panel --version | head -n 1" />
         <menuitem id="2" value="Kernel" splitChar="=" linesIgnore="2" command="uname -a ; echo ; zcat /proc/config.gz" />
         <menuitem id="3" value="CPU" splitChar=":" linesIgnore="" command="grep 'model name' /proc/cpuinfo | uniq | sed 's/model name/CPU Model/g' ; echo -n 'Number of CPUs: ' ; nproc ; echo ; cat /proc/cpuinfo ; echo ; echo" />
         <menuitem id="4" value="GPU" splitChar="" linesIgnore="" command="lspci -vnn | grep VGA -A 10" />
@@ -32,5 +32,7 @@
         <toolitem command="corectrl" version="--version | sed 's/ /-/'" /> 
         <toolitem command="truckersmp-cli" version="--version" /> 
         <toolitem command="!vibrantLinux" version="pacman -Q vibrantlinux | sed 's/ /-/'" /> 
+        <toolitem command="!dxvk" version="echo -n 'dxvk-'; command -v setup_dxvk ; echo -n '-'; pacman -Q dxvk | sed 's/-/–/;s/-[0-9]/ /'" /> 
+        <toolitem command="!vkd3d" version="echo -n 'vkd3d-'; command -v setup_vkd3d_proton ; echo -n '-'; pacman -Q vkd3d | sed 's/-/–/;s/-[0-9]/ /'" /> 
     </menu>
 </menus>
