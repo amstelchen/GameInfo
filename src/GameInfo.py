@@ -29,7 +29,7 @@ import gettext
 import cairosvg
 
 from AppDebug import AppDebug
-from AboutDialog import AboutDialog
+#from AboutDialog import AboutDialog
 
 VERSION = "1.0.5"
 
