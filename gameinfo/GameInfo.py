@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+from pprint import pprint
+
 import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
@@ -406,6 +408,16 @@ class Application(ttk.Window):
                     icon_name = part1
                     if part1 == "openrgb":
                         icon_name = "OpenRGB"
+                    if part1 == "minigalaxy":
+                        icon_name = "io.github.sharkwouter.Minigalaxy"
+                    if part1 == "pavucontrol":
+                        icon_name = "multimedia-volume-control"
+                    if part1 == "vibrantLinux":
+                        icon_name = "io.github.libvibrant.vibrantLinux"
+                    if part1 == "protontricks":
+                        icon_name = "wine"
+                    if part1 == "steamcmd":
+                        icon_name = "steam_tray_mono"
                     try:
                         #icon_theme = Gtk.IconTheme()
                         #ico = icon_theme.get_default()
@@ -421,6 +433,8 @@ class Application(ttk.Window):
                         image = None
                         if icon_info != None:
                             image_filename = icon_info.get_filename()
+                        else:
+                            AppDebug.debug_print("No file for " + icon_name + " :-(")
                     except:
                         #AppDebug.debug_print("")
                         image_filename = None
@@ -436,11 +450,15 @@ class Application(ttk.Window):
                         image = Image.open(image_filename)
                         photo = image.resize((32, 32), Image.Resampling.LANCZOS) #, Image.ANTIALIAS)
                         photo = ImageTk.PhotoImage(photo)
-                try:
-                    itemx = treeView.insert("", index=zeile, text=part1, values=(part2, ""), tags=(tag,), image=photo)
-                except:
-                    photo = None
-                    itemx = treeView.insert("", index=zeile, text=part1, values=(part2, ""), tags=(tag,))
+                    try:
+                        AppDebug.debug_print("  Füge " + icon_name + " in den Baum zu Index " + str(zeile) + " hinzu...")
+                        AppDebug.debug_print(pprint(photo))
+                        itemx = treeView.insert("", "end", text=part1, values=(part2, ""), tags=(tag,), image=photo)
+                        AppDebug.debug_print("  ok! " + str(type(photo)))
+                    except:
+                        photo = None
+                        AppDebug.debug_print(icon_name + " fehlgeschlagen")
+                        itemx = treeView.insert("", index=zeile, text=part1, values=(part2, ""), tags=(tag,))
                 else:
                     #treeView.insert("", index=zeile, text=line, tags=(tag,))
                     pass
