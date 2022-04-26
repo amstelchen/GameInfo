@@ -4,7 +4,7 @@ version = "1.0.5"
 description = "System info tool for gamers"
 authors = ["Michael John <michael.john@gmx.at>"]
 license = "GPL"
-include = ["images/*", "locales/*"]
+include = ["images/*", "gameinfo/locales/de/LC_MESSAGES/*.mo"]
 
 [tool.poetry.scripts]
 GameInfo = 'gameinfo.__main__:main'
@@ -13,7 +13,9 @@ GameInfo = 'gameinfo.__main__:main'
 python = "^3.10"
 python-gettext = "^4.0"
 requests = "^2.27.1"
-wxPython = "^4.1.1"
+ttkbootstrap = "^1.7.6"
+CairoSVG = "^2.5.2"
+Pillow = "^9.1.0"
 
 [tool.poetry.dev-dependencies]
 
