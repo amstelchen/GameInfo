@@ -356,12 +356,27 @@ class Application(ttk.Window):
                 #returnString += str(prefix) + ":" + print("Yes") if os.path.isdir(str(prefix)) == True else print("No") + "\n"
 
         if selection == "Proton":
-            proton_dir = (cmdline("grep _proton= `which proton`")).replace('\n','')
-            proton_bin = (cmdline("which proton")).replace('\n','')
-            proton_ver = cmdline("grep CURRENT_PREFIX_VERSION= " + proton_dir.replace("_proton=",""))
-
-            returnString = proton_dir + "\n(set in " + proton_bin + ")\n"
-            returnString += proton_ver
+            #proton_bin = (cmdline("which proton")).replace('\n','')
+            proton_bin = (cmdline("command -v proton")).replace('\n','')
+            #print(proton_bin)
+            if len(proton_bin) == 0:
+                returnString += "Proton executable not found." + "\n"
+            else:
+                #proton_dir = (cmdline("grep _proton= `which proton`")).replace('\n','')
+                proton_dir = (cmdline("cat `command -v proton` | grep _proton=")).replace('\n','').replace("_proton=","")
+                if len(proton_dir) == 0:
+                    returnString += "Proton variable _proton not found."
+                #returnString += proton_dir
+                #print(proton_dir)
+            if len(proton_bin) > 0 and len(proton_dir) > 0:
+                proton_ver = cmdline("cat " + proton_dir + " | grep CURRENT_PREFIX_VERSION=")
+                if len(proton_ver) == 0:
+                    returnString += "Proton custom executable not found." + "\n"
+                else:
+                    returnString += "proton_bin:=" + proton_bin + "\n"
+                    returnString += "proton_dir (set in " + proton_bin + "):=" + proton_dir +"\n"
+                    returnString += proton_ver
+                    #print(proton_ver)
 
             #mypath = os.path.dirname(proton_dir.replace("_proton=","").replace("\n",""))
             mypath = "compatibilitytools.d"
@@ -401,7 +416,7 @@ class Application(ttk.Window):
                 returnString += _("Games")
                 for row in cursor:
                     returnString += ": " + row[1] + "\n"
-                    conn.close()
+                conn.close()
             except sqlite3.OperationalError:
                 returnString += "\n" + _("Lutris install directory not found.")
 
