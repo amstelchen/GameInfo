@@ -60,7 +60,7 @@ except FileNotFoundError as e:
     debug_print(e)
     
 def cmdline(command):
-    process = Popen(args=command, stdout=PIPE, shell=True, universal_newlines=True) #text_mode = True
+    process = Popen(args=command, stdout=PIPE, stderr=PIPE, shell=True, universal_newlines=True) #text_mode = True
     #process.text_mode = True
     return process.communicate()[0]
 
@@ -104,7 +104,14 @@ for menuitem in menuitems:
     #print(menuitem.attributes['splitChar'].value)
     #menuReturn.append(menuitem.attributes['value'].value)
     #menuReturn.append(cmdline(menuitem.attributes['command'].value))
-    menuitem.attributes['command'].value = cmdline(menuitem.attributes['command'].value)
+    section = menuitem.attributes['value'].value
+    command = menuitem.attributes['command'].value
+    result = cmdline(command)
+    #print(command)
+    if len(result) > 0:
+        menuitem.attributes['command'].value = result
+    else:
+        menuitem.attributes['command'].value = section + " info could not be retrieved."
     pass
 
 menuPlatforms = ["Tools", "Steam", "Proton", "Wine", "DOSBox", "Lutris", "GOG", "ScummVM", "Epic Games", "Battle.net"]
@@ -125,9 +132,12 @@ for toolitem in toolitems:
         toolResult = cmdline(str(command + " " + version))
     else:
         toolResult = cmdline(str(version))
+    if len(toolResult) == 0:
+        toolResult += "\n"
     #toolResult = toolResult.decode('utf-8')
     #splitChar = item.attributes["splitChar"].value
     #outputALLE += command + "-" + toolResult + "\n"
+    command = command.replace('-','–')
     if toolResult.find(command.replace('!','')) == -1:
         outputALLE += command.replace('!','') + "-" + toolResult
     else:
@@ -357,41 +367,56 @@ class Application(ttk.Window):
             mypath = "compatibilitytools.d"
             returnString += "\nOther tools in " + mypath
             mypath = "/usr/share/steam/compatibilitytools.d"
-            onlyfiles = [f for f in listdir(mypath)]
-            for file in onlyfiles:
-                returnString += "=" + str(file) + "\n"
+            if os.path.exists(mypath):
+                onlyfiles = [f for f in listdir(mypath)]
+                for file in onlyfiles:
+                    returnString += "=" + str(file) + "\n"
+            else:
+                returnString += "\n" + _("Steam compatibilitytools install directory not found.")
             splitChar = "="
 
         if selection == "DOSBox":
-            returnString += cmdline("dosbox --version | head -n 2 | tail -n 1 | sed 's/ox/ox:/'; echo")
             mypath = os.path.expanduser("~/.dosbox/")
-            returnString += _("Config files")
-            onlyfiles = [f for f in listdir(mypath) if isfile(join(mypath, f))]
-            for file in onlyfiles:
-                returnString += ": " + str(file) + "\n"
+            returnString += cmdline("dosbox --version | head -n 2 | tail -n 1 | sed 's/ox/ox:/'; echo")
+            if os.path.exists(mypath):
+                returnString += _("Config files")
+                onlyfiles = [f for f in listdir(mypath) if isfile(join(mypath, f))]
+                for file in onlyfiles:
+                    returnString += ": " + str(file) + "\n"
+            else:
+                returnString += "\n" + _("DOSBox install directory not found.")
             splitChar = ": "
 
         if selection == "Lutris":
             returnString += "Lutris " + cmdline("lutris --version | sed 's/lutris-//'; echo")
             #mypath = os.path.expanduser("~/.config/lutris/games/")
-            returnString += _("Games")
+            #returnString += _("Games")
             #onlyfiles = [f for f in listdir(mypath) if isfile(join(mypath, f))]
             #for file in onlyfiles:
             #    returnString += ": " + os.path.splitext(file)[0] + "\n"
             #splitChar = ": "
-            conn = sqlite3.connect('/home/mic/.local/share/lutris/pga.db')
-            cursor = conn.execute("SELECT id, name from games")
-            for row in cursor:
-                returnString += ": " + row[1] + "\n"
-            conn.close()
+            try:
+                conn = sqlite3.connect('/home/mic/.local/share/lutris/pga.db')
+                cursor = conn.execute("SELECT id, name from games")
+                returnString += _("Games")
+                for row in cursor:
+                    returnString += ": " + row[1] + "\n"
+                    conn.close()
+            except sqlite3.OperationalError:
+                returnString += "\n" + _("Lutris install directory not found.")
 
         if selection == "GOG":
-            returnString += "Minigalaxy " + cmdline("minigalaxy --version; echo")
             mypath = os.path.expanduser("~/.config/minigalaxy/games/")
-            returnString += _("Games")
-            onlyfiles = [f for f in listdir(mypath) if isfile(join(mypath, f))]
-            for file in onlyfiles:
-                returnString += ": " + os.path.splitext(file)[0] + "\n"
+            returnString += "Minigalaxy " + cmdline("minigalaxy --version; echo")
+            if os.path.exists(mypath):
+                returnString += _("Games")
+                #try:
+                onlyfiles = [f for f in listdir(mypath) if isfile(join(mypath, f))]
+                for file in onlyfiles:
+                    returnString += ": " + os.path.splitext(file)[0] + "\n"
+                #except FileNotFoundError as err:
+            else:
+                returnString += "\n" + _("Minigalaxy/GOG install directory not found.")
             splitChar = ": "
 
         if selection == "ScummVM":
@@ -487,6 +512,7 @@ class Application(ttk.Window):
                             image_filename = icon_info.get_filename()
                         else:
                             AppDebug.debug_print("No file for " + icon_name + " :-(")
+                            image_filename = ""
                     except:
                         #AppDebug.debug_print("")
                         image_filename = None
