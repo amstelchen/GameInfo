@@ -10,12 +10,13 @@ include = ["images/*", "gameinfo/locales/de/LC_MESSAGES/*.mo"]
 GameInfo = 'gameinfo.__main__:main'
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = "^3.7"
 python-gettext = "^4.0"
 requests = "^2.27.1"
 ttkbootstrap = "^1.7.6"
 CairoSVG = "^2.5.2"
 Pillow = "^9.1.0"
+tk = "^0.1.0"
 
 [tool.poetry.dev-dependencies]
 
