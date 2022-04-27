@@ -16,7 +16,6 @@ requests = "^2.27.1"
 ttkbootstrap = "^1.7.6"
 CairoSVG = "^2.5.2"
 Pillow = "^9.1.0"
-tk = "^0.1.0"
 cffi = "^1.15.0"
 
 [tool.poetry.dev-dependencies]
