@@ -31,8 +31,10 @@ from os.path import isfile, join
 
 import gettext
 import cairosvg
-
 import sqlite3
+import vdf
+
+from .BitsBytes import bytes2human
 
 from .AppDebug import AppDebug
 #import AppDebug
@@ -337,9 +339,39 @@ class Application(ttk.Window):
             splitChar = "-"
             linesIgnore = 0
 
-        if selection == "Wine":
+        if selection == "Steam":
             returnString = f'{selection} {_("version")}:={cmdline("wine --version")}\n'
             #prefixes = ["$HOME/.wine", "$HOME/.wine32", "$HOME/.config/wine/prefixes"]
+            prefixes = ["~/.local/share/Steam", "~/.steampath", "~/.steam/bin32/"]
+            for prefix in prefixes:
+                returnString += str(prefix) + ":="
+                if os.path.isdir(os.path.expanduser(str(prefix))):
+                    returnString += _("Yes") + "\n"
+                else:
+                    returnString += _("No") + "\n"
+                #returnString += str(prefix) + ":" + print("Yes") if os.path.isdir(str(prefix)) == True else print("No") + "\n"
+            d = vdf.parse(open(os.path.expanduser('~/.steam/steam/config/libraryfolders.vdf')))
+            for folder in d['libraryfolders']:
+                totalSize = int(d['libraryfolders'][folder]['totalsize'])
+                folderPath = d['libraryfolders'][folder]['path']
+                sizeApps = 0
+                countApps = 0
+                #print(type(d['libraryfolders'][folder]['apps']))
+                dictApps = d['libraryfolders'][folder]['apps']
+                for app in dictApps:
+                    countApps += 1
+                    sizeApps += int(dictApps[app])
+                freeSize = totalSize - sizeApps
+                if freeSize < 0: freeSize = 0
+                returnString += "\n" + folderPath + ":="
+                returnString += " " + str(countApps).rjust(3,' ') + " " + _("games or apps") + "  "
+                returnString += bytes2human(totalSize,format="%(value)3.1f %(symbol)s") + " " + _("total")
+                returnString += " (" + bytes2human(sizeApps,format="%(value)3.1f %(symbol)s") + " " + _("used")
+                returnString += ", " + bytes2human(freeSize,format="%(value)3.1f %(symbol)s") + " " + _("free") + ")"
+            splitChar = "="
+
+        if selection == "Wine":
+            returnString = f'{selection} {_("version")}:={cmdline("wine --version")}\n'
             prefixes = ["~/.wine", "~/.wine32", "~/.config/wine/prefixes"]
             for prefix in prefixes:
                 returnString += str(prefix) + ":="
@@ -465,7 +497,7 @@ class Application(ttk.Window):
                 returnString += "\n" + _("ScummVM install directory not found.")
             splitChar = "="
 
-        if selection in ("Epic Games", "Battle.net", "Steam"):
+        if selection in ("Epic Games", "Battle.net"): #, "Steam"):
             returnString = str(selection) + " " + _("not yet implemented, sorry.")
 
         if selection == _("Help"):
