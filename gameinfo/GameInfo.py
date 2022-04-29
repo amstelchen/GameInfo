@@ -40,7 +40,7 @@ from .AppDebug import AppDebug
 #import AppDebug
 #from AboutDialog import AboutDialog
 
-VERSION = "1.0.5"
+VERSION = "1.0.6"
 
 __appname__ = "GameInfo"
 __version__ = VERSION
