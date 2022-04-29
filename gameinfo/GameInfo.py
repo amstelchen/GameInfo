@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 from pprint import pprint
+from importlib.metadata import version
 
 import gi
 gi.require_version('Gtk', '3.0')
@@ -12,6 +13,7 @@ import tkinter as tk
 #import tkinter.ttk as ttk
 #from ttkthemes import ThemedTk
 from PIL import Image, ImageTk
+import PIL._version
 
 import ttkbootstrap as ttk
 from ttkbootstrap.constants import *
@@ -64,20 +66,6 @@ def cmdline(command):
     #process.text_mode = True
     return process.communicate()[0]
 
-def open_info():
-    #tk.messagebox.showinfo("hi")
-    #msg = tk.messagebox.Dialog("hi")
-
-    #dialog_Option = AboutDialog()
-    #self.SetTopWindow(self.dialog_Event)
-    #dialog_Option.ShowModal()
-    #dialog_Option.Destroy()
-    return True
-
-def refresh():
-    #Application.createWidgets(textPane="Distro")
-    pass
-
 #menuSystem = ["Linux Kernel", "Linux Distro", "CPU", "GPU", "Vulkan", "OpenGL", "VDPAU", "VA-API"]
 
 #menuReturn = []
@@ -125,21 +113,21 @@ AppDebug.debug_print(_("Fetching system info, this can take a second..."))
 toolitems = file.getElementsByTagName('toolitem')
 outputALLE = str("")
 for toolitem in toolitems:
-    command = toolitem.attributes["command"].value
-    version = toolitem.attributes["version"].value
-    AppDebug.debug_print(_("Checking for") + " " + command)
-    if command.find("!") == -1:
-        toolResult = cmdline(str(command + " " + version))
+    toolitem_command = toolitem.attributes["command"].value
+    toolitem_version = toolitem.attributes["version"].value
+    AppDebug.debug_print(_("Checking for") + " " + toolitem_command)
+    if toolitem_command.find("!") == -1:
+        toolResult = cmdline(str(toolitem_command + " " + toolitem_version))
     else:
-        toolResult = cmdline(str(version))
+        toolResult = cmdline(str(toolitem_version))
     if len(toolResult) == 0:
         toolResult += "\n"
     #toolResult = toolResult.decode('utf-8')
     #splitChar = item.attributes["splitChar"].value
     #outputALLE += command + "-" + toolResult + "\n"
-    command = command.replace('-','–')
-    if toolResult.find(command.replace('!','')) == -1:
-        outputALLE += command.replace('!','') + "-" + toolResult
+    toolitem_command = toolitem_command.replace('-','–')
+    if toolResult.find(toolitem_command.replace('!','')) == -1:
+        outputALLE += toolitem_command.replace('!','') + "-" + toolResult
     else:
         outputALLE += toolResult
 
@@ -158,6 +146,12 @@ class Application(ttk.Window):
     def callback(self):
         AppDebug.debug_print("called the callback!")
             
+    def open_info(self):
+        self.createWidgets(textPane=_("About"))
+
+    def refresh(self):
+        self.createWidgets(textPane="Distro")
+
     def __init__(self, master=None):
 
         winSize = (1024, 768)
@@ -344,16 +338,17 @@ class Application(ttk.Window):
             linesIgnore = 0
 
         if selection == "Wine":
-            returnString = "WINE version:" + cmdline("wine --version ; echo")
+            returnString = f'{selection} {_("version")}:={cmdline("wine --version")}\n'
             #prefixes = ["$HOME/.wine", "$HOME/.wine32", "$HOME/.config/wine/prefixes"]
             prefixes = ["~/.wine", "~/.wine32", "~/.config/wine/prefixes"]
             for prefix in prefixes:
-                returnString += str(prefix) + ":"
+                returnString += str(prefix) + ":="
                 if os.path.isdir(os.path.expanduser(str(prefix))):
                     returnString += _("Yes") + "\n"
                 else:
                     returnString += _("No") + "\n"
                 #returnString += str(prefix) + ":" + print("Yes") if os.path.isdir(str(prefix)) == True else print("No") + "\n"
+            splitChar = "="
 
         if selection == "Proton":
             #proton_bin = (cmdline("which proton")).replace('\n','')
@@ -391,19 +386,21 @@ class Application(ttk.Window):
             splitChar = "="
 
         if selection == "DOSBox":
+            returnString = f'{selection} {_("version")}:={cmdline("dosbox --version | head -n 2 | tail -n 1 | sed s/DOSBox[[:space:]]version[[:space:]]//;")}\n'
             mypath = os.path.expanduser("~/.dosbox/")
-            returnString += cmdline("dosbox --version | head -n 2 | tail -n 1 | sed 's/ox/ox:/'; echo")
+            #returnString += cmdline("dosbox --version | head -n 2 | tail -n 1 | sed 's/version//'; echo")
             if os.path.exists(mypath):
                 returnString += _("Config files")
                 onlyfiles = [f for f in listdir(mypath) if isfile(join(mypath, f))]
                 for file in onlyfiles:
-                    returnString += ": " + str(file) + "\n"
+                    returnString += "=" + str(file) + "\n"
             else:
                 returnString += "\n" + _("DOSBox install directory not found.")
-            splitChar = ": "
+            splitChar = "="
 
         if selection == "Lutris":
-            returnString += "Lutris " + cmdline("lutris --version | sed 's/lutris-//'; echo")
+            returnString = f'{selection} {_("version")}:={cmdline("lutris --version | sed s/lutris-//;")}\n'
+            #returnString += "Lutris " + cmdline("lutris --version | sed 's/lutris-//'; echo")
             #mypath = os.path.expanduser("~/.config/lutris/games/")
             #returnString += _("Games")
             #onlyfiles = [f for f in listdir(mypath) if isfile(join(mypath, f))]
@@ -415,50 +412,57 @@ class Application(ttk.Window):
                 cursor = conn.execute("SELECT id, name from games")
                 returnString += _("Games")
                 for row in cursor:
-                    returnString += ": " + row[1] + "\n"
+                    returnString += "=" + row[1] + "\n"
                 conn.close()
             except sqlite3.OperationalError:
                 returnString += "\n" + _("Lutris install directory not found.")
+            splitChar = "="
 
         if selection == "GOG":
+            selection = "Minigalaxy"
+            returnString = f'{selection} {_("version")}:={cmdline("minigalaxy --version")}\n'
             mypath = os.path.expanduser("~/.config/minigalaxy/games/")
-            returnString += "Minigalaxy " + cmdline("minigalaxy --version; echo")
+            #returnString += "Minigalaxy " + cmdline("minigalaxy --version; echo")
             if os.path.exists(mypath):
                 returnString += _("Games")
                 #try:
                 onlyfiles = [f for f in listdir(mypath) if isfile(join(mypath, f))]
                 for file in onlyfiles:
-                    returnString += ": " + os.path.splitext(file)[0] + "\n"
+                    returnString += "=" + os.path.splitext(file)[0] + "\n"
                 #except FileNotFoundError as err:
             else:
                 returnString += "\n" + _("Minigalaxy/GOG install directory not found.")
-            splitChar = ": "
+            splitChar = "="
 
         if selection == "ScummVM":
-            returnString += cmdline("scummvm --version | head -n 1; echo")
+            returnString = f'{selection} {_("version")}:={cmdline("scummvm --version | head -n 1 | sed s/ScummVM[[:space:]]//;")}\n'
+            #returnString += cmdline("scummvm --version | head -n 1; echo")
             mypath = os.path.expanduser("~/.config/scummvm/scummvm.ini")
-            returnString += _("Games")
-            INIfile = open(mypath, 'r')
-            lines = INIfile.readlines()
-            count = 0
-            for line in lines:
-                count += 1
-                if "description" in line:
-                    #print("Line{}: {}".format(count, line.strip())
-                    returnString += line.strip("description") # + "\n"
-            cutString = cmdline("scummvm --version | tail -n 1")
-            #print(cutString)
-            returnString += '\n' + cutString.split(':')[0].rstrip('\n')
-            wordCount = 0
-            #returnString += "="
-            for word in cutString.split(':')[1].split(' '):
-                returnString += word + ' '
-                #if wordCount == 3:
-                    #returnString += "\n"
-                if wordCount % 8 == 0:
-                    returnString += "\n="
-                wordCount += 1
-            #print(returnString)
+            if os.path.exists(mypath):
+                returnString += _("Games")
+                INIfile = open(mypath, 'r')
+                lines = INIfile.readlines()
+                count = 0
+                for line in lines:
+                    count += 1
+                    if "description" in line:
+                        #print("Line{}: {}".format(count, line.strip())
+                        returnString += line.strip("description") # + "\n"
+                cutString = cmdline("scummvm --version | tail -n 1")
+                #print(cutString)
+                returnString += '\n' + cutString.split(':')[0].rstrip('\n')
+                wordCount = 0
+                #returnString += "="
+                for word in cutString.split(':')[1].split(' '):
+                    returnString += word + ' '
+                    #if wordCount == 3:
+                        #returnString += "\n"
+                    if wordCount % 8 == 0:
+                        returnString += "\n="
+                    wordCount += 1
+                #print(returnString)
+            else:
+                returnString += "\n" + _("ScummVM install directory not found.")
             splitChar = "="
 
         if selection in ("Epic Games", "Battle.net", "Steam"):
@@ -468,7 +472,12 @@ class Application(ttk.Window):
             returnString = _("Not yet implemented.")
             #splitChar = "---"
         if selection == _("About"):
-            returnString = f'{__appname__} {__version__}:\n\n{__licence__}' #{__author__}
+            returnString = (f'{__appname__} Version: {__version__}\n\n'
+                f'Python Version: {".".join([str(value) for value in sys.version_info[0:3]])}\n'
+                f'ttkbootstrap Version: {version("ttkbootstrap"):s}\n'
+                f'TK Version: {tk.TkVersion:.1f}\n'
+                f'PIL Version: {PIL.__version__:s}\n'
+                f'\n{__licence__}\n')
             splitChar = "---"
             #treeRight["columns"]=("#0") #,"two", "three")
             treeView.column("#0", width=900, minwidth=350, stretch=ttk.NO)
@@ -629,10 +638,10 @@ class Application(ttk.Window):
         #b1 = ttk.Button(self, text="Submit", bootstyle="success")
         #b1.pack(side=LEFT, padx=5, pady=10)
 
-        b2 = ttk.Button(f, text=_("Refresh"), bootstyle="warning", width=10, command=refresh) #self.createWidgets("Distro"))
+        b2 = ttk.Button(f, text=_("Refresh"), bootstyle="warning", width=10, command=self.refresh) #self.createWidgets("Distro"))
         b2.pack(side=RIGHT, padx=5, pady=10, anchor=ttk.SE)
 
-        b3 = ttk.Button(f, text=_("About"), bootstyle="info", width=10, command=open_info)
+        b3 = ttk.Button(f, text=_("About"), bootstyle="info", width=10, command=self.open_info)
         b3.pack(side=RIGHT, padx=5, pady=10, anchor=ttk.SE)
 
         b4 = ttk.Button(f, text=_("Quit"), bootstyle="danger", width=10, command=self.quit)
