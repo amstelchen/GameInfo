@@ -296,7 +296,7 @@ class Application(ttk.Window):
 
         if selection == "Kernel": #"Linux Kernel"
             splitChar = "="
-            linesIgnore = 2
+            #linesIgnore = 2
         if selection == "Distro": #"Linux Distro"
             returnString+= "$DESKTOP_SESSION=" + self.get_desktop_environment()
             splitChar = "="
