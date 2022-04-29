@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 from pprint import pprint
-from importlib.metadata import version
+from importlib_metadata import version
 
 import gi
 gi.require_version('Gtk', '3.0')
