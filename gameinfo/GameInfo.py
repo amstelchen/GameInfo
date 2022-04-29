@@ -344,11 +344,17 @@ class Application(ttk.Window):
             lineVersion = _("unknown")
             steamCtime = ""
 
+            # only on Arch
             steamBinary = os.path.expanduser("~/.local/share/Steam/ubuntu12_32/steam")
+            # on Debian and Arch
+            steamBinary = os.path.expanduser("~/.steam/steam/ubuntu12_32/steam")
             if os.path.isfile(steamBinary):
                 steamCtime = time.ctime(os.path.getmtime(steamBinary))
 
+            # only on Arch
             steamRuntime = os.path.expanduser("~/.local/share/Steam/ubuntu12_32/steam-runtime/version.txt")
+            # on Debian and Arch
+            steamRuntime = os.path.expanduser("~/.steam/steam/ubuntu12_32/steam-runtime/version.txt")
             if os.path.isfile(steamRuntime):
                 with open(steamRuntime, 'r') as versionFile:
                     lineVersion = versionFile.readline()
@@ -356,7 +362,8 @@ class Application(ttk.Window):
 
             returnString = f'{selection} {_("version")}:={steamCtime} - {lineVersion}\n'
             #prefixes = ["$HOME/.wine", "$HOME/.wine32", "$HOME/.config/wine/prefixes"]
-            prefixes = ["~/.local/share/Steam", "~/.steampath", "~/.steam/bin32/"]
+            prefixes = ["~/.local/share/Steam", "~/.steam/steam/", "~/.steampath", "~/.steam/bin32/"]
+            returnString += "Steam install folders:=\n\n"
             for prefix in prefixes:
                 returnString += str(prefix) + ":="
                 if os.path.isdir(os.path.expanduser(str(prefix))):
@@ -364,24 +371,29 @@ class Application(ttk.Window):
                 else:
                     returnString += _("No") + "\n"
                 #returnString += str(prefix) + ":" + print("Yes") if os.path.isdir(str(prefix)) == True else print("No") + "\n"
-            d = vdf.parse(open(os.path.expanduser('~/.steam/steam/config/libraryfolders.vdf')))
-            for folder in d['libraryfolders']:
-                totalSize = int(d['libraryfolders'][folder]['totalsize'])
-                folderPath = d['libraryfolders'][folder]['path']
-                sizeApps = 0
-                countApps = 0
-                #print(type(d['libraryfolders'][folder]['apps']))
-                dictApps = d['libraryfolders'][folder]['apps']
-                for app in dictApps:
-                    countApps += 1
-                    sizeApps += int(dictApps[app])
-                freeSize = totalSize - sizeApps
-                if freeSize < 0: freeSize = 0
-                returnString += "\n" + folderPath + ":="
-                returnString += " " + str(countApps).rjust(3,' ') + " " + _("games or apps") + "  "
-                returnString += bytes2human(totalSize,format="%(value)3.1f %(symbol)s") + " " + _("total")
-                returnString += " (" + bytes2human(sizeApps,format="%(value)3.1f %(symbol)s") + " " + _("used")
-                returnString += ", " + bytes2human(freeSize,format="%(value)3.1f %(symbol)s") + " " + _("free") + ")"
+            libraryfoldersPath = os.path.expanduser('~/.steam/steam/config/libraryfolders.vdf')
+            try:
+                d = vdf.parse(open(libraryfoldersPath))
+                returnString += "\nSteam library folders:=\n"
+                for folder in d['libraryfolders']:
+                    totalSize = int(d['libraryfolders'][folder]['totalsize'])
+                    folderPath = d['libraryfolders'][folder]['path']
+                    sizeApps = 0
+                    countApps = 0
+                    #print(type(d['libraryfolders'][folder]['apps']))
+                    dictApps = d['libraryfolders'][folder]['apps']
+                    for app in dictApps:
+                        countApps += 1
+                        sizeApps += int(dictApps[app])
+                    freeSize = totalSize - sizeApps
+                    if freeSize < 0: freeSize = 0
+                    returnString += "\n" + folderPath + ":="
+                    returnString += str(countApps).rjust(3,' ') + " " + _("games or apps") + "  "
+                    returnString += bytes2human(totalSize,format="%(value)3.1f %(symbol)s") + " " + _("total")
+                    returnString += " (" + bytes2human(sizeApps,format="%(value)3.1f %(symbol)s") + " " + _("used")
+                    returnString += ", " + bytes2human(freeSize,format="%(value)3.1f %(symbol)s") + " " + _("free") + ")"
+            except FileNotFoundError:
+                returnString += "\n" + libraryfoldersPath + " " + _("not found")
             splitChar = "="
 
         if selection == "Wine":
