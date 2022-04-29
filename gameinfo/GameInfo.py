@@ -33,6 +33,7 @@ import gettext
 import cairosvg
 import sqlite3
 import vdf
+import time
 
 from .BitsBytes import bytes2human
 
@@ -340,7 +341,20 @@ class Application(ttk.Window):
             linesIgnore = 0
 
         if selection == "Steam":
-            returnString = f'{selection} {_("version")}:={cmdline("wine --version")}\n'
+            lineVersion = _("unknown")
+            steamCtime = ""
+
+            steamBinary = os.path.expanduser("~/.local/share/Steam/ubuntu12_32/steam")
+            if os.path.isfile(steamBinary):
+                steamCtime = time.ctime(os.path.getmtime(steamBinary))
+
+            steamRuntime = os.path.expanduser("~/.local/share/Steam/ubuntu12_32/steam-runtime/version.txt")
+            if os.path.isfile(steamRuntime):
+                with open(steamRuntime, 'r') as versionFile:
+                    lineVersion = versionFile.readline()
+                #if len(lineVersion) == 0:
+
+            returnString = f'{selection} {_("version")}:={steamCtime} - {lineVersion}\n'
             #prefixes = ["$HOME/.wine", "$HOME/.wine32", "$HOME/.config/wine/prefixes"]
             prefixes = ["~/.local/share/Steam", "~/.steampath", "~/.steam/bin32/"]
             for prefix in prefixes:
