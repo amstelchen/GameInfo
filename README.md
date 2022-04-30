@@ -6,20 +6,17 @@ A system info tool for gamers.
 
 #### Supported tools
 
-|__Emulators/Runners__|__CLI tools__|
-|-|-|
-|:heavy_check_mark: wine  |:heavy_check_mark: steamcmd  |
-|:heavy_check_mark: winetricks  |:heavy_check_mark: steam-cli  |
-|:heavy_check_mark: protontricks  |:heavy_check_mark: legendary-gl |
+|__Emulators/Runners__|__CLI tools__|__Audio__|
+|-|-|-|
+|:heavy_check_mark: wine  |:heavy_check_mark: steamcmd  |:heavy_check_mark: pavucontrol
+|:heavy_check_mark: winetricks  |:heavy_check_mark: steam-cli  |:heavy_check_mark: pipewire
+|:heavy_check_mark: protontricks  |:heavy_check_mark: legendary-gl |:heavy_check_mark: pulseffects
 |:heavy_check_mark: lutris  |:heavy_check_mark: truckersmp-cli  |
 |:heavy_check_mark: minigalaxy  ||
-|__Graphics__|__Perf tuning__|
-:heavy_check_mark: dxvk  |:heavy_check_mark: mangohud  
-:heavy_check_mark: vkd3d  |:heavy_check_mark: corectrl  
-|__Audio__|__Modding__|
-|:heavy_check_mark: pavucontrol  |:heavy_check_mark: openrgb 
-|:heavy_check_mark: pipewire  |:heavy_check_mark: vibrantLinux 
-|:heavy_check_mark: pulseffects  |
+|__Graphics__|__Perf tuning__|__Modding__|
+|:heavy_check_mark: dxvk  |:heavy_check_mark: mangohud  |:heavy_check_mark: openrgb
+|:heavy_check_mark: vkd3d  |:heavy_check_mark: corectrl  |:heavy_check_mark: vibrantLinux 
+
 
 #### Debugging
 
