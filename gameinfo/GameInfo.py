@@ -35,6 +35,8 @@ import sqlite3
 import vdf
 import time
 
+import shutil
+
 from .BitsBytes import bytes2human
 
 from .AppDebug import AppDebug
@@ -385,8 +387,14 @@ class Application(ttk.Window):
                     for app in dictApps:
                         countApps += 1
                         sizeApps += int(dictApps[app])
-                    freeSize = totalSize - sizeApps
-                    if freeSize < 0: freeSize = 0
+                    #workaround for Steam
+                    if totalSize == 0:
+                        total, used, free = shutil.disk_usage(folderPath)
+                        totalSize = total
+                        freeSize = free
+                    else:
+                        freeSize = totalSize - sizeApps
+                    #if freeSize < 0: freeSize = 0
                     returnString += "\n" + folderPath + ":="
                     returnString += str(countApps).rjust(3,' ') + " " + _("games or apps") + "  "
                     returnString += bytes2human(totalSize,format="%(value)3.1f %(symbol)s") + " " + _("total")
