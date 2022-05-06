@@ -378,6 +378,9 @@ class Application(ttk.Window):
                 d = vdf.parse(open(libraryfoldersPath))
                 returnString += "\nSteam library folders:=\n"
                 for folder in d['libraryfolders']:
+                    #workaround for Steam on Debian default installations
+                    if folder == "contentstatsid":
+                        continue
                     totalSize = int(d['libraryfolders'][folder]['totalsize'])
                     folderPath = d['libraryfolders'][folder]['path']
                     sizeApps = 0
@@ -387,7 +390,7 @@ class Application(ttk.Window):
                     for app in dictApps:
                         countApps += 1
                         sizeApps += int(dictApps[app])
-                    #workaround for Steam
+                    #workaround for Steam for the default library reported 0 size
                     if totalSize == 0:
                         total, used, free = shutil.disk_usage(folderPath)
                         totalSize = total
