@@ -37,6 +37,9 @@ import time
 
 import shutil
 
+sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
+import pyrandr as randr
+
 from .BitsBytes import bytes2human
 
 from .AppDebug import AppDebug
@@ -105,7 +108,9 @@ for menuitem in menuitems:
         menuitem.attributes['command'].value = result
     else:
         menuitem.attributes['command'].value = section + " info could not be retrieved."
+    #print(menuitems.attributes['command'])
     pass
+
 
 menuPlatforms = ["Tools", "Steam", "Proton", "Wine", "DOSBox", "Lutris", "GOG", "ScummVM", "Epic Games", "Battle.net"]
 
@@ -303,6 +308,7 @@ class Application(ttk.Window):
             splitChar = "="
             #linesIgnore = 2
         if selection == "Distro": #"Linux Distro"
+            returnString = returnString.replace('\"','')
             returnString+= "$DESKTOP_SESSION=" + self.get_desktop_environment()
             splitChar = "="
             #linesIgnore = 1000
@@ -318,6 +324,22 @@ class Application(ttk.Window):
         #    splitChar = ": "
         #if selection == "USB":
         #    splitChar = ":"
+
+        if selection == "---Display---":
+        # using "cat /sys/class/drm/*/edid | edid-decode -s" instead
+            #returnString= returnString.replace('\t', "  ")
+            cs = randr.connected_screens()
+            returnString = ""
+            for s in cs:
+                #print(s.__str__())
+                returnString += s.__str__() + "|\n"
+                for m in s.supported_modes:
+                    #print(m.__str__())
+                    returnString += m.__str__() + "\n"
+            splitChar = "|"
+        
+        if selection == "Display":
+            splitChar = ":"
 
         if selection == "Vulkan":
             returnString= returnString.replace('\t', "  ")
@@ -745,7 +767,7 @@ class Application(ttk.Window):
             #cnt += 1
         #    pass
         menuitems = file.getElementsByTagName('menuitem')
-        for menuitem in sorted(menuitems, key=lambda menuitem: menuitem.attributes['id'].value):
+        for menuitem in sorted(menuitems, key=lambda menuitem: int(menuitem.attributes['id'].value)):
         #for menuitem in menuitems:
         #print(menu.firstChild.data)
             #print(menuitem.attributes['value'].value)

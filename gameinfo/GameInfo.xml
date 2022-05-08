@@ -4,15 +4,16 @@
         <menuitem id="2" value="Kernel" splitChar="=" linesIgnore="" command="uname -sr; uname -vmp; uname -mo; echo; if [[ -f /proc/config.gz ]]; then zcat /proc/config.gz; fi" />
         <menuitem id="3" value="CPU" splitChar=":" linesIgnore="" command="grep 'model name' /proc/cpuinfo | uniq | sed 's/model name/CPU Model/g' ; echo -n 'Number of CPUs: ' ; nproc ; echo ; cat /proc/cpuinfo ; echo ; echo" />
         <menuitem id="4" value="GPU" splitChar="" linesIgnore="" command="lspci -vnn | grep VGA -A 10" />
-        <menuitem id="4" value="PCI" splitChar=": " linesIgnore="" command="lspci -nn" />
-        <menuitem id="4" value="USB" splitChar=": " linesIgnore="" command="lsusb" />
-        <menuitem id="5" value="Vulkan" splitChar=":" linesIgnore="" command="vulkaninfo | tail -n +5 | uniq" />
-        <menuitem id="6" value="OpenGL" splitChar=":" linesIgnore="" command="glxinfo | grep OpenGL" />
-        <menuitem id="6" value="OpenCL" splitChar=":" linesIgnore="" command="clinfo | sed 's/   */:/g;s/^://'" />
-        <menuitem id="7" value="VDPAU" splitChar=":" linesIgnore="" command="vdpauinfo" />
-        <menuitem id="8" value="VA-API" splitChar=":" linesIgnore="" command="vainfo" />
-        <menuitem id="8" value="Pulse" splitChar=":" linesIgnore="" command="pactl info" />
-        <menuitem id="9" value="cpupower" splitChar=":" linesIgnore="" command="cpupower frequency-info | egrep --invert-match 'range|decide|Bereich|entscheid' | sed 's/GHz\./GHz sein./'" />
+        <menuitem id="5" value="PCI" splitChar=": " linesIgnore="" command="lspci -nn" />
+        <menuitem id="6" value="USB" splitChar=": " linesIgnore="" command="lsusb" />
+        <menuitem id="7" value="Display" splitChar=":" linesIgnore="" command="cat /sys/class/drm/*/edid | edid-decode -s" />
+        <menuitem id="8" value="Vulkan" splitChar=":" linesIgnore="" command="vulkaninfo | tail -n +5 | uniq" />
+        <menuitem id="9" value="OpenGL" splitChar=":" linesIgnore="" command="glxinfo | grep OpenGL" />
+        <menuitem id="10" value="OpenCL" splitChar=":" linesIgnore="" command="clinfo | sed 's/   */:/g;s/^://'" />
+        <menuitem id="11" value="VDPAU" splitChar=":" linesIgnore="" command="vdpauinfo" />
+        <menuitem id="12" value="VA-API" splitChar=":" linesIgnore="" command="vainfo" />
+        <menuitem id="13" value="Pulse" splitChar=":" linesIgnore="" command="pactl info" />
+        <menuitem id="14" value="cpupower" splitChar=":" linesIgnore="" command="cpupower frequency-info | egrep --invert-match 'range|decide|Bereich|entscheid' | sed 's/GHz\./GHz sein./'" />
     </menu>
     <menu id="tools" value="Tools">
         <toolitem command="wine" version="--version" />  
