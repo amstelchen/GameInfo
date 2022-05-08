@@ -610,6 +610,8 @@ class Application(ttk.Window):
                         icon_name = "wine"
                     if part1 == "steamcmd":
                         icon_name = "steam_tray_mono"
+                    if part1 == "pavucontrol":
+                        icon_name = "multimedia"
                     try:
                         #icon_theme = Gtk.IconTheme()
                         #ico = icon_theme.get_default()
@@ -626,14 +628,14 @@ class Application(ttk.Window):
                         if icon_info != None:
                             image_filename = icon_info.get_filename()
                         else:
-                            AppDebug.debug_print("No file for " + icon_name + " :-(")
-                            image_filename = ""
+                            #AppDebug.debug_print("No file for " + icon_name + " :-(")
+                            image_filename = "GameInfo.png"
                     except:
                         #AppDebug.debug_print("")
-                        image_filename = None
-                        itemx = treeView.insert("", index=zeile, text=part1, values=(part2, ""), tags=(tag,))
-                        zeile += 1
-                        continue
+                        image_filename = "GameInfo.png"
+                        #itemx = treeView.insert("", index=zeile, text=part1, values=(part2, ""), tags=(tag,))
+                        #zeile += 1
+                        #continue
                     if "svg" in image_filename:
                         image_data = cairosvg.svg2png(url=image_filename)
                         image = (Image.open(io.BytesIO(image_data)))
@@ -643,19 +645,20 @@ class Application(ttk.Window):
                         image = Image.open(image_filename)
                         photo = image.resize((32, 32), Image.Resampling.LANCZOS) #, Image.ANTIALIAS)
                         photo = ImageTk.PhotoImage(photo)
-                try:
-                    AppDebug.debug_print("  Füge " + icon_name + " in den Baum zu Index " + str(zeile) + " hinzu...")
-                    AppDebug.debug_print(pprint(photo))
-                    itemx = treeView.insert("", index=zeile, text=part1, values=(part2, ""), tags=(tag,), image=photo)
-                    AppDebug.debug_print("  ok! " + str(type(photo)))
-                except:
-                    photo = None
-                    #AppDebug.debug_print(icon_name + " fehlgeschlagen")
-                    itemx = treeView.insert("", index=zeile, text=part1, values=(part2, ""), tags=(tag,))
+                    try:
+                        #AppDebug.debug_print("  Füge " + icon_name + " in den Baum zu Index " + str(zeile) + " hinzu...")
+                        #AppDebug.debug_print(pprint(photo))
+                        itemx = treeView.insert("", index=zeile, text=part1, values=(part2, ""), tags=(tag,), image=photo)
+                        #AppDebug.debug_print("  ok! " + str(type(photo)))
+                    except:
+                        photo = None
+                        #AppDebug.debug_print("...fehlgeschlagen")
+                        itemx = treeView.insert("", index=zeile, text=part1, values=(part2, ""), tags=(tag,))
                 else:
-                    #treeView.insert("", index=zeile, text=line, tags=(tag,))
+                    itemx = treeView.insert("", index=zeile, text=part1, values=(part2, ""), tags=(tag,))
                     pass
-            zeile += 1
+                zeile += 1
+                #print(zeile)
 
     def mycallback(self, event):
  
@@ -803,7 +806,8 @@ class Application(ttk.Window):
         #top = tk.Label(m2, text=textPane, font="Sans 20")
         treeRight = ttk.Treeview(m2, style="mystyle.Treeview.Right",name="right_tree")
         
-        treeRight["columns"]=("#0", "#1")
+        treeRight["columns"]=("pic", "#0", "#1")
+        treeRight.column("pic", width=400, minwidth=400, stretch=ttk.NO)
         treeRight.column("#0", width=400, minwidth=400, stretch=ttk.NO)
         treeRight.column("#1", width=470, minwidth=470, stretch=ttk.NO)
         #treeRight.heading("#0",text="dfgsdfghsdfkjgsdhfjklsdfh",anchor=ttk.W) #text="Name"
