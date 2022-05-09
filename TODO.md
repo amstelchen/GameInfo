@@ -18,11 +18,12 @@
 :heavy_check_mark: vibrantLinux  
 :heavy_check_mark: dxvk  
 :heavy_check_mark: vkd3d  
-:white_check_mark: samrewritten  
+:heavy_check_mark: samrewritten  
+:heavy_check_mark: playonlinux
 
 :heavy_check_mark: Rework TKinter to use <strike>ThemedTk</strike> ttkbootstrap. :tired_face:  
 :heavy_check_mark: Switch from setuptools to poetry (done with v1.0.5).
-:white_check_mark: Add <a href="https://www.flaticon.com/de/kostenlose-icons/computer" title="computer Icons">Computer Icons erstellt von Freepik - Flaticon</a>
+:heavy_check_mark: Add <a href="https://www.flaticon.com/de/kostenlose-icons/computer" title="computer Icons">Computer Icons erstellt von Freepik - Flaticon</a>
 
 #### Tools
 
@@ -98,41 +99,10 @@ Move these into README.md when tested:
 
 GameInfo is tested to work on the following distributions:
 
-- Arch Linux
-- Debian 10 or newer
-- Ubuntu 20.04 or newer
-- Manjaro 20
-- Linux Mint 20 or newer (19.3 lacks support for python3.7, only has 3.6.9)
-- MX Linux 19 or newer (19.1 likely needs to run `pip install --upgrade pip setuptools wheel `)
-- Fedora 32 Workstation or newer
+(see README.md)
 
 Tests underway:
 
 - openSUSE Tumbleweed and Leap 15.2 or newer
 - Void Linux
 - Gentoo Linux (my portage is broken currently)
-
-#### Installation
-
-Steps assume that `python` and `pip` are already installed.
-
-Install dependencies (see sections below)
-
-Then, run:
-
-    $ pip install GameInfo
-
-Install directly from ``github``:
-
-
-    $ pip install git+https://github.com/amstelchen/GameInfo#egg=GameInfo
-
-When completed, run it with:
-
-    $ GameInfo
-
-#### Dependencies
-
-On Debian-based distributions (Mint, Ubuntu, MX, etc.), installation of the packages `tk` and `python3-tk` may be necessary.
-
-    sudo apt install python3-tk tk
