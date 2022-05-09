@@ -1,62 +1,12 @@
 #!/usr/bin/env python
 
-from pprint import pprint
-from importlib_metadata import version
+from .__init__ import *
 
-import gi
-gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk
-#from gi.repository.GdkPixbuf import Pixbuf
-
-import tkinter as tk
-#from tkinter import ttk
-#import tkinter.ttk as ttk
-#from ttkthemes import ThemedTk
-from PIL import Image, ImageTk
-import PIL._version
-
-import ttkbootstrap as ttk
-from ttkbootstrap.constants import *
-
-import os, sys, re, io
-import sysconfig
-from subprocess import PIPE, Popen, check_output
-import subprocess
-import json
-from xml.dom import minidom
-import string
-
-from os import listdir
-from os.path import isfile, join
-
-import gettext
-import cairosvg
-import sqlite3
-import vdf
-import time
-
-import shutil
-
-sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
-import pyrandr as randr
-
-from .BitsBytes import bytes2human
-
+from .Version import __appname__, __version__, __author__, __licence__
 from .AppDebug import AppDebug
-#import AppDebug
-#from AboutDialog import AboutDialog
-
-VERSION = "1.0.6"
-
-__appname__ = "GameInfo"
-__version__ = VERSION
-__author__ = "Michael John"
-__licence__ = \
-'Copyright © 2022 Michael John <michael.john@gmx.at>\n' \
-'Lizenz GPLv3: GNU GPL Version 3 oder neuer <https://gnu.org/licenses/gpl.html>\n' \
-'Dies ist freie Software; es steht Ihnen frei, sie zu verändern und weiterzugeben.\n' \
-'Es gibt KEINE GARANTIE, soweit als vom Gesetz erlaubt.\n' \
-'Geschrieben von Michael John.'
+from .PrintInfo import cmdline, PrintAbout, PopulateMenuitems, ReplaceIconname, ListTools
+from .PrintInfo import WineInfo, SteamInfo, ProtonInfo, DOSBoxInfo, LutrisInfo, GOGInfo, ScummVMInfo
+from .Desktop import get_desktop_environment, is_running
 
 AppDebug.debug_print(f'{__appname__} {__version__}')
 
@@ -69,11 +19,6 @@ try:
 except FileNotFoundError as e:
     debug_print(e)
     
-def cmdline(command):
-    process = Popen(args=command, stdout=PIPE, stderr=PIPE, shell=True, universal_newlines=True) #text_mode = True
-    #process.text_mode = True
-    return process.communicate()[0]
-
 #menuSystem = ["Linux Kernel", "Linux Distro", "CPU", "GPU", "Vulkan", "OpenGL", "VDPAU", "VA-API"]
 
 #menuReturn = []
@@ -92,56 +37,9 @@ for menu in menus:
     #    llist = menu.getElementsByTagName('l')
     #    l = llist.item(level)
 
-menuitems = file.getElementsByTagName('menuitem')
-for menuitem in menuitems:
-    #print(menu.firstChild.data)
-    #print(menuitem.attributes['value'].value)
-    #print(menuitem.attributes['command'].value)
-    #print(menuitem.attributes['splitChar'].value)
-    #menuReturn.append(menuitem.attributes['value'].value)
-    #menuReturn.append(cmdline(menuitem.attributes['command'].value))
-    section = menuitem.attributes['value'].value
-    command = menuitem.attributes['command'].value
-    result = cmdline(command)
-    #print(command)
-    if len(result) > 0:
-        menuitem.attributes['command'].value = result
-    else:
-        menuitem.attributes['command'].value = section + " info could not be retrieved."
-    #print(menuitems.attributes['command'])
-    pass
-
-
 menuPlatforms = ["Tools", "Steam", "Proton", "Wine", "DOSBox", "Lutris", "GOG", "ScummVM", "Epic Games", "Battle.net"]
 
 menuGameInfo = [_("Help"), _("About")]
-
-#print(sysconfig.get_python_version())
-#print(sys.version)
-
-AppDebug.debug_print(_("Fetching system info, this can take a second..."))
-toolitems = file.getElementsByTagName('toolitem')
-outputALLE = str("")
-for toolitem in toolitems:
-    toolitem_command = toolitem.attributes["command"].value
-    toolitem_version = toolitem.attributes["version"].value
-    AppDebug.debug_print(_("Checking for") + " " + toolitem_command)
-    if toolitem_command.find("!") == -1:
-        toolResult = cmdline(str(toolitem_command + " " + toolitem_version))
-    else:
-        toolResult = cmdline(str(toolitem_version))
-    if len(toolResult) == 0:
-        toolResult += "\n"
-    #toolResult = toolResult.decode('utf-8')
-    #splitChar = item.attributes["splitChar"].value
-    #outputALLE += command + "-" + toolResult + "\n"
-    toolitem_command = toolitem_command.replace('-','–')
-    if toolResult.find(toolitem_command.replace('!','')) == -1:
-        outputALLE += toolitem_command.replace('!','') + "-" + toolResult
-    else:
-        outputALLE += toolResult
-
-#AppDebug.debug_print(outputALLE)
 
 class Application(ttk.Window):
     def dic_imgs(self):
@@ -160,19 +58,18 @@ class Application(ttk.Window):
         self.createWidgets(textPane=_("About"))
 
     def refresh(self):
-        self.createWidgets(textPane="Distro")
+        #self.createWidgets(textPane="Distro")
+        self.fillTreeview(text)
 
     def __init__(self, master=None):
 
         winSize = (1024, 768)
-        ttk.Window.__init__(self, master, size=winSize, minsize=winSize, iconphoto = os.path.join(os.path.dirname(__file__), "GameInfo.png"))
+        ttk.Window.__init__(self, master, size=winSize, minsize=winSize, iconphoto = os.path.join(os.path.dirname(__file__), "images", "GameInfo.png"))
 
         self.title(f'{__appname__} {__version__}')
 
         #self.themename = "flatly"
         #self.iconphoto = "GameInfo.png"
-
-        self.size = winSize
 
         style = ttk.Style()
         style.configure("mystyle.Treeview.Left", highlightthickness=0, bd=0, font=('Sans Regular', 12)) # Modify the font of the body
@@ -188,31 +85,8 @@ class Application(ttk.Window):
             themes += str(theme) + " "
         AppDebug.debug_print(_("Themes loaded") + ": " + themes)
 
-        #tt = tk.Tk()
-        #master = ttk.Frame(size=winSize)
-
-        #theme = ThemedTk.themes('ubuntu')
-        #self.master.theme_use('ubuntu')
-        #t = thtk.ThemedTk()
-
-        #s = ttk.Style(self.master)
-        #s.theme_use('clam')
-        #print(s.theme_names())
-
-        #style = ttk.Style()
-        #style.theme_use('yaru')
-        #self.master.style = style
-
-        #myimage_16 = tk.PhotoImage(file="GameInfo.png")  
-        #tt.iconbitmap = tk.PhotoImage(file='GameInfo.png')
-        #tt.iconbitmap('GameInfo.png')
-        #icon = tk.Tk().iconbitmap('GameInfo.png')
-        #tk.Tk().call('wm', 'iconphoto', self._root.w, tk.PhotoImage(file='GameInfo.png'))
-
-        #self.grid()
-        
         w = 1024 # width for the Tk root
-        h = 568 # height for the Tk root
+        h = 768 # height for the Tk root
 
         # get screen width and height
         ws = self.winfo_screenwidth() # width of the screen
@@ -222,72 +96,42 @@ class Application(ttk.Window):
         x = (ws/2) - (w/2)
         y = (hs/2) - (h/2)
 
-        #self.size = (ws, hs)
-
-        self.position_center()
-
         # set the dimensions of the screen 
         # and where it is placed
+        #self.size = (ws, hs)
         #self.master.geometry('%dx%d+%d+%d' % (w, h, x, y))
-        #a.master.iconbitmap(myimage_16)
-        #self.master.iconphoto(False, myimage_16) # finally works now :-)
-        #print("debug")
 
-        self.createWidgets(textPane="Distro")
+        self.size = winSize
+        self.position_center()
 
-    def print_element(self, event):
-        tree = event.widget
-        selection = [tree.item(item)["text"] for item in tree.selection()]
+        self.createWidgets()
+        self.updateWidgets(textPane="Distro")
+
+    def TreeElementClicked(self, event):
+        selectedTreeWidget = event.widget
+        selection = [selectedTreeWidget.item(item)["text"] for item in selectedTreeWidget.selection()]
         AppDebug.debug_print(_("Selected entry") + ": " + str(selection))
 
-        #m2.add(tree)       
-        #app.master.m2.add(tree)
-        #self.updateWidgets(self.master.treeRight, selection)
+        self.updateWidgets(textPane=selection)
 
-        #self.fillTreeview(self.master.treeRight, selection)
+    def updateWidgets(self, textPane):
+        self.fillTreeview(textPane)
 
-        self.createWidgets(textPane=selection)
-
-    def updateWidgets(self, treeView, selection):
-        #for label in filter(lambda w:isinstance(w,Label), frame.children.itervalues()):
-        idx = 0
-        #for tv in filter(lambda w:isinstance(w,ttk.Treeview), self.master.winfo_children()):
-        #for child in self.master.winfo_children():
-            #print(tv, str(tv.index))
-            #print(type(tv))
-            #if idx == 1:
-                #tv.destroy()
-                #tv.delete(*tv.get_children())
-            #idx += 1
-            #if tv._index == 0:
-            #    print("bla")
-        #for elem in self.m:
-        #    print(elem)
-        #self.createWidgets()
-        self.fillTreeview(treeView, selection)
-
-        #self.master.top.text = "bla"
-        
-        #for la in filter(lambda w:isinstance(w,tk.Label), self.master.winfo_children()):
-            #la.destroy()
-            #la.text = selection
-
-        #self.pack_slaves(0).text = selection
-
-        #top = tk.Label(self.m2, text="top pane", font="Times 20 italic bold")
-        #top.pack()
-
-    def fillTreeview(self, treeView, selection="Distro"):
-
-        #selectedSet = outputDISTRO
+    def fillTreeview(self, selection="Distro"):
 
         returnString = ""
         splitChar = ":"
         linesIgnore = 0
+        columnWidth = 400
 
-        #print(type(selection))
+        treeRight = self.winfo_children()[3]
+        treeRight.delete(*treeRight.get_children())
+        treeRight.column("#0", width=columnWidth, minwidth=columnWidth, stretch=ttk.NO)
+
         if isinstance(selection, list):
             selection = str(selection[0])
+
+        menuitems = PopulateMenuitems()
 
         for item in menuitems:
             name = item.attributes["value"].value
@@ -304,338 +148,144 @@ class Application(ttk.Window):
         #selectedSet = menuitems["Distro"]
         #selectedSet = menuitems.attributes["value"].value
 
-        if selection == "Kernel": #"Linux Kernel"
+        if selection == "Kernel":
             splitChar = "="
             #linesIgnore = 2
+
         if selection == "Distro": #"Linux Distro"
             returnString = returnString.replace('\"','')
-            returnString+= "$DESKTOP_SESSION=" + self.get_desktop_environment()
+            returnString+= "$DESKTOP_SESSION=" + get_desktop_environment(self)
             splitChar = "="
             #linesIgnore = 1000
+
         if selection == "CPU":
             splitChar = ":"
             #linesIgnore = 1000
+
         if selection == "GPU":
             returnString = returnString.replace(': ','|')
             returnString = returnString.replace(' at','|at')
             splitChar = "|"
             #linesIgnore = 1000
-        #if selection == "PCI":
-        #    splitChar = ": "
-        #if selection == "USB":
-        #    splitChar = ":"
 
-        if selection == "---Display---":
-        # using "cat /sys/class/drm/*/edid | edid-decode -s" instead
-            #returnString= returnString.replace('\t', "  ")
-            cs = randr.connected_screens()
-            returnString = ""
-            for s in cs:
-                #print(s.__str__())
-                returnString += s.__str__() + "|\n"
-                for m in s.supported_modes:
-                    #print(m.__str__())
-                    returnString += m.__str__() + "\n"
-            splitChar = "|"
-        
+        if selection == "PCI":
+            #splitChar = ": "
+            pass
+
+        if selection == "USB":
+            #splitChar = ":"
+            pass
+
         if selection == "Display":
             splitChar = ":"
 
         if selection == "Vulkan":
             returnString= returnString.replace('\t', "  ")
+            returnString= returnString.replace('Vulkan version', ":\nVulkan version")
+            returnString= returnString.replace('lay) V', "lay):\nV")
+            columnWidth = 600
+
         if selection == "VA-API":
-            #returnString = returnString.replace("       ", " ")
-            #returnString = " ".join(returnString).splitlines()
-            #for line in returnString:
-            #    returnString += " ".join(line).split()
-            #returnString= " ".join(returnString).split() #.trim(" ") #.replace("   ", " ")
             splitChar = ":\t"
             linesIgnore = 0
+
         if selection == "VDPAU":
             splitChar = "\t"
             #linesIgnore = 1000
+            columnWidth = 900
+
         if selection == "OpenGL":
             splitChar = ": "
+
         if selection == "OpenCL":
             #returnString.replace("     ", " ")
             pass
-        if selection == "Tools":
-            returnString = outputALLE
-            splitChar = "-"
-            linesIgnore = 0
 
         if selection == "Steam":
-            lineVersion = _("unknown")
-            steamCtime = ""
-
-            # only on Arch
-            steamBinary = os.path.expanduser("~/.local/share/Steam/ubuntu12_32/steam")
-            # on Debian and Arch
-            steamBinary = os.path.expanduser("~/.steam/steam/ubuntu12_32/steam")
-            if os.path.isfile(steamBinary):
-                steamCtime = time.ctime(os.path.getmtime(steamBinary))
-
-            # only on Arch
-            steamRuntime = os.path.expanduser("~/.local/share/Steam/ubuntu12_32/steam-runtime/version.txt")
-            # on Debian and Arch
-            steamRuntime = os.path.expanduser("~/.steam/steam/ubuntu12_32/steam-runtime/version.txt")
-            if os.path.isfile(steamRuntime):
-                with open(steamRuntime, 'r') as versionFile:
-                    lineVersion = versionFile.readline()
-                #if len(lineVersion) == 0:
-
-            returnString = f'{selection} {_("version")}:={steamCtime} - {lineVersion}\n'
-            #prefixes = ["$HOME/.wine", "$HOME/.wine32", "$HOME/.config/wine/prefixes"]
-            prefixes = ["~/.local/share/Steam", "~/.steam/steam/", "~/.steampath", "~/.steam/bin32/"]
-            returnString += "Steam install folders:=\n\n"
-            for prefix in prefixes:
-                returnString += str(prefix) + ":="
-                if os.path.isdir(os.path.expanduser(str(prefix))):
-                    returnString += _("Yes") + "\n"
-                else:
-                    returnString += _("No") + "\n"
-                #returnString += str(prefix) + ":" + print("Yes") if os.path.isdir(str(prefix)) == True else print("No") + "\n"
-            libraryfoldersPath = os.path.expanduser('~/.steam/steam/config/libraryfolders.vdf')
-            try:
-                d = vdf.parse(open(libraryfoldersPath))
-                returnString += "\nSteam library folders:=\n"
-                for folder in d['libraryfolders']:
-                    #workaround for Steam on Debian default installations
-                    if folder == "contentstatsid":
-                        continue
-                    totalSize = int(d['libraryfolders'][folder]['totalsize'])
-                    folderPath = d['libraryfolders'][folder]['path']
-                    sizeApps = 0
-                    countApps = 0
-                    #print(type(d['libraryfolders'][folder]['apps']))
-                    dictApps = d['libraryfolders'][folder]['apps']
-                    for app in dictApps:
-                        countApps += 1
-                        sizeApps += int(dictApps[app])
-                    #workaround for Steam for the default library reported 0 size
-                    if totalSize == 0:
-                        total, used, free = shutil.disk_usage(folderPath)
-                        totalSize = total
-                        freeSize = free
-                    else:
-                        freeSize = totalSize - sizeApps
-                    #if freeSize < 0: freeSize = 0
-                    returnString += "\n" + folderPath + ":="
-                    returnString += str(countApps).rjust(3,' ') + " " + _("games or apps") + "  "
-                    returnString += bytes2human(totalSize,format="%(value)3.1f %(symbol)s") + " " + _("total")
-                    returnString += " (" + bytes2human(sizeApps,format="%(value)3.1f %(symbol)s") + " " + _("used")
-                    returnString += ", " + bytes2human(freeSize,format="%(value)3.1f %(symbol)s") + " " + _("free") + ")"
-            except FileNotFoundError:
-                returnString += "\n" + libraryfoldersPath + " " + _("not found")
+            returnString = SteamInfo()
             splitChar = "="
+            columnWidth = 300
 
         if selection == "Wine":
-            returnString = f'{selection} {_("version")}:={cmdline("wine --version")}\n'
-            prefixes = ["~/.wine", "~/.wine32", "~/.config/wine/prefixes"]
-            for prefix in prefixes:
-                returnString += str(prefix) + ":="
-                if os.path.isdir(os.path.expanduser(str(prefix))):
-                    returnString += _("Yes") + "\n"
-                else:
-                    returnString += _("No") + "\n"
-                #returnString += str(prefix) + ":" + print("Yes") if os.path.isdir(str(prefix)) == True else print("No") + "\n"
+            returnString = WineInfo()
             splitChar = "="
+            columnWidth = 300
 
         if selection == "Proton":
-            #proton_bin = (cmdline("which proton")).replace('\n','')
-            proton_bin = (cmdline("command -v proton")).replace('\n','')
-            #print(proton_bin)
-            if len(proton_bin) == 0:
-                returnString += "Proton executable not found." + "\n"
-            else:
-                #proton_dir = (cmdline("grep _proton= `which proton`")).replace('\n','')
-                proton_dir = (cmdline("cat `command -v proton` | grep _proton=")).replace('\n','').replace("_proton=","")
-                if len(proton_dir) == 0:
-                    returnString += "Proton variable _proton not found."
-                #returnString += proton_dir
-                #print(proton_dir)
-            if len(proton_bin) > 0 and len(proton_dir) > 0:
-                proton_ver = cmdline("cat " + proton_dir + " | grep CURRENT_PREFIX_VERSION=")
-                if len(proton_ver) == 0:
-                    returnString += "Proton custom executable not found." + "\n"
-                else:
-                    returnString += "proton_bin:=" + proton_bin + "\n"
-                    returnString += "proton_dir (set in " + proton_bin + "):=" + proton_dir +"\n"
-                    returnString += proton_ver
-                    #print(proton_ver)
-
-            #mypath = os.path.dirname(proton_dir.replace("_proton=","").replace("\n",""))
-            mypath = "compatibilitytools.d"
-            returnString += "\nOther tools in " + mypath
-            mypath = "/usr/share/steam/compatibilitytools.d"
-            if os.path.exists(mypath):
-                onlyfiles = [f for f in listdir(mypath)]
-                for file in onlyfiles:
-                    returnString += "=" + str(file) + "\n"
-            else:
-                returnString += "\n" + _("Steam compatibilitytools install directory not found.")
+            returnString = ProtonInfo()
             splitChar = "="
+            columnWidth = 350
 
         if selection == "DOSBox":
-            returnString = f'{selection} {_("version")}:={cmdline("dosbox --version | head -n 2 | tail -n 1 | sed s/DOSBox[[:space:]]version[[:space:]]//;")}\n'
-            mypath = os.path.expanduser("~/.dosbox/")
-            #returnString += cmdline("dosbox --version | head -n 2 | tail -n 1 | sed 's/version//'; echo")
-            if os.path.exists(mypath):
-                returnString += _("Config files")
-                onlyfiles = [f for f in listdir(mypath) if isfile(join(mypath, f))]
-                for file in onlyfiles:
-                    returnString += "=" + str(file) + "\n"
-            else:
-                returnString += "\n" + _("DOSBox install directory not found.")
+            returnString = DOSBoxInfo()
             splitChar = "="
+            columnWidth = 300
 
         if selection == "Lutris":
-            returnString = f'{selection} {_("version")}:={cmdline("lutris --version | sed s/lutris-//;")}\n'
-            #returnString += "Lutris " + cmdline("lutris --version | sed 's/lutris-//'; echo")
-            #mypath = os.path.expanduser("~/.config/lutris/games/")
-            #returnString += _("Games")
-            #onlyfiles = [f for f in listdir(mypath) if isfile(join(mypath, f))]
-            #for file in onlyfiles:
-            #    returnString += ": " + os.path.splitext(file)[0] + "\n"
-            #splitChar = ": "
-            try:
-                conn = sqlite3.connect('/home/mic/.local/share/lutris/pga.db')
-                cursor = conn.execute("SELECT id, name from games")
-                returnString += _("Games")
-                for row in cursor:
-                    returnString += "=" + row[1] + "\n"
-                conn.close()
-            except sqlite3.OperationalError:
-                returnString += "\n" + _("Lutris install directory not found.")
+            returnString = LutrisInfo()
             splitChar = "="
+            columnWidth = 300
 
         if selection == "GOG":
-            selection = "Minigalaxy"
-            returnString = f'{selection} {_("version")}:={cmdline("minigalaxy --version")}\n'
-            mypath = os.path.expanduser("~/.config/minigalaxy/games/")
-            #returnString += "Minigalaxy " + cmdline("minigalaxy --version; echo")
-            if os.path.exists(mypath):
-                returnString += _("Games")
-                #try:
-                onlyfiles = [f for f in listdir(mypath) if isfile(join(mypath, f))]
-                for file in onlyfiles:
-                    returnString += "=" + os.path.splitext(file)[0] + "\n"
-                #except FileNotFoundError as err:
-            else:
-                returnString += "\n" + _("Minigalaxy/GOG install directory not found.")
+            returnString = GOGInfo()
             splitChar = "="
+            columnWidth = 300
 
         if selection == "ScummVM":
-            returnString = f'{selection} {_("version")}:={cmdline("scummvm --version | head -n 1 | sed s/ScummVM[[:space:]]//;")}\n'
-            #returnString += cmdline("scummvm --version | head -n 1; echo")
-            mypath = os.path.expanduser("~/.config/scummvm/scummvm.ini")
-            if os.path.exists(mypath):
-                returnString += _("Games")
-                INIfile = open(mypath, 'r')
-                lines = INIfile.readlines()
-                count = 0
-                for line in lines:
-                    count += 1
-                    if "description" in line:
-                        #print("Line{}: {}".format(count, line.strip())
-                        returnString += line.strip("description") # + "\n"
-                cutString = cmdline("scummvm --version | tail -n 1")
-                #print(cutString)
-                returnString += '\n' + cutString.split(':')[0].rstrip('\n')
-                wordCount = 0
-                #returnString += "="
-                for word in cutString.split(':')[1].split(' '):
-                    returnString += word + ' '
-                    #if wordCount == 3:
-                        #returnString += "\n"
-                    if wordCount % 8 == 0:
-                        returnString += "\n="
-                    wordCount += 1
-                #print(returnString)
-            else:
-                returnString += "\n" + _("ScummVM install directory not found.")
+            returnString = ScummVMInfo()
             splitChar = "="
+            columnWidth = 300
 
         if selection in ("Epic Games", "Battle.net"): #, "Steam"):
             returnString = str(selection) + " " + _("not yet implemented, sorry.")
 
-        if selection == _("Help"):
-            returnString = _("Not yet implemented.")
-            #splitChar = "---"
-        if selection == _("About"):
-            returnString = (f'{__appname__} Version: {__version__}\n\n'
-                f'Python Version: {".".join([str(value) for value in sys.version_info[0:3]])}\n'
-                f'ttkbootstrap Version: {version("ttkbootstrap"):s}\n'
-                f'TK Version: {tk.TkVersion:.1f}\n'
-                f'PIL Version: {PIL.__version__:s}\n'
-                f'\n{__licence__}\n')
-            splitChar = "---"
-            #treeRight["columns"]=("#0") #,"two", "three")
-            treeView.column("#0", width=900, minwidth=350, stretch=ttk.NO)
-
         if selection in (_("System"), _("Platforms"), "GameInfo"):
             returnString = _("Please select a sub-category.") + ":"
 
-        treeView.tag_configure("evenrow",background='white smoke',foreground='black')
-        treeView.tag_configure("oddrow",background='white',foreground='black')
+        if selection == _("Help"):
+            returnString = _("Not yet implemented.")
+            columnWidth = 900
+
+        if selection == _("About"):
+            returnString = PrintAbout()
+            splitChar = "---"
+            columnWidth = 900
+
+        if selection == "Tools":
+            returnString = ListTools()
+            splitChar = "-"
+            linesIgnore = 0
 
         zeile = 1
-        photo = None
-        #for line in selectedSet.splitlines():
         for line in returnString.splitlines():
+
             if zeile % 2 == 0:
                 tag = "evenrow"
             else:
                 tag = "oddrow"
+
             if zeile > linesIgnore:
                 part1 = line.split(splitChar, 1)[0]
                 try:
                     part2 = line.split(splitChar, 1)[1]
                 except:
-                    if selection == "OpenGL":
-                        part2 = "-"
-                    else:
-                        part2 = ""
-                if selection == "Tools":
-                    icon_name = part1
-                    if part1 == "openrgb":
-                        icon_name = "OpenRGB"
-                    if part1 == "minigalaxy":
-                        icon_name = "io.github.sharkwouter.Minigalaxy"
-                    if part1 == "pavucontrol":
-                        icon_name = "multimedia-volume-control"
-                    if part1 == "vibrantLinux":
-                        icon_name = "io.github.libvibrant.vibrantLinux"
-                    if part1 == "protontricks":
-                        icon_name = "wine"
-                    if part1 == "steamcmd":
-                        icon_name = "steam_tray_mono"
-                    if part1 == "pavucontrol":
-                        icon_name = "multimedia"
-                    try:
-                        #icon_theme = Gtk.IconTheme()
-                        #ico = icon_theme.get_default()
-                        #icon_theme = Gtk.Settings.get_default()
-                        #print(Gtk.Settings.get_default().get_property("gtk-icon-theme-name"))
-                        icon_theme = Gtk.IconTheme.get_default()
-                        icon_info = icon_theme.lookup_icon(icon_name, 32, 0)
-                    except:
-                        #AppDebug.debug_print("")
-                        pass
-                    try:
-                        #print(icon_info.get_filename())
-                        image = None
-                        if icon_info != None:
-                            image_filename = icon_info.get_filename()
-                        else:
-                            #AppDebug.debug_print("No file for " + icon_name + " :-(")
-                            image_filename = "GameInfo.png"
-                    except:
-                        #AppDebug.debug_print("")
-                        image_filename = "GameInfo.png"
-                        #itemx = treeView.insert("", index=zeile, text=part1, values=(part2, ""), tags=(tag,))
-                        #zeile += 1
-                        #continue
+                    part2 = ""
+
+            if selection == "Tools":
+                icon_name = part1
+                icon_name = ReplaceIconname(icon_name)
+
+                icon_theme = Gtk.IconTheme.get_default()
+                icon_info = icon_theme.lookup_icon(icon_name, 32, 0)
+
+                if icon_info != None:
+                    image_filename = icon_info.get_filename()
+                else:
+                    AppDebug.debug_print("No file for " + icon_name + " :-(")
+                    image_filename = os.path.join(os.path.dirname(__file__), "images", "GameInfo.png")
+
+                    photo = None
+                    
                     if "svg" in image_filename:
                         image_data = cairosvg.svg2png(url=image_filename)
                         image = (Image.open(io.BytesIO(image_data)))
@@ -645,20 +295,31 @@ class Application(ttk.Window):
                         image = Image.open(image_filename)
                         photo = image.resize((32, 32), Image.Resampling.LANCZOS) #, Image.ANTIALIAS)
                         photo = ImageTk.PhotoImage(photo)
-                    try:
-                        #AppDebug.debug_print("  Füge " + icon_name + " in den Baum zu Index " + str(zeile) + " hinzu...")
-                        #AppDebug.debug_print(pprint(photo))
-                        itemx = treeView.insert("", index=zeile, text=part1, values=(part2, ""), tags=(tag,), image=photo)
-                        #AppDebug.debug_print("  ok! " + str(type(photo)))
-                    except:
-                        photo = None
-                        #AppDebug.debug_print("...fehlgeschlagen")
-                        itemx = treeView.insert("", index=zeile, text=part1, values=(part2, ""), tags=(tag,))
-                else:
-                    itemx = treeView.insert("", index=zeile, text=part1, values=(part2, ""), tags=(tag,))
-                    pass
-                zeile += 1
-                #print(zeile)
+
+            treeRight.insert("", index=zeile, text=part1, values=(part2, ""), tags=(tag,))
+            zeile += 1
+        pass
+
+        #for line in selectedSet.splitlines():
+            #icon_theme = Gtk.IconTheme()
+            #ico = icon_theme.get_default()
+            #icon_theme = Gtk.Settings.get_default()
+            #print(Gtk.Settings.get_default().get_property("gtk-icon-theme-name"))
+            #AppDebug.debug_print("")
+            #print(icon_info.get_filename())
+            #AppDebug.debug_print("")
+            #itemx = treeView.insert("", index=zeile, text=part1, values=(part2, ""), tags=(tag,))
+            #zeile += 1
+            #continue
+            #AppDebug.debug_print("  Füge " + icon_name + " in den Baum zu Index " + str(zeile) + " hinzu...")
+            #AppDebug.debug_print(pprint(photo))
+            #itemx = treeRight.insert("", index=zeile, text=part1, values=(part2, ""), tags=(tag,), image=photo)
+            #AppDebug.debug_print("  ok! " + str(type(photo)))
+            #AppDebug.debug_print("...fehlgeschlagen")
+            #itemx = treeRight.insert("", index=zeile, text=part1, values=(part2, ""), tags=(tag,))
+            #
+            #print(zeile)'''
+        treeRight.column("#0", width=columnWidth, minwidth=350, stretch=ttk.NO)
 
     def mycallback(self, event):
  
@@ -675,62 +336,12 @@ class Application(ttk.Window):
             #if widgets.widgetName == "ttk:treeview":
             widgets.destroy()
       
-    def createWidgets(self, textPane):
+    def createWidgets(self):
 
-        #self.children.clear()
-
-        self.clear_frame()
-
-        '''toolbar = ttk.Frame(self)
-        toolbar.pack(side=TOP, fill=X)
-
-        photo = ttk.PhotoImage(file="GameInfo.png")
-        ttk.icons.Icon()
-        
-        b1 = ttk.Button(
-            toolbar,
-            #relief=FLAT,
-            compound = LEFT,
-            text="new",
-            command=self.callback,
-            image=photo)
-        b1.photo = photo
-        b1.pack(side=LEFT, padx=0, pady=0)
-        
-        b2 = ttk.Button(
-            toolbar,
-            text="open",
-            compound = LEFT,
-            command=self.callback)
-            #relief=FLAT,
-            #image=ttk.Image.open("GameInfo.png")) # .PhotoImage("GameInfo.png"))
-        b2.pack(side=LEFT, padx=0, pady=0)
-
-        menubar = ttk.Menu(self)
-
-        salutations = ttk.Menu(menubar)
-        salutations.add_command(label="Say Hello", command=lambda: print("Hello"))
-        salutations.add_command(label="Say Goodbye", command=lambda: print("Goodbye"))
-
-        menubar.add_cascade(label="Salutations", menu=salutations)
-
-        self.config(menu=menubar) '''
-    
-        icons = ["edit-cut", "edit-paste", "edit-copy"]
-
-        #path = os.path.abspath(path)
-        #i = './icon/Home-icon_16.gif'
-        #root_pic1 = Image.open(i)
-        #self.root_pic2 = ImageTk.PhotoImage(root_pic1)  
-
-        #myimage_16=tk.PhotoImage(file="GameInfo.png")
-        #,iconbitmap=myimage_16 # does not work with TV
+        #self.clear_frame()
 
         f = ttk.Frame()
         f.pack(side=BOTTOM)
-
-        #b1 = ttk.Button(self, text="Submit", bootstyle="success")
-        #b1.pack(side=LEFT, padx=5, pady=10)
 
         b2 = ttk.Button(f, text=_("Refresh"), bootstyle="warning", width=10, command=self.refresh) #self.createWidgets("Distro"))
         b2.pack(side=RIGHT, padx=5, pady=10, anchor=ttk.SE)
@@ -741,41 +352,23 @@ class Application(ttk.Window):
         b4 = ttk.Button(f, text=_("Quit"), bootstyle="danger", width=10, command=self.quit)
         b4.pack(side=RIGHT, padx=5, pady=10, anchor=ttk.SE)
 
-        #self.quitButton = ttk.Button(self, text='Quit', command=self.quit)
-        #self.quitButton.pack(side=LEFT)
-        #self.quitButton.grid()            
-
-        #m0 = ttk.PanedWindow(self, orient="vertical")
-        #m0.pack(fill=ttk.Y, expand=150)
-
-        #m1 = tk.PanedWindow(width=100,border=10,borderwidth=0,handlepad=0, background="#000000",handlesize=0) #height=800, width=1024)
         m1 = ttk.PanedWindow(self, orient="horizontal",width=250)
         m1.pack(fill=ttk.BOTH, expand=250, side=TOP)
 
-        #left = tk.Label(m1, text="left pane")
         treeLeft = ttk.Treeview(style="mystyle.Treeview.Left")
         treeLeft.pack(fill=X, side=LEFT)
 
-        treeLeft.bind("<<TreeviewSelect>>", self.print_element)
-        #treeLeft.bind("<Motion>", self.mycallback)
+        treeLeft.bind("<<TreeviewSelect>>", self.TreeElementClicked)
 
-        #tree["columns"]=("one") #,"two","three")
         treeLeft.column("#0", width=150, minwidth=150, stretch=ttk.NO)
         treeLeft.pack(side=ttk.LEFT,fill=ttk.X)
+
         # Level 1
         folder1=treeLeft.insert("", 0, 0, text="System", open=True) #, values=("23-Jun-17 11:05","File folder",""))
         cnt = 0
-        #for entry in menuSystem:
-            #treeLeft.insert(0, cnt + 1, text=entry) #, values=("23-Jun-17 11:25","TXT file","1 KB"))
-            #cnt += 1
-        #    pass
         menuitems = file.getElementsByTagName('menuitem')
         for menuitem in sorted(menuitems, key=lambda menuitem: int(menuitem.attributes['id'].value)):
-        #for menuitem in menuitems:
-        #print(menu.firstChild.data)
-            #print(menuitem.attributes['value'].value)
             #pixbuf = Gtk.IconTheme.get_default().load_icon(icons[0], 64, 0) 
-
             item = treeLeft.insert(0, cnt + 1, text=menuitem.attributes['value'].value) #,image=ImageTk.PhotoImage(pixbuf))
             #image_show_2.set_from_pixbuf(pixbuf)
             cnt += 1
@@ -786,12 +379,6 @@ class Application(ttk.Window):
             cnt += 1
 
         m1.add(treeLeft)
-
-        #m1.add(b1)
-        #m1.add(b2)
-
-        #x1 = tree.insert("", 1, "1", text="hallo")
-        #m1.add(left)
 
         folder2=treeLeft.insert("", cnt, 200, text="GameInfo", open=True) #, values=("23-Jun-17 11:05","File folder",""))
         for entry in menuGameInfo:
@@ -804,115 +391,15 @@ class Application(ttk.Window):
         m1.add(m2)
 
         #top = tk.Label(m2, text=textPane, font="Sans 20")
-        treeRight = ttk.Treeview(m2, style="mystyle.Treeview.Right",name="right_tree")
+        treeRight = ttk.Treeview(style="mystyle.Treeview.Right", name="right_tree")
         
         treeRight["columns"]=("pic", "#0", "#1")
         treeRight.column("pic", width=400, minwidth=400, stretch=ttk.NO)
         treeRight.column("#0", width=400, minwidth=400, stretch=ttk.NO)
         treeRight.column("#1", width=470, minwidth=470, stretch=ttk.NO)
-        #treeRight.heading("#0",text="dfgsdfghsdfkjgsdhfjklsdfh",anchor=ttk.W) #text="Name"
-        #if True: #selection == "Alle":
-        #    treeRight.heading("#0", text="Name",anchor=ttk.W) #text="Wert"
-        #else:
-        #    treeRight.heading("one", text="",anchor=ttk.W)
-        #tree.heading("two", text="Type",anchor=tk.W)
-        #tree.heading("three", text="Size",anchor=tk.W)
-        #tree.pack(side=ttk.TOP,fill=ttk.BOTH)
         treeRight.pack(side=TOP)
 
-        #logo = ttk.Image.open(os.path.dirname(__file__) + "/GameInfo.png")
-        #logo2 = logo.resize((100, 100), Image.Resampling.LANCZOS) #, Image.ANTIALIAS)
-        #logo3 = ImageTk.PhotoImage(logo2)
-        #f = ttk.Frame(iconbitmap=logo3)
-        #f.pack()
+        treeRight.tag_configure("evenrow",background='white smoke',foreground='black')
+        treeRight.tag_configure("oddrow",background='white',foreground='black')
 
-        if textPane == "":
-
-            #frame = ttk.Frame(self, width=512, height=512)
-            #frame.pack()
-            #frame.place(anchor='center', relx=0.5, rely=0.5)
-
-            # Create an object of tkinter ImageTk
-            #img = ImageTk.PhotoImage(Image.open(os.path.join(os.path.dirname(__file__),"..","GameInfo.png")))
-            
-            #label = ttk.Label(frame, image = img)
-            #label.pack()
-
-            #m2.add(frame)
-            pass
-        else:
-            m2.add(treeRight)
-
-        self.fillTreeview(treeRight, selection=textPane)
-
-        #m2.add(top)
-        #m2.add(tree, minsize=100)
-
-        #bottom = tk.Label(m2, text="bottom pane", font="Times 20 italic bold")
-        #text1 = tk.Label(m2,text="fdgsdkflgjsdkfgjsdfklgjsdlkfögjsdfkg",height=300,background="#ffffff",width=400)
-        #text1.pack(side=tk.TOP,fill=tk.Y)
-        '''tree = ttk.Treeview()
-        tree["columns"]=("one","two","three")
-        tree.heading("#0",text="Name",anchor=tk.W)
-        tree.heading("one", text="Date modified",anchor=tk.W)
-        tree.heading("two", text="Type",anchor=tk.W)
-        tree.heading("three", text="Size",anchor=tk.W)
-        tree.pack(side=tk.TOP,fill=tk.X)
-        m2.add(text1)
-        m2.add(tree)'''
-        #m2.add(bottom)
-
-    def get_desktop_environment(self):
-        #From http://stackoverflow.com/questions/2035657/what-is-my-current-desktop-environment
-        # and http://ubuntuforums.org/showthread.php?t=652320
-        # and http://ubuntuforums.org/showthread.php?t=652320
-        # and http://ubuntuforums.org/showthread.php?t=1139057
-        if sys.platform in ["win32", "cygwin"]:
-            return "windows"
-        elif sys.platform == "darwin":
-            return "mac"
-        else: #Most likely either a POSIX system or something not much common
-            desktop_session = os.environ.get("DESKTOP_SESSION")
-            if desktop_session is not None: #easier to match if we doesn't have  to deal with caracter cases
-                desktop_session = desktop_session.lower()
-                if desktop_session in ["gnome","unity", "cinnamon", "mate", "xfce4", "lxde", "fluxbox", 
-                                        "blackbox", "openbox", "icewm", "jwm", "afterstep","trinity", "kde"]:
-                    return desktop_session
-                ## Special cases ##
-                # Canonical sets $DESKTOP_SESSION to Lubuntu rather than LXDE if using LXDE.
-                # There is no guarantee that they will not do the same with the other desktop environments.
-                elif "xfce" in desktop_session or desktop_session.startswith("xubuntu"):
-                    return "xfce4"
-                elif desktop_session.startswith("ubuntu"):
-                    return "unity"       
-                elif desktop_session.startswith("lubuntu"):
-                    return "lxde" 
-                elif desktop_session.startswith("kubuntu"): 
-                    return "kde" 
-                elif desktop_session.startswith("razor"): # e.g. razorkwin
-                    return "razor-qt"
-                elif desktop_session.startswith("wmaker"): # e.g. wmaker-common
-                    return "windowmaker"
-            if os.environ.get('KDE_FULL_SESSION') == 'true':
-                return "kde"
-            elif os.environ.get('GNOME_DESKTOP_SESSION_ID'):
-                if not "deprecated" in os.environ.get('GNOME_DESKTOP_SESSION_ID'):
-                    return "gnome2"
-            #From http://ubuntuforums.org/showthread.php?t=652320
-            #elif self.is_running("xfce-mcs-manage"):
-                #return "xfce4"
-            #elif self.is_running("ksmserver"):
-                #return "kde"
-        return "unknown"
-
-    def is_running(self, process):
-        #From http://www.bloggerpolis.com/2011/05/how-to-check-if-a-process-is-running-using-python/
-        # and http://richarddingwall.name/2009/06/18/windows-equivalents-of-ps-and-kill-commands/
-        try: #Linux/Unix
-            s = subprocess.Popen(["ps", "axw"],stdout=subprocess.PIPE)
-        except: #Windows
-            s = subprocess.Popen(["tasklist", "/v"],stdout=subprocess.PIPE)
-        #for x in s.stdout:
-        #    if re.search(process, x):
-        #        return True
-        return False
+        m2.add(treeRight)
