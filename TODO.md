@@ -22,6 +22,7 @@
 
 :heavy_check_mark: Rework TKinter to use <strike>ThemedTk</strike> ttkbootstrap. :tired_face:  
 :heavy_check_mark: Switch from setuptools to poetry (done with v1.0.5).
+:white_check_mark: Add <a href="https://www.flaticon.com/de/kostenlose-icons/computer" title="computer Icons">Computer Icons erstellt von Freepik - Flaticon</a>
 
 #### Tools
 
