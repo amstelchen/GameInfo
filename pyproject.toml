@@ -19,6 +19,7 @@ Pillow = "^9.1.0"
 cffi = "^1.15.0"
 vdf = "^3.4"
 importlib-metadata = "^4.11.3"
+pyrandr = {git = "https://github.com/cakturk/pyrandr.git"}
 
 [tool.poetry.dev-dependencies]
 
