@@ -55,11 +55,12 @@ class Application(ttk.Window):
         AppDebug.debug_print("called the callback!")
             
     def open_info(self):
-        self.createWidgets(textPane=_("About"))
+        #self.createWidgets(textPane=_("About"))
+        self.fillTreeview(selection=_("About"))
 
     def refresh(self):
         #self.createWidgets(textPane="Distro")
-        self.fillTreeview(text)
+        self.fillTreeview(selection="Distro")
 
     def __init__(self, master=None):
 
@@ -204,7 +205,7 @@ class Application(ttk.Window):
         if selection == "Steam":
             returnString = SteamInfo()
             splitChar = "="
-            columnWidth = 300
+            columnWidth = 350
 
         if selection == "Wine":
             returnString = WineInfo()
@@ -396,7 +397,7 @@ class Application(ttk.Window):
         treeRight["columns"]=("pic", "#0", "#1")
         treeRight.column("pic", width=400, minwidth=400, stretch=ttk.NO)
         treeRight.column("#0", width=400, minwidth=400, stretch=ttk.NO)
-        treeRight.column("#1", width=470, minwidth=470, stretch=ttk.NO)
+        treeRight.column("#1", width=500, minwidth=500, stretch=ttk.NO)
         treeRight.pack(side=TOP)
 
         treeRight.tag_configure("evenrow",background='white smoke',foreground='black')
