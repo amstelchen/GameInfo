@@ -12,11 +12,48 @@ A system info tool for gamers.
 |:heavy_check_mark: winetricks  |:heavy_check_mark: steam-cli  |:heavy_check_mark: pipewire
 |:heavy_check_mark: protontricks  |:heavy_check_mark: legendary-gl |:heavy_check_mark: pulseffects
 |:heavy_check_mark: lutris  |:heavy_check_mark: truckersmp-cli  |
-|:heavy_check_mark: minigalaxy  ||
+|:heavy_check_mark: minigalaxy  |:heavy_check_mark: samrewritten  |
+|:heavy_check_mark: playonlinux  ||
 |__Graphics__|__Perf tuning__|__Modding__|
 |:heavy_check_mark: dxvk  |:heavy_check_mark: mangohud  |:heavy_check_mark: openrgb
 |:heavy_check_mark: vkd3d  |:heavy_check_mark: corectrl  |:heavy_check_mark: vibrantLinux 
 
+#### Installation
+
+Steps assume that `python` and `pip` are already installed.
+
+Install dependencies (see sections below)
+
+Then, run:
+
+    $ pip install GameInfo
+
+Install directly from ``github``:
+
+
+    $ pip install git+https://github.com/amstelchen/GameInfo#egg=GameInfo
+
+When completed, run it with:
+
+    $ GameInfo
+
+#### Dependencies
+
+On Debian-based distributions (Mint, Ubuntu, MX, etc.), installation of the packages `tk` and `python3-tk` may be necessary.
+
+    sudo apt install python3-tk tk
+
+#### System requirements
+
+GameInfo is tested to work on the following distributions:
+
+- Arch Linux <sup>(1.0.7)</sup>
+- Debian 10 or newer <sup>(1.0.7)</sup>
+- Ubuntu 20.04 or newer <sup>(1.0.7)</sup>
+- Manjaro 20 <sup>(1.0.7)</sup>
+- Linux Mint 20 or newer <sup>(1.0.7)</sup> (19.3 lacks support for python3.7, only has 3.6.9)
+- MX Linux 19 or newer <sup>(1.0.7)</sup> (19.1 likely needs to run `pip install --upgrade pip setuptools wheel `)
+- Fedora 32 Workstation or newer <sup>(1.0.7)</sup>
 
 #### Debugging
 
@@ -33,3 +70,8 @@ DEBUG: Themen geladen: cosmo flatly litera minty lumen
 
 [![https://imgur.com/QfApzDu.png](https://imgur.com/QfApzDu.png)](https://imgur.com/QfApzDu.png)
 
+#### Licences
+
+*GameInfo* is licensed under the [GPLv2](LICENSE) license.
+
+<a href="https://www.flaticon.com/de/kostenlose-icons/computer" title="computer Icons">Computer Icons created by Freepik - Flaticon</a>
