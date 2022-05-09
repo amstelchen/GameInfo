@@ -1,4 +1,4 @@
-import sys, os
+import sys, os, subprocess
 
 def get_desktop_environment(self):
     #From http://stackoverflow.com/questions/2035657/what-is-my-current-desktop-environment
