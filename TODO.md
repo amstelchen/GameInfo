@@ -94,7 +94,6 @@ GameInfo is tested to work on the following distributions:
 
 Tests underway:
 
-- openSUSE Tumbleweed and Leap 15.2 or newer
 - Gentoo Linux (my portage is broken currently)
 
 #### Supported tools
