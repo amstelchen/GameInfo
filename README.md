@@ -43,6 +43,11 @@ On Debian-based distributions (Mint, Ubuntu, MX, etc.), installation of the pack
 
     sudo apt install python3-tk tk
 
+On Void Linux, installation of the packages `python3-tkinter` and `python3-gobject` is necessary instead.
+
+    sudo xbps-install python3-tkinter python3-gobject
+
+
 #### System requirements
 
 GameInfo is tested to work on the following distributions:
@@ -54,6 +59,8 @@ GameInfo is tested to work on the following distributions:
 - Linux Mint 20 or newer <sup>(1.0.7)</sup> (19.3 lacks support for python3.7, only has 3.6.9)
 - MX Linux 19 or newer <sup>(1.0.7)</sup> (19.1 likely needs to run `pip install --upgrade pip setuptools wheel `)
 - Fedora 32 Workstation or newer <sup>(1.0.7)</sup>
+- Void Linux <sup>(1.0.8)</sup>
+- Garuda Linux <sup>(1.0.7)</sup>
 
 #### Debugging
 
