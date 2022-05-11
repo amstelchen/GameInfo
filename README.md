@@ -61,6 +61,8 @@ GameInfo is tested to work on the following distributions:
 - Fedora 32 Workstation or newer <sup>(1.0.7)</sup>
 - Void Linux <sup>(1.0.8)</sup>
 - Garuda Linux <sup>(1.0.7)</sup>
+- openSUSE Tumbleweed and Leap 15.2 or newer <sup>(1.0.8)</sup>
+- Slackware 64 14.2 or newer <sup>(1.0.8)</sup>
 
 #### Debugging
 
