@@ -1,25 +1,4 @@
-#### Supported tools
-
-:heavy_check_mark: wine  
-:heavy_check_mark: winetricks  
-:heavy_check_mark: protontricks  
-:heavy_check_mark: lutris  
-:heavy_check_mark: minigalaxy  
-:heavy_check_mark: steamcmd  
-:heavy_check_mark: steam-cli  
-:heavy_check_mark: mangohud  
-:heavy_check_mark: pavucontrol  
-:heavy_check_mark: pipewire  
-:heavy_check_mark: legendary-gl  
-:heavy_check_mark: pulseffects  
-:heavy_check_mark: openrgb  
-:heavy_check_mark: corectrl  
-:heavy_check_mark: truckersmp-cli  
-:heavy_check_mark: vibrantLinux  
-:heavy_check_mark: dxvk  
-:heavy_check_mark: vkd3d  
-:heavy_check_mark: samrewritten  
-:heavy_check_mark: playonlinux
+#### TODO
 
 :heavy_check_mark: Rework TKinter to use <strike>ThemedTk</strike> ttkbootstrap. :tired_face:  
 :heavy_check_mark: Switch from setuptools to poetry (done with v1.0.5).
@@ -27,7 +6,17 @@
 
 #### Tools
 
-:white_check_mark: Use App's icons in Tools list - tedious with TK.  
+:white_check_mark: Use App's icons in Tools list - tedious with TK. Unfortunately, even after further attempts to get this working, it doesn't.  
+
+:white_check_mark: Provide a hook whether there is an update available for each tool.
+
+:white_check_mark: Support various package manager hooks, i.e.
+- `pacman/yay`,
+- `apt/dpkg`, 
+- `yum/dnf`,
+- or even `xbps`.
+
+:white_check_mark: Provide a button to start each tool.
 
 :heavy_check_mark: Up to `lutris-0.5.9`, a progressbar was shown when GameInfo was running `lutris --version`. This has been changed with `lutris-0.5.10` onwards.  
 
@@ -57,9 +46,9 @@ Move these into README.md when tested:
 
 #### Steam
 
-:heavy_check_mark: list libraries and their space usage, based on *libraryfolders.vdf*
-:white_check_mark: list games
-:white_check_mark: list other Proton installs in SteamLibrary/common
+:heavy_check_mark: list libraries and their space usage, based on *libraryfolders.vdf*  
+:white_check_mark: list games  
+:white_check_mark: list other Proton installs in *SteamLibrary/steamapps/common*  
   
 #### Proton
 
@@ -71,21 +60,21 @@ Move these into README.md when tested:
 
 #### Wine
 
-:heavy_check_mark: list prefixes
-:white_check_mark: ... maybe with usage in MB?
+:heavy_check_mark: list prefixes  
+:heavy_check_mark: ... with usage in MB/GB  
 
 #### DOSBox
 
-:heavy_check_mark: show version
-:heavy_check_mark: list .conf's
+:heavy_check_mark: show version  
+:heavy_check_mark: list .conf's  
 
 #### Lutris
 
-:white_check_mark: list games in <strike>~/.config/lutris/games/</strike> `~.local/share/lutris/pga.db`
+:heavy_check_mark: list games in <strike>~/.config/lutris/games/</strike> `~.local/share/lutris/pga.db`
 
 #### GOG
 
-:white_check_mark: list games in `~/.config/minigalaxy/games/` if there are any
+:heavy_check_mark: list games in `~/.config/minigalaxy/games/` if there are any
 
 #### ScummVM
 
@@ -106,3 +95,28 @@ Tests underway:
 - openSUSE Tumbleweed and Leap 15.2 or newer
 - Void Linux
 - Gentoo Linux (my portage is broken currently)
+
+#### Supported tools
+
+(see README.md)
+
+:heavy_check_mark: wine  
+:heavy_check_mark: winetricks  
+:heavy_check_mark: protontricks  
+:heavy_check_mark: lutris  
+:heavy_check_mark: minigalaxy  
+:heavy_check_mark: steamcmd  
+:heavy_check_mark: steam-cli  
+:heavy_check_mark: mangohud  
+:heavy_check_mark: pavucontrol  
+:heavy_check_mark: pipewire  
+:heavy_check_mark: legendary-gl  
+:heavy_check_mark: pulseffects  
+:heavy_check_mark: openrgb  
+:heavy_check_mark: corectrl  
+:heavy_check_mark: truckersmp-cli  
+:heavy_check_mark: vibrantLinux  
+:heavy_check_mark: dxvk  
+:heavy_check_mark: vkd3d  
+:heavy_check_mark: samrewritten  
+:heavy_check_mark: playonlinux
