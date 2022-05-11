@@ -103,7 +103,9 @@ def WineInfo() -> str:
     for prefix in prefixes:
         returnString += str(prefix) + ":="
         if os.path.isdir(os.path.expanduser(str(prefix))):
-            returnString += _("Yes") + "\n"
+            pathToPrefix = Path(os.path.expanduser(prefix))
+            sumBytesPrefix = sum(f.stat().st_size for f in pathToPrefix.glob('**/*') if f.is_file())
+            returnString += _("Yes") + " (" + bytes2human(sumBytesPrefix,format="%(value)3.1f %(symbol)s", symbols="iec") + "B)\n"
         else:
             returnString += _("No") + "\n"
         #returnString += str(prefix) + ":" + print("Yes") if os.path.isdir(str(prefix)) == True else print("No") + "\n"

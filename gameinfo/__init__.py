@@ -35,6 +35,8 @@ import time
 
 import shutil
 
+from pathlib import Path
+
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 import pyrandr as randr
 import typing
