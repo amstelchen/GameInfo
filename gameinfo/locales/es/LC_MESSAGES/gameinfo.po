@@ -1,133 +1,132 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# Spanish translations for PACKAGE package.
+# Copyright (C) 2022 THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Michael John <mic@sundance.local>, 2022.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: GameInfo\n"
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-05-11 11:45+0200\n"
-"PO-Revision-Date: 2022-05-11 11:49+0200\n"
-"Last-Translator: \n"
-"Language-Team: Michael John\n"
-"Language: de\n"
+"PO-Revision-Date: 2022-05-11 12:14+0200\n"
+"Last-Translator: Michael John <mic@sundance.local>\n"
+"Language-Team: Spanish <es@tp.org.es>\n"
+"Language: es\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=ASCII\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.0.1\n"
 
 #: gameinfo/GameInfo.py:42 gameinfo/GameInfo.py:246
 msgid "Help"
-msgstr "Hilfe"
+msgstr ""
 
 #: gameinfo/GameInfo.py:42 gameinfo/GameInfo.py:59 gameinfo/GameInfo.py:250
 #: gameinfo/GameInfo.py:350
 msgid "About"
-msgstr "Info"
+msgstr ""
 
 #: gameinfo/GameInfo.py:87
 msgid "Themes loaded"
-msgstr "Themen geladen"
+msgstr ""
 
 #: gameinfo/GameInfo.py:114
 msgid "Selected entry"
-msgstr "Gewählter Eintrag"
+msgstr ""
 
 #: gameinfo/GameInfo.py:241
 msgid "not yet implemented, sorry."
-msgstr "noch nicht implementiert, sorry."
+msgstr ""
 
 #: gameinfo/GameInfo.py:243
 msgid "System"
-msgstr "System"
+msgstr ""
 
 #: gameinfo/GameInfo.py:243 gameinfo/GameInfo.py:377
 msgid "Platforms"
-msgstr "Plattformen"
+msgstr ""
 
 #: gameinfo/GameInfo.py:244
 msgid "Please select a sub-category."
-msgstr "Bitte eine Unterkategorie auswählen."
+msgstr ""
 
 #: gameinfo/GameInfo.py:247
 msgid "Not yet implemented."
-msgstr "Noch nicht implementiert."
+msgstr ""
 
 #: gameinfo/GameInfo.py:347
 msgid "Refresh"
-msgstr "Auffrischen"
+msgstr ""
 
 #: gameinfo/GameInfo.py:353
 msgid "Quit"
-msgstr "Beenden"
+msgstr ""
 
 #: gameinfo/PrintInfo.py:56
 msgid "Fetching system info, this can take a second..."
-msgstr "Hole Systeminfo, dies kann einen Moment dauern..."
+msgstr ""
 
 #: gameinfo/PrintInfo.py:66
 msgid "Checking for"
-msgstr "Prüfe auf"
+msgstr ""
 
 #: gameinfo/PrintInfo.py:108 gameinfo/PrintInfo.py:141
 msgid "Yes"
-msgstr "Ja"
+msgstr ""
 
 #: gameinfo/PrintInfo.py:110 gameinfo/PrintInfo.py:143
 msgid "No"
-msgstr "Nein"
+msgstr ""
 
 #: gameinfo/PrintInfo.py:115
 msgid "unknown"
-msgstr "unbekannt"
+msgstr ""
 
 #: gameinfo/PrintInfo.py:171
 msgid "games or apps"
-msgstr "Spiele oder Apps"
+msgstr ""
 
 #: gameinfo/PrintInfo.py:172
 msgid "total"
-msgstr "total"
+msgstr ""
 
 #: gameinfo/PrintInfo.py:173
 msgid "used"
-msgstr "benutzt"
+msgstr ""
 
 #: gameinfo/PrintInfo.py:174
 msgid "free"
-msgstr "frei"
+msgstr ""
 
 #: gameinfo/PrintInfo.py:176
 msgid "not found"
-msgstr "nicht gefunden"
+msgstr ""
 
 #: gameinfo/PrintInfo.py:212
 msgid "Steam compatibilitytools install directory not found."
-msgstr "Steam compatibilitytools Installationsverzeichnis nicht gefunden."
+msgstr ""
 
 #: gameinfo/PrintInfo.py:220
 msgid "Config files"
-msgstr "Konfigurationsdateien"
+msgstr ""
 
 #: gameinfo/PrintInfo.py:225
 msgid "DOSBox install directory not found."
-msgstr "DOSBox Installationsverzeichnis nicht gefunden."
+msgstr ""
 
 #: gameinfo/PrintInfo.py:240 gameinfo/PrintInfo.py:254
 #: gameinfo/PrintInfo.py:269
 msgid "Games"
-msgstr "Spiele"
+msgstr ""
 
 #: gameinfo/PrintInfo.py:245
 msgid "Lutris install directory not found."
-msgstr "Lutris Installationsverzeichnis nicht gefunden."
+msgstr ""
 
 #: gameinfo/PrintInfo.py:261
 msgid "Minigalaxy/GOG install directory not found."
-msgstr "Minigalaxy/GOG Installationsverzeichnis nicht gefunden."
+msgstr ""
 
 #: gameinfo/PrintInfo.py:292
 msgid "ScummVM install directory not found."
-msgstr "ScummVM Installationsverzeichnis nicht gefunden."
+msgstr ""
