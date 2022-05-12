@@ -104,23 +104,6 @@ Tests underway:
 
 (see README.md)
 
-:heavy_check_mark: wine  
-:heavy_check_mark: winetricks  
-:heavy_check_mark: protontricks  
-:heavy_check_mark: lutris  
-:heavy_check_mark: minigalaxy  
-:heavy_check_mark: steamcmd  
-:heavy_check_mark: steam-cli  
-:heavy_check_mark: mangohud  
-:heavy_check_mark: pavucontrol  
-:heavy_check_mark: pipewire  
-:heavy_check_mark: legendary-gl  
-:heavy_check_mark: pulseffects  
-:heavy_check_mark: openrgb  
-:heavy_check_mark: corectrl  
-:heavy_check_mark: truckersmp-cli  
-:heavy_check_mark: vibrantLinux  
-:heavy_check_mark: dxvk  
-:heavy_check_mark: vkd3d  
-:heavy_check_mark: samrewritten  
-:heavy_check_mark: playonlinux
+#### Planned tools
+
+(see README.md)
