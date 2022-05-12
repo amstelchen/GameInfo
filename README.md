@@ -52,17 +52,17 @@ On Void Linux, installation of the packages `python3-tkinter` and `python3-gobje
 
 GameInfo is tested to work on the following distributions:
 
-- Arch Linux <sup>(1.0.7)</sup>
-- Debian 10 or newer <sup>(1.0.7)</sup>
-- Ubuntu 20.04 or newer <sup>(1.0.7)</sup>
-- Manjaro 20 <sup>(1.0.7)</sup>
-- Linux Mint 20 or newer <sup>(1.0.7)</sup> (19.3 lacks support for python3.7, only has 3.6.9)
-- MX Linux 19 or newer <sup>(1.0.7)</sup> (19.1 likely needs to run `pip install --upgrade pip setuptools wheel `)
-- Fedora 32 Workstation or newer <sup>(1.0.7)</sup>
+- Arch Linux <sup>(1.0.8)</sup>
+- Debian 10 or newer <sup>(1.0.8)</sup>
+- Ubuntu 20.04 or newer, Pop!_OS 20.04 or newer <sup>(1.0.8)</sup>
+- Manjaro 20 <sup>(1.0.8)</sup>
+- Linux Mint 20 or newer <sup>(1.0.8)</sup> (19.3 lacks support for python3.7, only has 3.6.9)
+- MX Linux 19 or newer <sup>(1.0.8)</sup> (19.1 likely needs to run `pip install --upgrade pip setuptools wheel `)
+- Fedora 32 Workstation or newer <sup>(1.0.8)</sup>
 - Void Linux <sup>(1.0.8)</sup>
-- Garuda Linux <sup>(1.0.7)</sup>
+- Garuda Linux <sup>(1.0.8)</sup>
 - openSUSE Tumbleweed and Leap 15.2 or newer <sup>(1.0.8)</sup>
-- Slackware 64 14.2 or newer <sup>(1.0.8)</sup>
+- Slackware 64 14.2 and 15.0 <sup>(1.0.8)</sup>
 
 #### Debugging
 
