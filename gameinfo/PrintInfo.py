@@ -95,7 +95,7 @@ def ListTools() -> str:
     if Distribution == "fedora": PackageManager = "rpm -q" # "dnf info -C -q python3 | grep Version | uniq"
     if Distribution == "suse": PackageManager = "rpm -q" # "zypper"
     if Distribution == "void": PackageManager = "xbps-query -S"; CutString=" | grep pkgver | cut -d ':' -f 2 | cut -d '-' -f 2"
-    if Distribution == "slackware": PackageManager = "slackpkg"
+    if Distribution == "slackware": PackageManager = "slackpkg info"; CutString=" | grep Package | cut -d ':' -f 2"
 
     for toolitem in toolitems:
         toolitem_command = toolitem.attributes["command"].value
