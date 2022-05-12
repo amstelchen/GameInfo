@@ -18,6 +18,13 @@ A system info tool for gamers.
 |:heavy_check_mark: dxvk  |:heavy_check_mark: mangohud  |:heavy_check_mark: openrgb
 |:heavy_check_mark: vkd3d  |:heavy_check_mark: corectrl  |:heavy_check_mark: vibrantLinux 
 
+Planned:
+
+- discord
+- twitch-bin
+- redshift / blueshift
+- easyeffects (might replace pulseeffects)
+
 #### Installation
 
 Steps assume that `python` and `pip` are already installed.
@@ -46,7 +53,6 @@ On Debian-based distributions (Mint, Ubuntu, MX, etc.), installation of the pack
 On Void Linux, installation of the packages `python3-tkinter` and `python3-gobject` is necessary instead.
 
     sudo xbps-install python3-tkinter python3-gobject
-
 
 #### System requirements
 
