@@ -20,6 +20,9 @@ cffi = "^1.15.0"
 vdf = "^3.4"
 importlib-metadata = "^4.11.3"
 pyrandr = {git = "https://github.com/cakturk/pyrandr.git"}
+#python-pacman = {git = "https://github.com/peakwinter/python-pacman.git"}
+#apt-wrapper = {git = "https://github.com/mixmastamyk/apt-wrapper.git"}
+#lionshead = {git = "https://github.com/natefoo/lionshead.git"}
 
 [tool.poetry.dev-dependencies]
 
