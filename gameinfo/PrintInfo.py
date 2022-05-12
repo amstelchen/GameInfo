@@ -18,6 +18,34 @@ def cmdline(command):
     #process.text_mode = True
     return process.communicate()[0]
 
+def GetDistributionId() -> str:
+    with open("/etc/os-release", mode="r", encoding = 'utf-8') as f:
+        for line in f.readlines():
+            #print(line)
+            if "VERSION_ID=" in line:
+                continue
+            if "ID=" in line:
+                result = str(line.split("=")[1].strip().strip('\"'))
+                AppDebug.debug_print("DistributionId: " + result)
+                return result
+
+def GetDistributionKind() -> str:
+    DistributionId = GetDistributionId()
+    if DistributionId in ["debian", "ubuntu", "linuxmint", "mint", "kali", "raspbian"]:
+        return "debian"
+    if DistributionId in "arch manjaro garuda".split():
+        return "arch"
+    if DistributionId in "fedora centos rhel mageia mandriva".split():
+        return "fedora"
+    if DistributionId in "opensuse-tumbleweed opensuse-leap opensuse sles".split():
+        return "suse"
+    if DistributionId in ["void"]:
+        return "void"
+    if DistributionId in ["slackware"]:
+        return "slackware"
+    if DistributionId in "ol amzn".split():
+        return ""
+
 #def PrintInfo(Section: Section, Separator: char):
 #    AppDebug.debug_print(f'{Section} {Separator}')
 
@@ -60,24 +88,38 @@ def ListTools() -> str:
     toolitems = file.getElementsByTagName('toolitem')
     outputALLE = str("")
 
+    Distribution = GetDistributionKind()
+    PackageManager = ""; CutString=""
+    if Distribution == "arch": PackageManager = "pacman -Q"; CutString = " | cut -d ' ' -f 2"
+    if Distribution == "debian": PackageManager = "apt-cache policy"; CutString=" | head -n 2 | tail -n 1 | cut -d ':' -f 2"
+    if Distribution == "fedora": PackageManager = "rpm -q" # "dnf info -C -q python3 | grep Version | uniq"
+    if Distribution == "suse": PackageManager = "rpm -q" # "zypper"
+    if Distribution == "void": PackageManager = "xbps-query -S"; CutString=" | grep pkgver | cut -d ':' -f 2 | cut -d '-' -f 2"
+    if Distribution == "slackware": PackageManager = "slackpkg"
+
     for toolitem in toolitems:
         toolitem_command = toolitem.attributes["command"].value
         toolitem_version = toolitem.attributes["version"].value
         AppDebug.debug_print(_("Checking for") + " " + toolitem_command)
-        if toolitem_command.find("!") == -1:
+        # contains no ! or ?, just the filename
+        if toolitem_command.find("!") == -1 and toolitem_command.find("?") == -1:
             toolResult = cmdline(str(toolitem_command + " " + toolitem_version))
-        else:
+        # contains a ! -> execute the version string
+        if toolitem_command.find("!") == 0:
+            toolitem_command = toolitem_command.strip('!')
             toolResult = cmdline(str(toolitem_version))
+        # contains a ? -> ask the package manager
+        if toolitem_command.find("?") == 0:
+            toolitem_command = toolitem_command.strip('?')
+            AppDebug.debug_print(f"{PackageManager} {toolitem_command}")
+            cmdlineResult = cmdline(PackageManager + " " + toolitem_version + CutString).strip(' ')
+            toolResult = cmdlineResult # split(' ')[0] 
         if len(toolResult) == 0:
             toolResult += "\n"
-        #toolResult = toolResult.decode('utf-8')
-        #splitChar = item.attributes["splitChar"].value
-        #outputALLE += command + "-" + toolResult + "\n"
-        toolitem_command = toolitem_command.replace('-','–')
-        if toolResult.find(toolitem_command.replace('!','')) == -1:
-            outputALLE += toolitem_command.replace('!','') + "-" + toolResult
         else:
-            outputALLE += toolResult
+            toolResult = toolResult.replace('-','–')
+        outputALLE += toolitem_command + "|" + toolResult
+
     #AppDebug.debug_print(outputALLE)
     FinishTime = time.time()
     AppDebug.debug_print(f"Time elapsed: {(FinishTime - StartTime):.2f}s")

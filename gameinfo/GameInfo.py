@@ -5,10 +5,12 @@ from .__init__ import *
 from .Version import __appname__, __version__, __author__, __licence__
 from .AppDebug import AppDebug
 from .PrintInfo import cmdline, PrintAbout, PopulateMenuitems, ReplaceIconname, ListTools
+from .PrintInfo import GetDistributionKind, GetDistributionId
 from .PrintInfo import WineInfo, SteamInfo, ProtonInfo, DOSBoxInfo, LutrisInfo, GOGInfo, ScummVMInfo
 from .Desktop import get_desktop_environment, is_running
 
 AppDebug.debug_print(f'{__appname__} {__version__}')
+AppDebug.debug_print(f"DistributionKind: {GetDistributionKind()}")
 
 try:
     # localedir=os.path.dirname(__file__) + '/locales'
@@ -254,7 +256,7 @@ class Application(ttk.Window):
 
         if selection == "Tools":
             returnString = ListTools()
-            splitChar = "-"
+            splitChar = "|"
             linesIgnore = 0
 
         zeile = 1
@@ -273,6 +275,8 @@ class Application(ttk.Window):
                     part2 = ""
 
             if selection == "Tools":
+                columnWidth = 300
+
                 icon_name = part1
                 icon_name = ReplaceIconname(icon_name)
 
