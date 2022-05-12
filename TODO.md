@@ -10,13 +10,17 @@
 
 :white_check_mark: Provide a hook whether there is an update available for each tool.
 
-:white_check_mark: Support various package manager hooks, i.e.
+:heavy_check_mark: Support various package manager hooks, i.e.
 - `pacman/yay`,
 - `apt/dpkg`, 
 - `yum/dnf`,
 - or even `xbps`.
 
+(mostly done)
+
 :white_check_mark: Provide a button to start each tool.
+
+:white_check_mark: dosbox (dosbox-staging) on openSUSE has a differntly formatted version-string.
 
 :heavy_check_mark: Up to `lutris-0.5.9`, a progressbar was shown when GameInfo was running `lutris --version`. This has been changed with `lutris-0.5.10` onwards.  
 
