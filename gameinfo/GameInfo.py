@@ -5,7 +5,7 @@ from .__init__ import *
 from .Version import __appname__, __version__, __author__, __licence__
 from .AppDebug import AppDebug
 from .PrintInfo import cmdline, PrintAbout, PopulateMenuitems, ReplaceIconname, ListTools
-from .PrintInfo import GetDistributionKind, GetDistributionId
+from .PrintInfo import ParseMachineTags, GetDistributionKind, GetDistributionId
 from .PrintInfo import WineInfo, SteamInfo, ProtonInfo, DOSBoxInfo, LutrisInfo, GOGInfo, ScummVMInfo
 from .Desktop import get_desktop_environment, is_running
 
@@ -62,7 +62,7 @@ class Application(ttk.Window):
 
     def refresh(self):
         #self.createWidgets(textPane="Distro")
-        self.fillTreeview(selection="Distro")
+        self.fillTreeview(selection="Machine")
 
     def __init__(self, master=None):
 
@@ -108,7 +108,7 @@ class Application(ttk.Window):
         self.position_center()
 
         self.createWidgets()
-        self.updateWidgets(textPane="Distro")
+        self.updateWidgets(textPane="Machine")
 
     def TreeElementClicked(self, event):
         selectedTreeWidget = event.widget
@@ -120,7 +120,7 @@ class Application(ttk.Window):
     def updateWidgets(self, textPane):
         self.fillTreeview(textPane)
 
-    def fillTreeview(self, selection="Distro"):
+    def fillTreeview(self, selection="Machine"):
 
         returnString = ""
         splitChar = ":"
@@ -151,15 +151,19 @@ class Application(ttk.Window):
         #selectedSet = menuitems["Distro"]
         #selectedSet = menuitems.attributes["value"].value
 
-        if selection == "Kernel":
-            splitChar = "="
-            #linesIgnore = 2
+        if selection == "Machine":
+            splitChar = ":"
+            returnString = ParseMachineTags(returnString)
 
         if selection == "Distro": #"Linux Distro"
             returnString = returnString.replace('\"','')
             returnString+= "$DESKTOP_SESSION=" + get_desktop_environment(self)
             splitChar = "="
             #linesIgnore = 1000
+
+        if selection == "Kernel":
+            splitChar = "="
+            #linesIgnore = 2
 
         if selection == "CPU":
             splitChar = ":"

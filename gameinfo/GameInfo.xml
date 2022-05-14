@@ -1,5 +1,6 @@
 <menus>
     <menu id="system" value="System">
+        <menuitem id="0" value="Machine" splitChar=":" linesIgnore="0" command="cd /sys/devices/virtual/dmi/id/; for f in *; do printf $f:; cat $f 2>/dev/null || echo '***_Unavailable_***'; done" />
         <menuitem id="1" value="Distro" splitChar="=" linesIgnore="0" command="cat /etc/os-release ; echo -n 'Desktop-Umgebung=' ; xfce4-panel --version | head -n 1" />
         <menuitem id="2" value="Kernel" splitChar="=" linesIgnore="" command="uname -sr; uname -vmp; uname -mo; echo; if [[ -f /proc/config.gz ]]; then zcat /proc/config.gz; fi" />
         <menuitem id="3" value="CPU" splitChar=":" linesIgnore="" command="grep 'model name' /proc/cpuinfo | uniq | sed 's/model name/CPU Model/g' ; echo -n 'Number of CPUs: ' ; nproc ; echo ; cat /proc/cpuinfo ; echo ; echo" />

@@ -18,6 +18,38 @@ def cmdline(command):
     #process.text_mode = True
     return process.communicate()[0]
 
+def MachineInfo() -> str:
+    SystemPath = "/sys/devices/virtual/dmi/id"
+    if os.path.exists(SystemPath):
+        onlyfiles = [f for f in listdir(SystemPath)]
+        for file in onlyfiles:
+            with open(os.path.join(SystemPath, file), 'r') as infoFile:
+                lineInfo = infoFile.read()
+                returnString += "=" + str(lineInfo) + "\n"
+    else:
+        returnString += "\n" + _("Machine info sysfs directory not found.")
+    return returnString
+
+def ParseMachineTags(Tags: str) -> str:
+    lineMod = ""
+    for line in Tags.splitlines():
+        if "_Unavailable_" in line:
+            continue
+        if "To be filled by O.E.M." in line:
+            continue
+        if "dmi" in line:
+            continue
+        line = line.split(':')
+        if "bios" in line[0]:
+            line[0] = line[0].replace('bios', 'BIOS')
+        else:
+            line[0] = line[0].capitalize()
+        lineMod += ':'.join([line[0].replace('_', ' '), line[1] + "\n"])
+        if "version" in line[0]:
+            lineMod += ":\n"
+    # return Tag.replace('bios', 'BIOS').capitalize().replace('_', ' ')
+    return lineMod
+
 def GetDistributionId() -> str:
     with open("/etc/os-release", mode="r", encoding = 'utf-8') as f:
         for line in f.readlines():
@@ -141,7 +173,7 @@ def DisplayInfoUnused() -> str:
 
 def WineInfo() -> str:
     returnString = f'Wine {_("version")}:={cmdline("wine --version")}\n'
-    prefixes = ["~/.wine", "~/.wine32", "~/.config/wine/prefixes"]
+    prefixes = ["~/.wine", "~/.wine32", "~/.config/wine/prefixes", "~/.local/share/wineprefixes"]
     for prefix in prefixes:
         returnString += str(prefix) + ":="
         if os.path.isdir(os.path.expanduser(str(prefix))):
