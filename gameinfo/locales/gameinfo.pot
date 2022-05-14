@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-05-11 11:45+0200\n"
+"POT-Creation-Date: 2022-05-14 14:43+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,116 +17,120 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: gameinfo/GameInfo.py:42 gameinfo/GameInfo.py:246
-msgid "Help"
-msgstr ""
-
-#: gameinfo/GameInfo.py:42 gameinfo/GameInfo.py:59 gameinfo/GameInfo.py:250
-#: gameinfo/GameInfo.py:350
-msgid "About"
-msgstr ""
-
-#: gameinfo/GameInfo.py:87
-msgid "Themes loaded"
-msgstr ""
-
-#: gameinfo/GameInfo.py:114
-msgid "Selected entry"
-msgstr ""
-
-#: gameinfo/GameInfo.py:241
-msgid "not yet implemented, sorry."
-msgstr ""
-
-#: gameinfo/GameInfo.py:243
-msgid "System"
-msgstr ""
-
-#: gameinfo/GameInfo.py:243 gameinfo/GameInfo.py:377
-msgid "Platforms"
-msgstr ""
-
-#: gameinfo/GameInfo.py:244
-msgid "Please select a sub-category."
-msgstr ""
-
-#: gameinfo/GameInfo.py:247
-msgid "Not yet implemented."
-msgstr ""
-
-#: gameinfo/GameInfo.py:347
-msgid "Refresh"
-msgstr ""
-
-#: gameinfo/GameInfo.py:353
-msgid "Quit"
-msgstr ""
-
-#: gameinfo/PrintInfo.py:56
+#: gameinfo/AppDebug.py:8 gameinfo/GameInfo.py:44
 msgid "Fetching system info, this can take a second..."
 msgstr ""
 
-#: gameinfo/PrintInfo.py:66
+#: gameinfo/GameInfo.py:43 gameinfo/GameInfo.py:257
+msgid "Help"
+msgstr ""
+
+#: gameinfo/GameInfo.py:43 gameinfo/GameInfo.py:61 gameinfo/GameInfo.py:261
+#: gameinfo/GameInfo.py:366
+msgid "About"
+msgstr ""
+
+#: gameinfo/GameInfo.py:89
+msgid "Themes loaded"
+msgstr ""
+
+#: gameinfo/GameInfo.py:116
+msgid "Selected entry"
+msgstr ""
+
+#: gameinfo/GameInfo.py:252
+msgid "not yet implemented, sorry."
+msgstr ""
+
+#: gameinfo/GameInfo.py:254
+msgid "System"
+msgstr ""
+
+#: gameinfo/GameInfo.py:254 gameinfo/GameInfo.py:393
+msgid "Platforms"
+msgstr ""
+
+#: gameinfo/GameInfo.py:255
+msgid "Please select a sub-category."
+msgstr ""
+
+#: gameinfo/GameInfo.py:258
+msgid "Not yet implemented."
+msgstr ""
+
+#: gameinfo/GameInfo.py:363
+msgid "Refresh"
+msgstr ""
+
+#: gameinfo/GameInfo.py:369
+msgid "Quit"
+msgstr ""
+
+#: gameinfo/PrintInfo.py:30
+msgid "Machine info sysfs directory not found."
+msgstr ""
+
+#: gameinfo/PrintInfo.py:135
 msgid "Checking for"
 msgstr ""
 
-#: gameinfo/PrintInfo.py:108 gameinfo/PrintInfo.py:141
+#: gameinfo/PrintInfo.py:182 gameinfo/PrintInfo.py:215
 msgid "Yes"
 msgstr ""
 
-#: gameinfo/PrintInfo.py:110 gameinfo/PrintInfo.py:143
+#: gameinfo/PrintInfo.py:184 gameinfo/PrintInfo.py:217
 msgid "No"
 msgstr ""
 
-#: gameinfo/PrintInfo.py:115
+#: gameinfo/PrintInfo.py:189
 msgid "unknown"
 msgstr ""
 
-#: gameinfo/PrintInfo.py:171
+#: gameinfo/PrintInfo.py:245
 msgid "games or apps"
 msgstr ""
 
-#: gameinfo/PrintInfo.py:172
+#: gameinfo/PrintInfo.py:246
 msgid "total"
 msgstr ""
 
-#: gameinfo/PrintInfo.py:173
+#: gameinfo/PrintInfo.py:247
 msgid "used"
 msgstr ""
 
-#: gameinfo/PrintInfo.py:174
+#: gameinfo/PrintInfo.py:248
 msgid "free"
 msgstr ""
 
-#: gameinfo/PrintInfo.py:176
+#: gameinfo/PrintInfo.py:250
 msgid "not found"
 msgstr ""
 
-#: gameinfo/PrintInfo.py:212
+#: gameinfo/PrintInfo.py:286
 msgid "Steam compatibilitytools install directory not found."
 msgstr ""
 
-#: gameinfo/PrintInfo.py:220
+#: gameinfo/PrintInfo.py:294
 msgid "Config files"
 msgstr ""
 
-#: gameinfo/PrintInfo.py:225
+#: gameinfo/PrintInfo.py:299
 msgid "DOSBox install directory not found."
 msgstr ""
 
-#: gameinfo/PrintInfo.py:240 gameinfo/PrintInfo.py:254
-#: gameinfo/PrintInfo.py:269
+#: gameinfo/PrintInfo.py:314 gameinfo/PrintInfo.py:328
+#: gameinfo/PrintInfo.py:343
 msgid "Games"
 msgstr ""
 
-#: gameinfo/PrintInfo.py:245
+#: gameinfo/PrintInfo.py:319
 msgid "Lutris install directory not found."
 msgstr ""
 
-#: gameinfo/PrintInfo.py:261
+#: gameinfo/PrintInfo.py:335
 msgid "Minigalaxy/GOG install directory not found."
 msgstr ""
 
-#: gameinfo/PrintInfo.py:292
+#: gameinfo/PrintInfo.py:366
 msgid "ScummVM install directory not found."
 msgstr ""
