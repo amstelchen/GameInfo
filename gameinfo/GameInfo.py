@@ -208,6 +208,11 @@ class Application(ttk.Window):
             #returnString.replace("     ", " ")
             pass
 
+        if selection == "Sensors":
+            splitChar = "\t"
+            #linesIgnore = 1000
+            columnWidth = 900
+
         if selection == "Steam":
             returnString = SteamInfo()
             splitChar = "="
