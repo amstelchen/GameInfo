@@ -3,7 +3,7 @@
 from .__init__ import *
 
 from .Version import __appname__, __version__, __author__, __licence__
-from .AppDebug import AppDebug
+from .AppDebug import AppDebug, WaitMessage
 from .PrintInfo import cmdline, PrintAbout, PopulateMenuitems, ReplaceIconname, ListTools
 from .PrintInfo import ParseMachineTags, GetDistributionKind, GetDistributionId
 from .PrintInfo import WineInfo, SteamInfo, ProtonInfo, DOSBoxInfo, LutrisInfo, GOGInfo, ScummVMInfo
@@ -40,8 +40,8 @@ for menu in menus:
     #    l = llist.item(level)
 
 menuPlatforms = ["Tools", "Steam", "Proton", "Wine", "DOSBox", "Lutris", "GOG", "ScummVM", "Epic Games", "Battle.net"]
-
 menuGameInfo = [_("Help"), _("About")]
+WaitMessage = _("Fetching system info, this can take a second...")
 
 class Application(ttk.Window):
     def dic_imgs(self):
@@ -264,7 +264,10 @@ class Application(ttk.Window):
             columnWidth = 900
 
         if selection == "Tools":
+            treeRight.insert("", 0, text=WaitMessage, values=(""), tags=("evenrow"))
+            self.update()
             returnString = ListTools()
+            treeRight.delete(*treeRight.get_children())
             splitChar = "|"
             linesIgnore = 0
 

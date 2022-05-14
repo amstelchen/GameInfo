@@ -1,7 +1,7 @@
 from .__init__ import *
 
 from .Version import __appname__, __version__, __author__, __copyright__, __licence__
-from .AppDebug import AppDebug
+from .AppDebug import AppDebug, WaitMessage
 
 def PrintAbout() -> str:
     returnString = (f'{__appname__} Version: {__version__}\n\n'
@@ -113,7 +113,7 @@ def ReplaceIconname(icon_name) -> str:
     return icon_name
 
 def ListTools() -> str:
-    AppDebug.debug_print(_("Fetching system info, this can take a second..."))
+    AppDebug.debug_print(WaitMessage)
     StartTime = time.time()
 
     file = minidom.parse(os.path.join(os.path.dirname(__file__), "GameInfo.xml"))
