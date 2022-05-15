@@ -83,7 +83,7 @@ DEBUG: Themen geladen: cosmo flatly litera minty lumen
 ```
 #### Screenshots
 
-[![https://imgur.com/QfApzDu.png](https://imgur.com/QfApzDu.png)](https://imgur.com/QfApzDu.png)
+[![https://imgur.com/JgTRGmp.png](https://imgur.com/JgTRGmp.png)](https://imgur.com/JgTRGmp.png)
 
 #### Licences
 
