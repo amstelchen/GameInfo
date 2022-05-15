@@ -62,7 +62,7 @@ class Application(ttk.Window):
 
     def refresh(self):
         #self.createWidgets(textPane="Distro")
-        self.fillTreeview(selection="Machine")
+        self.fillTreeview(selection="Tools") # was "Machine"
 
     def __init__(self, master=None):
 
@@ -108,7 +108,7 @@ class Application(ttk.Window):
         self.position_center()
 
         self.createWidgets()
-        self.updateWidgets(textPane="Machine")
+        self.updateWidgets(textPane="Tools") # was "Machine"
 
     def TreeElementClicked(self, event):
         selectedTreeWidget = event.widget
@@ -120,7 +120,7 @@ class Application(ttk.Window):
     def updateWidgets(self, textPane):
         self.fillTreeview(textPane)
 
-    def fillTreeview(self, selection="Machine"):
+    def fillTreeview(self, selection="Tools"): # was "Machine"
 
         returnString = ""
         splitChar = ":"
@@ -270,8 +270,14 @@ class Application(ttk.Window):
             treeRight.delete(*treeRight.get_children())
             splitChar = "|"
             linesIgnore = 0
+            self.style.configure("mystyle.Treeview.Right", highlightthickness=0, bd=0, font=('Monospace', 10), rowheight=32)
+            self.style.layout("mystyle.Treeview.Right", [('mystyle.Treeview.Right.treearea', {'sticky': 'nswe'})]) # Remove the borders
+        else:
+            self.style.configure("mystyle.Treeview.Right", highlightthickness=0, bd=0, font=('Monospace', 10), rowheight=20)
+            self.style.layout("mystyle.Treeview.Right", [('mystyle.Treeview.Right.treearea', {'sticky': 'nswe'})]) # Remove the borders
 
         zeile = 1
+        self.temp_imgs = []
         for line in returnString.splitlines():
 
             if zeile % 2 == 0:
@@ -290,30 +296,42 @@ class Application(ttk.Window):
                 columnWidth = 300
 
                 icon_name = part1
+                part1 = "  " + part1
                 icon_name = ReplaceIconname(icon_name)
 
                 icon_theme = Gtk.IconTheme.get_default()
                 icon_info = icon_theme.lookup_icon(icon_name, 32, 0)
+                AppDebug.debug_print("icon_name: " + icon_name)
 
                 if icon_info != None:
                     image_filename = icon_info.get_filename()
+                    AppDebug.debug_print("image_filename: " + image_filename)
                 else:
                     AppDebug.debug_print("No file for " + icon_name + " :-(")
                     image_filename = os.path.join(os.path.dirname(__file__), "images", "GameInfo.png")
-
                     photo = None
                     
-                    if "svg" in image_filename:
-                        image_data = cairosvg.svg2png(url=image_filename)
-                        image = (Image.open(io.BytesIO(image_data)))
-                        photo = image.resize((32, 32), Image.Resampling.LANCZOS) #, Image.ANTIALIAS)
-                        photo = ImageTk.PhotoImage(photo)
-                    if "png" in image_filename:
-                        image = Image.open(image_filename)
-                        photo = image.resize((32, 32), Image.Resampling.LANCZOS) #, Image.ANTIALIAS)
-                        photo = ImageTk.PhotoImage(photo)
+                #if image_filename.find("/org/gtk") == 0:
+                #    image_filename = os.path.join(os.path.dirname(__file__), "images", "GameInfo.png")
+                #    photo = None
+                #    AppDebug.debug_print(image_filename + " ist leer")
 
-            treeRight.insert("", index=zeile, text=part1, values=(part2, ""), tags=(tag,))
+                if "svg" in image_filename:
+                    image_data = cairosvg.svg2png(url=image_filename)
+                    image = (Image.open(io.BytesIO(image_data)))
+                    photo = image.resize((32, 32), Image.Resampling.LANCZOS) #, Image.ANTIALIAS)
+                    self._photo = ImageTk.PhotoImage(photo)
+                    self.temp_imgs.append(self._photo)
+                if "png" in image_filename:
+                    image = Image.open(image_filename)
+                    photo = image.resize((32, 32), Image.Resampling.LANCZOS) #, Image.ANTIALIAS)
+                    self._photo = ImageTk.PhotoImage(photo)
+                    self.temp_imgs.append(self._photo)
+
+                #AppDebug.debug_print("len: " + str(len(temp_imgs)))
+                treeRight.insert("", index=zeile, text=part1, values=(part2, ""), tags=(tag,), image=self.temp_imgs[zeile - 1])
+            else:
+                treeRight.insert("", index=zeile, text=part1, values=(part2, ""), tags=(tag,))
             zeile += 1
         pass
 
@@ -410,8 +428,8 @@ class Application(ttk.Window):
         #top = tk.Label(m2, text=textPane, font="Sans 20")
         treeRight = ttk.Treeview(style="mystyle.Treeview.Right", name="right_tree")
         
-        treeRight["columns"]=("pic", "#0", "#1")
-        treeRight.column("pic", width=400, minwidth=400, stretch=ttk.NO)
+        treeRight["columns"]=("#0", "#1")
+        #treeRight.column("pic", width=400, minwidth=400, stretch=ttk.NO)
         treeRight.column("#0", width=400, minwidth=400, stretch=ttk.NO)
         treeRight.column("#1", width=500, minwidth=500, stretch=ttk.NO)
         treeRight.pack(side=TOP)

@@ -97,19 +97,23 @@ def PopulateMenuitems():
 
 def ReplaceIconname(icon_name) -> str:
     if icon_name == "openrgb":
-        icon_name = "OpenRGB"
+        return "OpenRGB"
     if icon_name == "minigalaxy":
-        icon_name = "io.github.sharkwouter.Minigalaxy"
-    if icon_name == "pavucontrol":
-        icon_name = "multimedia-volume-control"
+        return "io.github.sharkwouter.Minigalaxy"
     if icon_name == "vibrantLinux":
-        icon_name = "io.github.libvibrant.vibrantLinux"
+        return "io.github.libvibrant.vibrantLinux"
+    if icon_name == "wine":
+        return "application-x-wine-extension-icl"
     if icon_name == "protontricks":
-        icon_name = "wine"
+        return "winetricks"
     if icon_name == "steamcmd":
-        icon_name = "steam_tray_mono"
+        return "steam_tray_mono"
     if icon_name == "pavucontrol":
-        icon_name = "multimedia"
+        return "multimedia"
+    if icon_name == "OBS":
+        return "com.obsproject.Studio"
+    if icon_name == "cpupower-gui":
+        return "org.rnd2.cpupower_gui"
     return icon_name
 
 def ListTools() -> str:
