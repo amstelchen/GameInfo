@@ -1,7 +1,7 @@
 from .__init__ import *
 from .GameInfo import *
 
-gettext = gettext.translation('gameinfo', languages=['de'])
+gettext = gettext.translation('gameinfo', localedir=os.path.join(os.path.dirname(__file__), 'locales'), languages=['de'])
 gettext.install("gameinfo")
 _ = gettext.gettext
 
