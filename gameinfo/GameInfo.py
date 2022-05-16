@@ -15,7 +15,7 @@ AppDebug.debug_print(f"DistributionKind: {GetDistributionKind()}")
 try:
     # localedir=os.path.dirname(__file__) + '/locales'
     #gettext = gettext.translation('gameinfo', localedir='/usr/share/locale', languages=['de'])
-    gettext = gettext.translation('gameinfo', languages=['de'])
+    gettext = gettext.translation('gameinfo', localedir=os.path.join(os.path.dirname(__file__), 'locales'), languages=['de'])
     gettext.install("gameinfo")
     _ = gettext.gettext
 except FileNotFoundError as e:
