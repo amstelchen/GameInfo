@@ -5,7 +5,7 @@ from .__init__ import *
 from .Version import __appname__, __version__, __author__, __licence__
 from .AppDebug import AppDebug, WaitMessage
 from .PrintInfo import cmdline, PrintAbout, PopulateMenuitems, ReplaceIconname, ListTools
-from .PrintInfo import ParseMachineTags, GetDistributionKind, GetDistributionId
+from .PrintInfo import ParseMachineTags, GetDistributionKind, GetDistributionId, GetDistributionLogoName, GetDistributionLogoImage, GetDesktopLogoImage
 from .PrintInfo import WineInfo, SteamInfo, ProtonInfo, DOSBoxInfo, LutrisInfo, GOGInfo, ScummVMInfo
 from .Desktop import get_desktop_environment, is_running
 
@@ -126,6 +126,10 @@ class Application(ttk.Window):
         splitChar = ":"
         linesIgnore = 0
         columnWidth = 400
+        rowHeight = 20
+
+        sl = self.winfo_children()[3].place_slaves()
+        for s in sl: s.destroy()
 
         treeRight = self.winfo_children()[3]
         treeRight.delete(*treeRight.get_children())
@@ -156,10 +160,21 @@ class Application(ttk.Window):
             returnString = ParseMachineTags(returnString)
 
         if selection == "Distro": #"Linux Distro"
+            self.temp_imgs_logos = []
             returnString = returnString.replace('\"','')
             returnString+= "$DESKTOP_SESSION=" + get_desktop_environment(self)
             splitChar = "="
+            rowHeight=20
             #linesIgnore = 1000
+            self.temp_imgs_logos.append(GetDistributionLogoImage(GetDistributionLogoName()))
+            panel1 = ttk.Label(self.winfo_children()[3], image = self.temp_imgs_logos[0], border=0)
+            panel1.place(x = 10, y = 300, width=64, height=64)
+            self.temp_imgs_logos.append(GetDesktopLogoImage(get_desktop_environment(self) + "-logo"))
+            panel2 = ttk.Label(self.winfo_children()[3], image = self.temp_imgs_logos[1], border=0)
+            panel2.place(x = 100, y = 300, width=64, height=64)
+            
+            #treeRight.insert("", 0, text="", values=("", ""), image=self._photo)
+            #print(self.temp_imgs)
 
         if selection == "Kernel":
             splitChar = "="
@@ -270,14 +285,13 @@ class Application(ttk.Window):
             treeRight.delete(*treeRight.get_children())
             splitChar = "|"
             linesIgnore = 0
-            self.style.configure("mystyle.Treeview.Right", highlightthickness=0, bd=0, font=('Monospace', 10), rowheight=32)
-            self.style.layout("mystyle.Treeview.Right", [('mystyle.Treeview.Right.treearea', {'sticky': 'nswe'})]) # Remove the borders
-        else:
-            self.style.configure("mystyle.Treeview.Right", highlightthickness=0, bd=0, font=('Monospace', 10), rowheight=20)
-            self.style.layout("mystyle.Treeview.Right", [('mystyle.Treeview.Right.treearea', {'sticky': 'nswe'})]) # Remove the borders
+            rowHeight = 32
 
         zeile = 1
         self.temp_imgs = []
+
+        self.style.configure("mystyle.Treeview.Right", highlightthickness=0, bd=0, font=('Monospace', 10), rowheight=rowHeight)
+        self.style.layout("mystyle.Treeview.Right", [('mystyle.Treeview.Right.treearea', {'sticky': 'nswe'})])
         for line in returnString.splitlines():
 
             if zeile % 2 == 0:
@@ -333,7 +347,6 @@ class Application(ttk.Window):
             else:
                 treeRight.insert("", index=zeile, text=part1, values=(part2, ""), tags=(tag,))
             zeile += 1
-        pass
 
         #for line in selectedSet.splitlines():
             #icon_theme = Gtk.IconTheme()

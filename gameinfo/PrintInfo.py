@@ -63,7 +63,7 @@ def GetDistributionId() -> str:
 
 def GetDistributionKind() -> str:
     DistributionId = GetDistributionId()
-    if DistributionId in ["debian", "ubuntu", "linuxmint", "mint", "kali", "raspbian"]:
+    if DistributionId in ["debian", "ubuntu", "linuxmint", "mint", "pop", "kali", "raspbian"]:
         return "debian"
     if DistributionId in "arch manjaro garuda".split():
         return "arch"
@@ -77,6 +77,70 @@ def GetDistributionKind() -> str:
         return "slackware"
     if DistributionId in "ol amzn".split():
         return ""
+
+def GetDistributionLogoName():
+    with open("/etc/os-release", mode="r", encoding = 'utf-8') as f:
+        for line in f.readlines():
+            #print(line)
+            if "LOGO=" in line:
+                result = str(line.split("=")[1].strip().strip('\"'))
+                AppDebug.debug_print("DistributionLogo: " + result)
+                return result
+        if GetDistributionId() == "debian":
+            return "debian-logo"
+        if GetDistributionId() == "ubuntu":
+            return "ubuntu-logo-icon"
+        if GetDistributionId() == "linuxmint":
+            return "linuxmint-logo"
+        if GetDistributionId() == "distributor-logo-Tumbleweed": # opensuse-tumbleweed
+            return "xfce4-button-opensuse"
+    
+def GetDistributionLogoImage(Logo):
+    #if "logo" not in Logo:
+    #    Logo += "-logo"
+    try:
+        icon_file = Gtk.IconTheme.get_default().lookup_icon(Logo, 32, 0).get_filename()
+        if os.path.isfile(icon_file):
+            if "svg" in icon_file:
+                image_data = cairosvg.svg2png(url=icon_file)
+                image = (Image.open(io.BytesIO(image_data)))
+                photo = image.resize((64, 64), Image.Resampling.LANCZOS) #, Image.ANTIALIAS)
+            if "png" in icon_file:
+                image = Image.open(icon_file)
+                photo = image.resize((64, 64), Image.Resampling.LANCZOS) #, Image.ANTIALIAS)
+        return ImageTk.PhotoImage(photo)
+    except:
+        #print(distro_logo)
+        distro_logo = os.path.join("/usr/share/pixmaps/", Logo + ".svg")
+        if os.path.isfile(distro_logo):
+            image_data = cairosvg.svg2png(url=distro_logo)
+            image = (Image.open(io.BytesIO(image_data)))
+            photo = image.resize((64, 64), Image.Resampling.LANCZOS) #, Image.ANTIALIAS)
+        else:
+            distro_logo = os.path.join("/usr/share/pixmaps/", Logo + ".png")
+            if os.path.isfile(distro_logo):
+                image = Image.open(distro_logo)
+                photo = image.resize((64, 64), Image.Resampling.LANCZOS) #, Image.ANTIALIAS)
+            else:
+                distro_logo = os.path.join("/usr/share/pixmaps/", Logo + "-logo.png")
+                if os.path.isfile(distro_logo):
+                    image = Image.open(distro_logo)
+                    photo = image.resize((64, 64), Image.Resampling.LANCZOS) #, Image.ANTIALIAS)
+        return ImageTk.PhotoImage(photo)
+
+def GetDesktopLogoImage(Logo):
+    if Logo == "gnome-logo":
+        Logo = "org.gnome.Software"
+    icon_file = Gtk.IconTheme.get_default().lookup_icon(Logo, 32, 0).get_filename()
+    #print(icon_file)
+    if "svg" in icon_file:
+        image_data = cairosvg.svg2png(url=icon_file)
+        image = (Image.open(io.BytesIO(image_data)))
+        photo = image.resize((64, 64), Image.Resampling.LANCZOS) #, Image.ANTIALIAS)
+    if "png" in icon_file:
+        image = Image.open(icon_file)
+        photo = image.resize((64, 64), Image.Resampling.LANCZOS) #, Image.ANTIALIAS)
+    return ImageTk.PhotoImage(photo)
 
 #def PrintInfo(Section: Section, Separator: char):
 #    AppDebug.debug_print(f'{Section} {Separator}')
