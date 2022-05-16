@@ -3,6 +3,13 @@
 :heavy_check_mark: Rework TKinter to use <strike>ThemedTk</strike> ttkbootstrap. :tired_face:  
 :heavy_check_mark: Switch from setuptools to poetry (done with v1.0.5).  
 :heavy_check_mark: Add <a href="https://www.flaticon.com/de/kostenlose-icons/computer" title="computer Icons">Computer Icons erstellt von Freepik - Flaticon</a>
+:white_check_mark: Give a hint for Slackware:
+
+```
+echo "LOGO=slackware-logo" | sudo tee -a /etc/os-release
+wget -O slackware-logo.svg https://upload.wikimedia.org/wikipedia/commons/3/34/Slackware_logo.svg
+sudo mv slackware-logo.svg /usr/share/pixmaps
+```
 
 #### Tools
 
