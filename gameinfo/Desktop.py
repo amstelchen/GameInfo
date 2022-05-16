@@ -19,10 +19,12 @@ def get_desktop_environment(self):
             ## Special cases ##
             # Canonical sets $DESKTOP_SESSION to Lubuntu rather than LXDE if using LXDE.
             # There is no guarantee that they will not do the same with the other desktop environments.
-            elif "xfce" in desktop_session or desktop_session.startswith("xubuntu"):
+            elif "xfce" in desktop_session or desktop_session.startswith("xubuntu") or desktop_session.startswith("lightdm"):
                 return "xfce4"
+            elif desktop_session.startswith("pop"):
+                return "gnome"
             elif desktop_session.startswith("ubuntu"):
-                return "unity"       
+                return "gnome" # "unity"
             elif desktop_session.startswith("lubuntu"):
                 return "lxde" 
             elif desktop_session.startswith("kubuntu"): 
