@@ -6,24 +6,26 @@ A system info tool for gamers.
 
 #### Supported tools
 
-|__Emulators/Runners__|__CLI tools__|__Audio__|
-|-|-|-|
-|:heavy_check_mark: wine  |:heavy_check_mark: steamcmd  |:heavy_check_mark: pavucontrol
-|:heavy_check_mark: winetricks  |:heavy_check_mark: steam-cli  |:heavy_check_mark: pipewire
-|:heavy_check_mark: protontricks  |:heavy_check_mark: legendary-gl |:heavy_check_mark: pulseffects
-|:heavy_check_mark: lutris  |:heavy_check_mark: truckersmp-cli  |
-|:heavy_check_mark: minigalaxy  |:heavy_check_mark: samrewritten  |
-|:heavy_check_mark: playonlinux  ||
+|__Emulators/Runners__|__CLI tools__|__Streaming/Video__|__Audio__|
+|-|-|-|-|
+|:heavy_check_mark: wine  |:heavy_check_mark: steamcmd  |:heavy_check_mark: discord |:heavy_check_mark: pavucontrol
+|:heavy_check_mark: winetricks  |:heavy_check_mark: steam-cli  |:heavy_check_mark: twitch |:heavy_check_mark: pipewire
+|:heavy_check_mark: protontricks  |:heavy_check_mark: legendary-gl |:heavy_check_mark: obs-studio |:heavy_check_mark: pulseffects
+|:heavy_check_mark: lutris  |:heavy_check_mark: truckersmp-cli  |:heavy_check_mark: kdenlive |:heavy_check_mark: easyeffects*
+|:heavy_check_mark: minigalaxy  |:heavy_check_mark: samrewritten  |  |
+|:heavy_check_mark: playonlinux  |  |
 |__Graphics__|__Perf tuning__|__Modding__|
-|:heavy_check_mark: dxvk  |:heavy_check_mark: mangohud  |:heavy_check_mark: openrgb
-|:heavy_check_mark: vkd3d  |:heavy_check_mark: corectrl  |:heavy_check_mark: vibrantLinux 
+|:heavy_check_mark: dxvk  |:heavy_check_mark: mangohud  |:heavy_check_mark: openrgb  |
+|:heavy_check_mark: vkd3d  |:heavy_check_mark: corectrl  |:heavy_check_mark:  vibrantLinux |
+| |:heavy_check_mark: cpupower-gui | |
+
+<sub>(*) might replace pulseeffects</sub>
 
 Planned:
 
-- discord
-- twitch-bin
 - redshift / blueshift
-- easyeffects (might replace pulseeffects)
+- gamehub
+
 
 #### Installation
 
@@ -58,17 +60,18 @@ On Void Linux, installation of the packages `python3-tkinter` and `python3-gobje
 
 GameInfo is tested to work on the following distributions:
 
-- Arch Linux <sup>(1.0.8)</sup>
-- Debian 10 or newer <sup>(1.0.8)</sup>
-- Ubuntu 20.04 or newer, Pop!_OS 20.04 or newer <sup>(1.0.8)</sup>
-- Manjaro 20 <sup>(1.0.8)</sup>
-- Linux Mint 20 or newer <sup>(1.0.8)</sup> (19.3 lacks support for python3.7, only has 3.6.9)
-- MX Linux 19 or newer <sup>(1.0.8)</sup> (19.1 likely needs to run `pip install --upgrade pip setuptools wheel `)
-- Fedora 32 Workstation or newer <sup>(1.0.8)</sup>
-- Void Linux <sup>(1.0.8)</sup>
-- Garuda Linux <sup>(1.0.8)</sup>
+- Arch Linux <sup>(1.0.9)</sup>
+- Debian 10 or newer <sup>(1.0.9)</sup>
+- Ubuntu 20.04 or newer, Pop!_OS 20.04 or newer <sup>(1.0.9)</sup>
+- Manjaro 20 <sup>(1.0.9)</sup>
+- Linux Mint 20 or newer <sup>(1.0.9)</sup> (19.3 lacks support for python3.7, only has 3.6.9)
+- MX Linux 19 or newer <sup>(1.0.9)</sup> (19.1 likely needs to run `pip install --upgrade pip setuptools wheel `)
+- Fedora 32 Workstation or newer <sup>(1.0.9)</sup>
+- Void Linux <sup>(1.0.9)</sup>
+- Garuda Linux <sup>(1.0.9)</sup>
 - openSUSE Tumbleweed and Leap 15.2 or newer <sup>(1.0.8)</sup>
 - Slackware 64 14.2 and 15.0 <sup>(1.0.8)</sup>
+- EndeavourOS <sup>(1.0.9)</sup>
 
 #### Debugging
 
