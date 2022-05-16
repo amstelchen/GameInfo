@@ -11,6 +11,13 @@ wget -O slackware-logo.svg https://upload.wikimedia.org/wikipedia/commons/3/34/S
 sudo mv slackware-logo.svg /usr/share/pixmaps
 ```
 
+:white_check_mark: Add to Troubleshooting section:
+
+```
+$ echo "# Add ~/.local/ to PATH
+export PATH=$HOME/.local/bin:$PATH" >> ~/.bashrc
+```
+
 #### Tools
 
 :white_check_mark: Use App's icons in Tools list - tedious with TK. Unfortunately, even after further attempts to get this working, it doesn't.  
