@@ -4,9 +4,9 @@ from .__init__ import *
 
 from .Version import __appname__, __version__, __author__, __licence__
 from .AppDebug import AppDebug, WaitMessage
-from .PrintInfo import cmdline, PrintAbout, PopulateMenuitems, ReplaceIconname, ListTools
-from .PrintInfo import ParseMachineTags, GetDistributionKind, GetDistributionId, GetDistributionLogoName, GetDistributionLogoImage, GetDesktopLogoImage
-from .PrintInfo import WineInfo, SteamInfo, ProtonInfo, DOSBoxInfo, LutrisInfo, GOGInfo, ScummVMInfo
+from .Functions import cmdline, PrintAbout, PopulateMenuitems, ReplaceIconname, ListTools
+from .Functions import ParseMachineTags, GetDistributionKind, GetDistributionId, GetDistributionLogoName, GetDistributionLogoImage, GetDesktopLogoImage
+from .Functions import WineInfo, SteamInfo, ProtonInfo, DOSBoxInfo, LutrisInfo, GOGInfo, ScummVMInfo, EpicGamesInfo
 from .Desktop import get_desktop_environment, is_running
 
 AppDebug.debug_print(f'{__appname__} {__version__}')
@@ -125,7 +125,8 @@ class Application(ttk.Window):
         returnString = ""
         splitChar = ":"
         linesIgnore = 0
-        columnWidth = 400
+        firstColumnWidth = 400
+        secondColumnWidth = 900
         rowHeight = 20
 
         sl = self.winfo_children()[3].place_slaves()
@@ -133,7 +134,7 @@ class Application(ttk.Window):
 
         treeRight = self.winfo_children()[3]
         treeRight.delete(*treeRight.get_children())
-        treeRight.column("#0", width=columnWidth, minwidth=columnWidth, stretch=ttk.NO)
+        treeRight.column("#0", width=firstColumnWidth, minwidth=firstColumnWidth, stretch=ttk.NO)
 
         if isinstance(selection, list):
             selection = str(selection[0])
@@ -205,7 +206,7 @@ class Application(ttk.Window):
             returnString= returnString.replace('\t', "  ")
             returnString= returnString.replace('Vulkan version', ":\nVulkan version")
             returnString= returnString.replace('lay) V', "lay):\nV")
-            columnWidth = 600
+            firstColumnWidth = 600
 
         if selection == "VA-API":
             splitChar = ":\t"
@@ -214,7 +215,7 @@ class Application(ttk.Window):
         if selection == "VDPAU":
             splitChar = "\t"
             #linesIgnore = 1000
-            columnWidth = 900
+            firstColumnWidth = 900
 
         if selection == "OpenGL":
             splitChar = ": "
@@ -226,44 +227,51 @@ class Application(ttk.Window):
         if selection == "Sensors":
             splitChar = "\t"
             #linesIgnore = 1000
-            columnWidth = 900
+            firstColumnWidth = 900
+            secondColumnWidth = 0
 
         if selection == "Steam":
             returnString = SteamInfo()
             splitChar = "="
-            columnWidth = 350
+            firstColumnWidth = 300
 
         if selection == "Wine":
             returnString = WineInfo()
             splitChar = "="
-            columnWidth = 300
+            firstColumnWidth = 300
 
         if selection == "Proton":
             returnString = ProtonInfo()
             splitChar = "="
-            columnWidth = 350
+            firstColumnWidth = 350
 
         if selection == "DOSBox":
             returnString = DOSBoxInfo()
             splitChar = "="
-            columnWidth = 300
+            firstColumnWidth = 300
 
         if selection == "Lutris":
             returnString = LutrisInfo()
             splitChar = "="
-            columnWidth = 300
+            firstColumnWidth = 300
 
         if selection == "GOG":
             returnString = GOGInfo()
             splitChar = "="
-            columnWidth = 300
+            firstColumnWidth = 300
 
         if selection == "ScummVM":
             returnString = ScummVMInfo()
             splitChar = "="
-            columnWidth = 300
+            firstColumnWidth = 300
 
-        if selection in ("Epic Games", "Battle.net"): #, "Steam"):
+        if selection == "Epic Games":
+            returnString = EpicGamesInfo()
+            splitChar = "("
+            firstColumnWidth = 250
+            secondColumnWidth = 700
+
+        if selection in ("Battle.net"):
             returnString = str(selection) + " " + _("not yet implemented, sorry.")
 
         if selection in (_("System"), _("Platforms"), "GameInfo"):
@@ -271,12 +279,12 @@ class Application(ttk.Window):
 
         if selection == _("Help"):
             returnString = _("Not yet implemented.")
-            columnWidth = 900
+            firstColumnWidth = 900
 
         if selection == _("About"):
             returnString = PrintAbout()
             splitChar = "---"
-            columnWidth = 900
+            firstColumnWidth = 900
 
         if selection == "Tools":
             treeRight.insert("", 0, text=WaitMessage, values=(""), tags=("evenrow"))
@@ -307,7 +315,8 @@ class Application(ttk.Window):
                     part2 = ""
 
             if selection == "Tools":
-                columnWidth = 300
+                firstColumnWidth = 300
+                secondColumnWidth = 900
 
                 icon_name = part1
                 part1 = "  " + part1
@@ -367,7 +376,8 @@ class Application(ttk.Window):
             #itemx = treeRight.insert("", index=zeile, text=part1, values=(part2, ""), tags=(tag,))
             #
             #print(zeile)'''
-        treeRight.column("#0", width=columnWidth, minwidth=350, stretch=ttk.NO)
+        treeRight.column("#0", width=firstColumnWidth, minwidth=firstColumnWidth, stretch=ttk.NO)
+        treeRight.column("#1", width=secondColumnWidth, minwidth=secondColumnWidth, stretch=ttk.NO)
 
     def mycallback(self, event):
  
