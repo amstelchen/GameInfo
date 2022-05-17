@@ -1,7 +1,4 @@
 
-__version__ = '1.0.9'
-__appname__ = "GameInfo"
-
 VERSION = "1.0.9"
 __appname__ = "GameInfo"
 __version__ = VERSION
