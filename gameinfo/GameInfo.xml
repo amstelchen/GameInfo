@@ -21,8 +21,9 @@
         <toolitem command="wine" version="--version" />  
         <toolitem command="winetricks" version="--version" />  
         <toolitem command="!protontricks" version="protontricks --version | sed 's/\ (/-/;s/)//'" />  
-        <toolitem command="dosbox" version="--version | head -n 2 | tail -n 1" />  
+        <toolitem command="dosbox" version="--version | grep version" />  
         <toolitem command="scummvm" version="--version | head -n 1" />  
+        <toolitem command="retroarch" version="--version | head -n 1" />  
         <toolitem command="lutris" version="--version" />  
         <toolitem command="minigalaxy" version="--version" />  
         <toolitem command="playonlinux" version="--version" />  
