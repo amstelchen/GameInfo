@@ -267,7 +267,7 @@ class Application(ttk.Window):
 
         if selection == "Epic Games":
             returnString = EpicGamesInfo()
-            splitChar = "("
+            splitChar = "="
             firstColumnWidth = 250
             secondColumnWidth = 700
 

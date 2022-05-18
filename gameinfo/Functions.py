@@ -435,16 +435,19 @@ def ScummVMInfo() -> str:
     return returnString
 
 def EpicGamesInfo() -> str:
-    returnString = "legendary " + _('version') + ":(" + cmdline("legendary --version | cut -d ' ' -f 3-") # + "\n"
+    #returnString = "legendary " + _('version') + ":(" + cmdline("legendary --version | cut -d ' ' -f 3-") # + "\n"
+    returnString = ""
     mypath = os.path.expanduser("~/.config/legendary/config.ini")
     if os.path.exists(mypath):
         #returnString += _("Games")
-        listGames = cmdline("legendary list 2>/dev/null") # | sed '/^$/d'")
+        listStatus = cmdline("legendary status 2>/dev/null")
+        returnString += listStatus.replace(':', '=')
+        listGamesAvailable = cmdline("legendary list 2>/dev/null") # | sed '/^$/d'")
         #for line in listGames:
-        returnString += listGames.replace(')', '')
-        listGames = cmdline("legendary list-installed 2>/dev/null") # | sed '/^$/d'")
+        returnString += listGamesAvailable.replace(' (', '=(')
+        listGamesInstalled = cmdline("legendary list-installed 2>/dev/null") # | sed '/^$/d'")
         #for line in listGames:
-        returnString += listGames.replace(')', '').replace('Platform: Windows | ', '')
+        returnString += listGamesInstalled.replace(' (', '=(').replace('Platform: Windows | ', '')
     else:
         returnString += "\n" + _("legendary install directory not found.")
     return returnString
