@@ -129,18 +129,23 @@ def GetDistributionLogoImage(Logo):
         return ImageTk.PhotoImage(photo)
 
 def GetDesktopLogoImage(Logo):
-    if Logo == "gnome-logo":
+    if Logo == "gnome":
         Logo = "org.gnome.Software"
-    icon_file = Gtk.IconTheme.get_default().lookup_icon(Logo, 32, 0).get_filename()
-    #print(icon_file)
-    if "svg" in icon_file:
-        image_data = cairosvg.svg2png(url=icon_file)
-        image = (Image.open(io.BytesIO(image_data)))
-        photo = image.resize((64, 64), Image.Resampling.LANCZOS) #, Image.ANTIALIAS)
-    if "png" in icon_file:
-        image = Image.open(icon_file)
-        photo = image.resize((64, 64), Image.Resampling.LANCZOS) #, Image.ANTIALIAS)
-    return ImageTk.PhotoImage(photo)
+    if Logo == "xfce" or Logo == "xfce4":
+        Logo = "xfce4-logo"
+    try:
+        icon_file = Gtk.IconTheme.get_default().lookup_icon(Logo, 32, 0).get_filename()
+        #print(icon_file)
+        if "svg" in icon_file:
+            image_data = cairosvg.svg2png(url=icon_file)
+            image = (Image.open(io.BytesIO(image_data)))
+            photo = image.resize((64, 64), Image.Resampling.LANCZOS) #, Image.ANTIALIAS)
+        if "png" in icon_file:
+            image = Image.open(icon_file)
+            photo = image.resize((64, 64), Image.Resampling.LANCZOS) #, Image.ANTIALIAS)
+        return ImageTk.PhotoImage(photo)
+    except AttributeError:
+        return None
 
 #def PrintInfo(Section: Section, Separator: char):
 #    AppDebug.debug_print(f'{Section} {Separator}')

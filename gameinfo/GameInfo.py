@@ -161,6 +161,7 @@ class Application(ttk.Window):
             returnString = ParseMachineTags(returnString)
 
         if selection == "Distro": #"Linux Distro"
+            strDesktopEnvironment = get_desktop_environment(self)
             self.temp_imgs_logos = []
             returnString = returnString.replace('\"','')
             returnString+= "$DESKTOP_SESSION=" + get_desktop_environment(self)
@@ -170,7 +171,7 @@ class Application(ttk.Window):
             self.temp_imgs_logos.append(GetDistributionLogoImage(GetDistributionLogoName()))
             panel1 = ttk.Label(self.winfo_children()[3], image = self.temp_imgs_logos[0], border=0)
             panel1.place(x = 10, y = 300, width=64, height=64)
-            self.temp_imgs_logos.append(GetDesktopLogoImage(get_desktop_environment(self) + "-logo"))
+            self.temp_imgs_logos.append(GetDesktopLogoImage(strDesktopEnvironment))
             panel2 = ttk.Label(self.winfo_children()[3], image = self.temp_imgs_logos[1], border=0)
             panel2.place(x = 100, y = 300, width=64, height=64)
             
