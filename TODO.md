@@ -10,6 +10,10 @@ echo "LOGO=slackware-logo" | sudo tee -a /etc/os-release
 wget -O slackware-logo.svg https://upload.wikimedia.org/wikipedia/commons/3/34/Slackware_logo.svg
 sudo mv slackware-logo.svg /usr/share/pixmaps
 ```
+Similar to Xubuntu:
+```
+echo LOGO=xubuntu | sudo tee -a /etc/os-release
+```
 
 :white_check_mark: Add to Troubleshooting section:
 
@@ -20,7 +24,7 @@ export PATH=$HOME/.local/bin:$PATH" >> ~/.bashrc
 
 #### Tools
 
-:white_check_mark: Use App's icons in Tools list - tedious with TK. Unfortunately, even after further attempts to get this working, it doesn't.  
+:white_check_mark: Use App's icons in Tools list - this was very tedious to implement with TK.
 
 :white_check_mark: Provide a hook whether there is an update available for each tool.
 
@@ -28,7 +32,8 @@ export PATH=$HOME/.local/bin:$PATH" >> ~/.bashrc
 - `pacman/yay`,
 - `apt/dpkg`, 
 - `yum/dnf`,
-- or even `xbps`.
+- or even `xbps`
+- and `slackpkg`.
 
 (mostly done)
 
@@ -100,9 +105,14 @@ Move these into README.md when tested:
 
 :heavy_check_mark: list games, if any
 
+#### Epic Games
+
+:heavy_check_mark: makes use of [legendary-gl](https://github.com/derrod/legendary) to list games
+:white_check_mark: and eventually launch them
+
 #### Other platforms
 
-:white_check_mark: Epic Games, Battle.net, etc - no idea.
+:white_check_mark: Battle.net, etc - no idea.
 
 #### System requirements
 
