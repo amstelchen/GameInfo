@@ -23,6 +23,8 @@ def get_desktop_environment(self):
                 return "xfce4"
             elif desktop_session.startswith("pop"):
                 return "gnome"
+            elif desktop_session.startswith("zorin"):
+                return "gnome"
             elif desktop_session.startswith("ubuntu"):
                 return "gnome" # "unity"
             elif desktop_session.startswith("lubuntu"):

@@ -90,6 +90,8 @@ def GetDistributionLogoName():
             return "debian-logo"
         if GetDistributionId() == "ubuntu":
             return "ubuntu-logo-icon"
+        if GetDistributionId() == "zorin":
+            return "zorin-os-logo-icon"
         if GetDistributionId() == "linuxmint":
             return "linuxmint-logo"
         if GetDistributionId() == "distributor-logo-Tumbleweed": # opensuse-tumbleweed
