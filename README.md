@@ -50,28 +50,33 @@ When completed, run it with:
 
 On Debian-based distributions (Mint, Ubuntu, MX, etc.), installation of the packages `tk` and `python3-tk` may be necessary.
 
-    sudo apt install python3-tk tk
+    $ sudo apt install python3-tk tk
 
 On Void Linux, installation of the packages `python3-tkinter` and `python3-gobject` is necessary instead.
 
-    sudo xbps-install python3-tkinter python3-gobject
+    $ sudo xbps-install python3-tkinter python3-gobject
+
+It often helps to keep your python installation updated:
+
+    $ python -m pip install --upgrade pip wheel setuptools
 
 #### System requirements
 
 GameInfo is tested to work on the following distributions:
 
-- Arch Linux <sup>(1.0.9)</sup>
-- Debian 10 or newer <sup>(1.0.9)</sup>
-- Ubuntu 20.04 or newer, Pop!_OS 20.04 or newer <sup>(1.0.9)</sup>
-- Manjaro 20 <sup>(1.0.9)</sup>
-- Linux Mint 20 or newer <sup>(1.0.9)</sup> (19.3 lacks support for python3.7, only has 3.6.9)
-- MX Linux 19 or newer <sup>(1.0.9)</sup> (19.1 likely needs to run `pip install --upgrade pip setuptools wheel `)
-- Fedora 32 Workstation or newer <sup>(1.0.9)</sup>
-- Void Linux <sup>(1.0.9)</sup>
-- Garuda Linux <sup>(1.0.9)</sup>
-- openSUSE Tumbleweed and Leap 15.2 or newer <sup>(1.0.8)</sup>
-- Slackware 64 14.2 and 15.0 <sup>(1.0.8)</sup>
-- EndeavourOS <sup>(1.0.9)</sup>
+- Arch Linux <sup>(1.0.10)</sup>
+- Debian 10 or newer <sup>(1.0.10)</sup>
+- Ubuntu, Kubuntu, Xubuntu 20.04 or newer, Pop!_OS 20.04 or newer <sup>(1.0.10)</sup>
+- Manjaro 20 <sup>(1.0.10)</sup>
+- Linux Mint 20 or newer <sup>(1.0.10)</sup> (19.3 lacks support for python3.7, only has 3.6.9)
+- MX Linux 19 or newer <sup>(1.0.10)</sup> (19.1 likely needs to run `pip install --upgrade pip setuptools wheel `)
+- Zorin OS 16.1 <sup>(1.0.10)</sup> (15.3 lacks support for python3.7, only has 3.6.9, plus misses a lot of libraries)
+- Fedora 32 Workstation or newer <sup>(1.0.10)</sup>
+- Void Linux <sup>(1.0.10)</sup>
+- Garuda Linux <sup>(1.0.10)</sup>
+- openSUSE Tumbleweed and Leap 15.2 or newer <sup>(1.0.10)</sup>
+- Slackware 64 14.2 and 15.0 <sup>(1.0.10)</sup>
+- EndeavourOS <sup>(1.0.10)</sup>
 
 #### Debugging
 
