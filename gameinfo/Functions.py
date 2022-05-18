@@ -404,7 +404,7 @@ def GOGInfo() -> str:
     return returnString
 
 def ScummVMInfo() -> str:
-    returnString = f'ScummVM {_("version")}:={cmdline("")}\n'
+    returnString = f'ScummVM {_("version")}:={cmdline("scummvm --version | head -n 1")}\n'
     #returnString += cmdline("scummvm --version | head -n 1; echo")
     mypath = os.path.expanduser("~/.config/scummvm/scummvm.ini")
     if os.path.exists(mypath):
