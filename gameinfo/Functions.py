@@ -40,6 +40,8 @@ def ParseMachineTags(Tags: str) -> str:
         if "dmi" in line:
             continue
         line = line.split(':')
+        if "sys_vendor" in line[0]:
+            line[0] = line[0].replace('sys', 'System')
         if "bios" in line[0]:
             line[0] = line[0].replace('bios', 'BIOS')
         else:
