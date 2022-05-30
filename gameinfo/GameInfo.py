@@ -231,6 +231,22 @@ class Application(ttk.Window):
             firstColumnWidth = 900
             secondColumnWidth = 0
 
+        if selection == "Input":
+            splitChar = "="
+            endString = ""
+            for line in returnString.split("\n"):
+                if len(line) == 0:
+                    break
+                #print(line,flush=True)
+                splitString = line.split(':', maxsplit=1)[1]
+                if "=" in splitString:
+                    endString += splitString.replace('\"', '') + "\n"
+                #if "UNIQ" in splitString:
+                    #splitString = splitString.replace("UNIQ", "\n")
+                if "MODALIAS" in splitString:
+                    endString += "=\n"
+            returnString = endString
+
         if selection == "Steam":
             returnString = SteamInfo()
             splitChar = "="

@@ -16,6 +16,7 @@
         <menuitem id="13" value="Pulse" splitChar=":" linesIgnore="" command="pactl info" />
         <menuitem id="14" value="cpupower" splitChar=":" linesIgnore="" command="cpupower frequency-info | egrep --invert-match 'range|decide|Bereich|entscheid' | sed 's/GHz\./GHz sein./'" />
         <menuitem id="15" value="Sensors" splitChar=":" linesIgnore="" command="sensors" />
+        <menuitem id="16" value="Input" splitChar=":" linesIgnore="" command="grep -s . /sys/class/input/js*/device/*" />
     </menu>
     <menu id="tools" value="Tools">
         <toolitem command="wine" version="--version" />  
