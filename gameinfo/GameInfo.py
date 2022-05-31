@@ -6,7 +6,7 @@ from .Version import __appname__, __version__, __author__, __licence__
 from .AppDebug import AppDebug, WaitMessage
 from .Functions import cmdline, PrintAbout, PopulateMenuitems, ReplaceIconname, ListTools
 from .Functions import ParseMachineTags, GetDistributionKind, GetDistributionId, GetDistributionLogoName, GetDistributionLogoImage, GetDesktopLogoImage
-from .Functions import WineInfo, SteamInfo, ProtonInfo, DOSBoxInfo, LutrisInfo, GOGInfo, ScummVMInfo, EpicGamesInfo
+from .Functions import WineInfo, PlayOnLinuxInfo, SteamInfo, ProtonInfo, DOSBoxInfo, LutrisInfo, GOGInfo, ScummVMInfo, EpicGamesInfo
 from .Desktop import get_desktop_environment, is_running
 
 AppDebug.debug_print(f'{__appname__} {__version__}')
@@ -21,25 +21,12 @@ try:
 except FileNotFoundError as e:
     debug_print(e)
     
-#menuSystem = ["Linux Kernel", "Linux Distro", "CPU", "GPU", "Vulkan", "OpenGL", "VDPAU", "VA-API"]
-
-#menuReturn = []
-
-#with open('GameInfo.json') as json_file:
-#    data = json.load(json_file)
-#    print(data)
-
 file = minidom.parse(os.path.join(os.path.dirname(__file__), "GameInfo.xml"))
 menus = file.getElementsByTagName('menu')
 for menu in menus:
     pass
-    #print(menu.firstChild.data)
-    #print(menu.attributes['value'].value)
-    #if menu.getAttribute('menuitem') == 'Levels':
-    #    llist = menu.getElementsByTagName('l')
-    #    l = llist.item(level)
 
-menuPlatforms = ["Tools", "Steam", "Proton", "Wine", "DOSBox", "Lutris", "GOG", "ScummVM", "Epic Games", "Battle.net"]
+menuPlatforms = ["Tools", "Steam", "Proton", "Wine", "PlayOnLinux", "DOSBox", "Lutris", "GOG", "ScummVM", "Epic Games", "Battle.net"]
 menuGameInfo = [_("Help"), _("About")]
 WaitMessage = _("Fetching system info, this can take a second...")
 
@@ -254,6 +241,11 @@ class Application(ttk.Window):
 
         if selection == "Wine":
             returnString = WineInfo()
+            splitChar = "="
+            firstColumnWidth = 300
+
+        if selection == "PlayOnLinux":
+            returnString = PlayOnLinuxInfo()
             splitChar = "="
             firstColumnWidth = 300
 

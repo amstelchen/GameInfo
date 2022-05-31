@@ -262,6 +262,34 @@ def WineInfo() -> str:
         #returnString += str(prefix) + ":" + print("Yes") if os.path.isdir(str(prefix)) == True else print("No") + "\n"
     return returnString
 
+def PlayOnLinuxInfo() -> str:
+    returnString = f'PlayOnLinux {_("version")}:={cmdline("playonlinux --version")}\n'
+    prefixes = ["~/.PlayOnLinux/wineprefix"]
+    for prefix in prefixes:
+        returnString += str(prefix) + ":="
+        if os.path.isdir(os.path.expanduser(str(prefix))):
+            pathToPrefix = Path(os.path.expanduser(prefix))
+            sumBytesPrefix = sum(f.stat().st_size for f in pathToPrefix.glob('**/*') if f.is_file())
+            returnString += _("Yes") + " (" + bytes2human(sumBytesPrefix,format="%(value)3.1f %(symbol)s", symbols="iec") + "B)\n"
+        else:
+            returnString += _("No") + "\n"
+    returnString += "\n"
+
+    mypath = os.path.expanduser("~/.PlayOnLinux/shortcuts")
+    if os.path.exists(mypath):
+        returnString += _("games or apps")
+        #try:
+        #onlydirs = [f for f in listdir(mypath) if isdir(join(mypath, f))]
+        #for dir in onlydirs:
+            #returnString += "=" + dir + "\n"
+        #except FileNotFoundError as err:
+        onlyfiles = [f for f in listdir(mypath) if isfile(join(mypath, f))]
+        for file in onlyfiles:
+            returnString += "=" + str(file) + "\n"
+    else:
+        returnString += "\n" + _("PlayOnLinux install directory not found.")
+    return returnString
+
 def SteamInfo() -> str:
     lineVersion = _("unknown")
     steamCtime = ""

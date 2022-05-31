@@ -28,7 +28,7 @@ from xml.dom import minidom
 import string
 
 from os import listdir
-from os.path import isfile, join
+from os.path import isfile, isdir, join
 
 import gettext
 import cairosvg
