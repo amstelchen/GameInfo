@@ -4,7 +4,7 @@ version = "1.0.11"
 description = "System info tool for gamers"
 authors = ["Michael John <michael.john@gmx.at>"]
 license = "GPL"
-include = ["images/*", "gameinfo/locales/de/LC_MESSAGES/*.mo"]
+include = ["images/*", "gameinfo/locales/**/LC_MESSAGES/*.mo"]
 
 [tool.poetry.scripts]
 GameInfo = 'gameinfo.__main__:main'

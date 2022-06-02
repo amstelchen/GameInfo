@@ -1,0 +1,136 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-05-16 00:44+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: gameinfo/AppDebug.py:8 gameinfo/GameInfo.py:44
+msgid "Fetching system info, this can take a second..."
+msgstr ""
+
+#: gameinfo/GameInfo.py:43 gameinfo/GameInfo.py:269
+msgid "Help"
+msgstr ""
+
+#: gameinfo/GameInfo.py:43 gameinfo/GameInfo.py:61 gameinfo/GameInfo.py:273
+#: gameinfo/GameInfo.py:394
+msgid "About"
+msgstr ""
+
+#: gameinfo/GameInfo.py:89
+msgid "Themes loaded"
+msgstr ""
+
+#: gameinfo/GameInfo.py:116
+msgid "Selected entry"
+msgstr ""
+
+#: gameinfo/GameInfo.py:264
+msgid "not yet implemented, sorry."
+msgstr ""
+
+#: gameinfo/GameInfo.py:266
+msgid "System"
+msgstr ""
+
+#: gameinfo/GameInfo.py:266 gameinfo/GameInfo.py:421
+msgid "Platforms"
+msgstr ""
+
+#: gameinfo/GameInfo.py:267
+msgid "Please select a sub-category."
+msgstr ""
+
+#: gameinfo/GameInfo.py:270
+msgid "Not yet implemented."
+msgstr ""
+
+#: gameinfo/GameInfo.py:391
+msgid "Refresh"
+msgstr ""
+
+#: gameinfo/GameInfo.py:397
+msgid "Quit"
+msgstr ""
+
+#: gameinfo/PrintInfo.py:30
+msgid "Machine info sysfs directory not found."
+msgstr ""
+
+#: gameinfo/PrintInfo.py:169
+msgid "Checking for"
+msgstr ""
+
+#: gameinfo/PrintInfo.py:216 gameinfo/PrintInfo.py:249
+msgid "Yes"
+msgstr ""
+
+#: gameinfo/PrintInfo.py:218 gameinfo/PrintInfo.py:251
+msgid "No"
+msgstr ""
+
+#: gameinfo/PrintInfo.py:223
+msgid "unknown"
+msgstr ""
+
+#: gameinfo/PrintInfo.py:279
+msgid "games or apps"
+msgstr ""
+
+#: gameinfo/PrintInfo.py:280
+msgid "total"
+msgstr ""
+
+#: gameinfo/PrintInfo.py:281
+msgid "used"
+msgstr ""
+
+#: gameinfo/PrintInfo.py:282
+msgid "free"
+msgstr ""
+
+#: gameinfo/PrintInfo.py:284
+msgid "not found"
+msgstr ""
+
+#: gameinfo/PrintInfo.py:320
+msgid "Steam compatibilitytools install directory not found."
+msgstr ""
+
+#: gameinfo/PrintInfo.py:328
+msgid "Config files"
+msgstr ""
+
+#: gameinfo/PrintInfo.py:333
+msgid "DOSBox install directory not found."
+msgstr ""
+
+#: gameinfo/PrintInfo.py:348 gameinfo/PrintInfo.py:362
+#: gameinfo/PrintInfo.py:377
+msgid "Games"
+msgstr ""
+
+#: gameinfo/PrintInfo.py:353
+msgid "Lutris install directory not found."
+msgstr ""
+
+#: gameinfo/PrintInfo.py:369
+msgid "Minigalaxy/GOG install directory not found."
+msgstr ""
+
+#: gameinfo/PrintInfo.py:400
+msgid "ScummVM install directory not found."
+msgstr ""
