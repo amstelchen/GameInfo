@@ -159,6 +159,14 @@ optional = false
 python-versions = "*"
 
 [[package]]
+name = "python-pacman"
+version = "0.6.0"
+description = "Simple Python interface to Arch Linux package manager (pacman)"
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "requests"
 version = "2.27.1"
 description = "Python HTTP for Humans."
@@ -262,7 +270,7 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "467b724f04c0aadad0e637a7716c8c31b025ff2a5e952c111bcc4b68d40d7e79"
+content-hash = "2465415ce2a502e817bf374c604c09b0e8c119e18cc8b601229588285caacb74"
 
 [metadata.files]
 cairocffi = [
@@ -391,6 +399,9 @@ pycparser = [
 pyrandr = []
 python-gettext = [
     {file = "python-gettext-4.0.tar.gz", hash = "sha256:626b501a51ac892fc3460cf550e60dca121f544eaa46eb69c90ce4682fc7ec02"},
+]
+python-pacman = [
+    {file = "python-pacman-0.6.0.tar.gz", hash = "sha256:1e3f6b3f004e35dea1a334b9740de93badc26f7cace89c75c8d5eba0e26e4b1f"},
 ]
 requests = [
     {file = "requests-2.27.1-py2.py3-none-any.whl", hash = "sha256:f22fa1e554c9ddfd16e6e41ac79759e17be9e492b3587efa038054674760e72d"},

@@ -23,6 +23,8 @@ pyrandr = {git = "https://github.com/cakturk/pyrandr.git"}
 #python-pacman = {git = "https://github.com/peakwinter/python-pacman.git"}
 #apt-wrapper = {git = "https://github.com/mixmastamyk/apt-wrapper.git"}
 #lionshead = {git = "https://github.com/natefoo/lionshead.git"}
+python-pacman = "^0.6.0"
+#python-apt = {path = "python-apt/python_apt-0.7.8-cp310-cp310-linux_x86_64.whl"}
 
 [tool.poetry.dev-dependencies]
 

@@ -207,9 +207,10 @@ def ListTools() -> str:
     if Distribution == "slackware": PackageManager = "slackpkg info"; CutString=" | grep Package | cut -d ':' -f 2"
 
     for toolitem in toolitems:
+        StartTimeTool = time.time()
         toolitem_command = toolitem.attributes["command"].value
         toolitem_version = toolitem.attributes["version"].value
-        AppDebug.debug_print(_("Checking for") + " " + toolitem_command)
+        AppDebug.debug_print(f'{_("Checking for")} {toolitem_command}...', end="")
         # contains no ! or ?, just the filename
         if toolitem_command.find("!") == -1 and toolitem_command.find("?") == -1:
             toolResult = cmdline(str(toolitem_command + " " + toolitem_version))
@@ -220,7 +221,7 @@ def ListTools() -> str:
         # contains a ? -> ask the package manager
         if toolitem_command.find("?") == 0:
             toolitem_command = toolitem_command.strip('?')
-            AppDebug.debug_print(f"{PackageManager} {toolitem_command}")
+            #AppDebug.debug_print(f"{PackageManager} {toolitem_command}")
             cmdlineResult = cmdline(PackageManager + " " + toolitem_version + CutString).strip(' ')
             toolResult = cmdlineResult # split(' ')[0] 
         if len(toolResult) == 0:
@@ -228,6 +229,8 @@ def ListTools() -> str:
         else:
             toolResult = toolResult.replace('-','–')
         outputALLE += toolitem_command + "|" + toolResult
+        FinishTimeTool = time.time()
+        AppDebug.debug_print(show_time=False, message=f"Time elapsed: {(FinishTimeTool - StartTimeTool) * 1000:2.2f}ms", prefix="")
 
     #AppDebug.debug_print(outputALLE)
     FinishTime = time.time()
@@ -263,7 +266,7 @@ def WineInfo() -> str:
     return returnString
 
 def PlayOnLinuxInfo() -> str:
-    returnString = f'PlayOnLinux {_("version")}:={cmdline("playonlinux --version")}\n'
+    returnString = f'PlayOnLinux {_("version")}:={cmdline("playonlinux --version || playonlinux4 --version")}\n'
     prefixes = ["~/.PlayOnLinux/wineprefix"]
     for prefix in prefixes:
         returnString += str(prefix) + ":="
@@ -399,7 +402,13 @@ def DOSBoxInfo() -> str:
         returnString += _("Config files")
         onlyfiles = [f for f in listdir(mypath) if isfile(join(mypath, f))]
         for file in onlyfiles:
-            returnString += "=" + str(file) + "\n"
+            returnString += "=" + file.ljust(20) + " "
+            with open(join(mypath, file), "r") as configfile:
+                filelines = configfile.read()
+                if "[autoexec]" in filelines:
+                    returnString += f'(has [autoexec] section: {_("Yes")})\n'
+                else:
+                    returnString += f'(has [autoexec] section: {_("No")})\n'
     else:
         returnString += "\n" + _("DOSBox install directory not found.")
     return returnString

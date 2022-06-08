@@ -25,9 +25,9 @@
         <toolitem command="dosbox" version="--version | grep version" />  
         <toolitem command="scummvm" version="--version | head -n 1" />  
         <toolitem command="retroarch" version="--version | head -n 1" />  
-        <toolitem command="lutris" version="--version" />  
+        <toolitem command="?lutris" version="lutris" />  
         <toolitem command="minigalaxy" version="--version" />  
-        <toolitem command="playonlinux" version="--version 2>/dev/null || playonlinux4 --version" />  
+        <toolitem command="playonlinux4" version="--version 2>/dev/null || playonlinux4 --version" />  
         <toolitem command="?heroic" version="heroic-games-launcher-bin" />  
         <toolitem command="!steamcmd" version="echo quit | steamcmd --version | grep version | sed 's/\-\ /-/'" />  
         <toolitem command="steam-cli" version="--version" />  
@@ -43,7 +43,7 @@
         <toolitem command="?OBS" version="obs-studio" /> 
         <toolitem command="?kdenlive" version="kdenlive" /> 
         <toolitem command="openrgb" version="--version | head -n 1" /> 
-        <toolitem command="corectrl" version="--version | sed 's/ /-/'" /> 
+        <toolitem command="?corectrl" version="corectrl" /> # --version | sed 's/ /-/'" /> 
         <toolitem command="cpupower-gui" version="--version | sed 's/ /-/'" /> 
         <toolitem command="truckersmp-cli" version="--version" /> 
         <toolitem command="?vibrantLinux" version="vibrantlinux" /> 
