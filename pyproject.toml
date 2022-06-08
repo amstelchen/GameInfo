@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "GameInfo"
-version = "1.0.11"
+version = "1.0.12"
 description = "System info tool for gamers"
 authors = ["Michael John <michael.john@gmx.at>"]
 license = "GPL"
