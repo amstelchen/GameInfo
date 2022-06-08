@@ -65,7 +65,7 @@ def GetDistributionId() -> str:
 
 def GetDistributionKind() -> str:
     DistributionId = GetDistributionId()
-    if DistributionId in ["debian", "ubuntu", "linuxmint", "mint", "pop", "kali", "raspbian"]:
+    if DistributionId in ["debian", "ubuntu", "linuxmint", "mint", "pop", "kali", "raspbian", "zorin"]:
         return "debian"
     if DistributionId in "arch manjaro garuda endeavouros arcolinux".split():
         return "arch"
