@@ -3,24 +3,8 @@
 :heavy_check_mark: Rework TKinter to use <strike>ThemedTk</strike> ttkbootstrap. :tired_face:  
 :heavy_check_mark: Switch from setuptools to poetry (done with v1.0.5).  
 :heavy_check_mark: Add <a href="https://www.flaticon.com/de/kostenlose-icons/computer" title="computer Icons">Computer Icons erstellt von Freepik - Flaticon</a>
-:white_check_mark: Give a hint for Slackware:
-
-```
-echo "LOGO=slackware-logo" | sudo tee -a /etc/os-release
-wget -O slackware-logo.svg https://upload.wikimedia.org/wikipedia/commons/3/34/Slackware_logo.svg
-sudo mv slackware-logo.svg /usr/share/pixmaps
-```
-Similar to Xubuntu:
-```
-echo LOGO=xubuntu | sudo tee -a /etc/os-release
-```
-
-:white_check_mark: Add to Troubleshooting section:
-
-```
-$ echo "# Add ~/.local/ to PATH
-export PATH=$HOME/.local/bin:$PATH" >> ~/.bashrc
-```
+:white_check_mark: Pop_OS logo is ugly; Fedora and Elementary logos are misplaced  
+:white_check_mark: Add new fixes to Troubleshooting section  
 
 #### Tools
 
@@ -38,10 +22,6 @@ export PATH=$HOME/.local/bin:$PATH" >> ~/.bashrc
 (mostly done)
 
 :white_check_mark: Provide a button to start each tool.
-
-:white_check_mark: dosbox (dosbox-staging) on openSUSE has a differntly formatted version-string.
-
-:heavy_check_mark: Up to `lutris-0.5.9`, a progressbar was shown when GameInfo was running `lutris --version`. This has been changed with `lutris-0.5.10` onwards.  
 
 #### System
 
@@ -119,10 +99,6 @@ Move these into README.md when tested:
 GameInfo is tested to work on the following distributions:
 
 (see README.md)
-
-Tests underway:
-
-- Gentoo Linux (my portage is broken currently)
 
 #### Supported tools
 
