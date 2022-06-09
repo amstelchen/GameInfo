@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <menus>
     <menu id="system" value="System">
         <menuitem id="0" value="Machine" splitChar=":" linesIgnore="0" command="cd /sys/devices/virtual/dmi/id/; for f in *; do printf $f:; cat $f 2>/dev/null || echo '***_Unavailable_***'; done" />
