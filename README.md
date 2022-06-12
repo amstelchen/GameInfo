@@ -2,31 +2,35 @@
 
 <h1>GameInfo</h1>
 
-A system info tool for gamers.
+#### What is or does GameInfo do?
+
+A system info tool, primarily for gamers. It displays a wide range of gaming-related information, like libraries and tools.
+
+#### What is it *not*?
+
+GameInfo is no a runner, not an emulator, or yet another game library. It simply displays what is installed on our system.
 
 #### Supported tools
 
-|__Emulators/Runners__|__CLI tools__|__Streaming/Video__|__Audio__|
+|__Emulators/Runners__||||
 |-|-|-|-|
-|:heavy_check_mark: Wine  |:heavy_check_mark: steamcmd  |:heavy_check_mark: discord |:heavy_check_mark: pavucontrol
-|:heavy_check_mark: DOSBox  |:heavy_check_mark: steam-cli  |:heavy_check_mark: twitch |:heavy_check_mark: pipewire
-|:heavy_check_mark: ScummVM  |:heavy_check_mark: legendary-gl |:heavy_check_mark: obs-studio |:heavy_check_mark: pulseffects
-|:heavy_check_mark: Lutris  |:heavy_check_mark: truckersmp-cli  |:heavy_check_mark: kdenlive |:heavy_check_mark: easyeffects*
-|:heavy_check_mark: Minigalaxy  |:heavy_check_mark: samrewritten  |  |
-|:heavy_check_mark: PlayOnLinux  |  |
-|:heavy_check_mark: Heroic Launcher  |  |
-|__Graphics__|__Perf tuning__|__Modding__|__Helpers__
-|:heavy_check_mark: dxvk  |:heavy_check_mark: mangohud  |:heavy_check_mark: openrgb  |:heavy_check_mark: winetricks
-|:heavy_check_mark: vkd3d  |:heavy_check_mark: corectrl  |:heavy_check_mark:  vibrantLinux |:heavy_check_mark: protontricks
-| |:heavy_check_mark: cpupower-gui | |
+|:heavy_check_mark: Wine  |:heavy_check_mark: Proton  |:heavy_check_mark: DOSBox  |:heavy_check_mark: ScummVM  |
+|:heavy_check_mark: Lutris  |:heavy_check_mark: Minigalaxy  |:heavy_check_mark: PlayOnLinux  |:heavy_check_mark: Heroic Launcher  |
+|:heavy_check_mark: GameHub |:heavy_check_mark: Rare |:heavy_check_mark: itch&#46;io App |:heavy_check_mark: SamRewritten  
+|__CLI tools__|__Streaming/Video__|__Audio / Mixers__|__Perf tuning__|
+|:heavy_check_mark: steamcmd  |:heavy_check_mark: Discord |:heavy_check_mark: pavucontrol  |:heavy_check_mark: MangoHud  |
+|:heavy_check_mark: steam-cli  |:heavy_check_mark: Twitch |:heavy_check_mark: pipewire  |:heavy_check_mark: CoreCtrl  |
+|:heavy_check_mark: legendary-gl |:heavy_check_mark: obs-studio |:heavy_check_mark: pulseffects  |:heavy_check_mark: cpupower-gui |
+|:heavy_check_mark: truckersmp-cli  |:heavy_check_mark: Kdenlive |:heavy_check_mark: easyeffects*
+|__Graphics__|__Modding__|__Helpers__
+|:heavy_check_mark: dxvk  |:heavy_check_mark: OpenRGB  |:heavy_check_mark: winetricks
+|:heavy_check_mark: vkd3d  |:heavy_check_mark:  vibrantLinux |:heavy_check_mark: protontricks
 
 <sub>(*) might replace pulseeffects</sub>
 
 Planned:
 
 - Redshift / Blueshift
-- GameHub
-
 
 #### Installation
 
@@ -82,9 +86,14 @@ Anyways, it often helps to keep your python installation updated:
 - openSUSE Tumbleweed and Leap 15.2 or newer <sup>(1.0.12)</sup>
 - Slackware 64 14.2 and 15.0 <sup>(1.0.12)</sup>
 - EndeavourOS <sup>(1.0.12)</sup>
-  
-If you encounter any bugs or incompatibilities, __please report them [here](https://github.com/amstelchen/GameInfo/issues/new)__.
 
+thus, *GameInfo*  supports various package managers, i.e.
+- `pacman/yay` (Arch),
+- `apt/dpkg` (Debian), 
+- `yum/dnf` (Fedora),
+- and even `xbps` (Void)
+- and `slackpkg` (Slackware).
+  
 Tests underway:
 
 - Gentoo Linux (my portage is broken currently)
@@ -92,7 +101,12 @@ Tests underway:
 - Haiku (just for fun, you probably won't play games on Haiku)
 - NixOS 22.05 (probably never going to work)
 
-#### Debugging
+#### Reporting bugs
+
+If you encounter any bugs or incompatibilities, __please report them [here](https://github.com/amstelchen/GameInfo/issues/new)__.
+
+
+#### Enabling logging/debugging
 
 ```
 $ GAMEINFO_DEBUG=1 GameInfo
@@ -102,7 +116,6 @@ $ GAMEINFO_DEBUG=1 GameInfo
 2022-06-09 01:42:43.677696 DEBUG: Themes loaded: cosmo flatly litera minty lumen sandstone yeti pulse united morph journal darkly superhero solar cyborg vapor simplex cerculean 
 2022-06-09 01:42:44.184135 DEBUG: Fetching system info, this can take a second...
 2022-06-09 01:42:44.185443 DEBUG: Checking for wine... Time elapsed: 4.60ms
-
 ```
 
 #### Troubleshooting
@@ -129,13 +142,17 @@ Set accordingly when using another shell.
 
 :heavy_check_mark: Up to `lutris-0.5.9`, a progressbar was shown even when *GameInfo* was running `lutris --version`: This has been changed with `lutris-0.5.10` onwards. 
 
-:heavy_check_mark: dosbox (dosbox-staging) on openSUSE has a differntly formatted version-string. This has been fixed in *GameInfo*.
+:heavy_check_mark: dosbox (dosbox-staging) on openSUSE has a differently formatted version-string. This has been fixed in *GameInfo*.
 
 #### Screenshots
 
 (always outdated)
 
 [![https://imgur.com/JgTRGmp.png](https://imgur.com/JgTRGmp.png)](https://imgur.com/JgTRGmp.png)
+
+#### Future plans / TODO
+
+(see TODO.md)
 
 #### Licences
 
