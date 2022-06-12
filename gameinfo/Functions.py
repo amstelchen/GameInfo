@@ -499,3 +499,43 @@ def EpicGamesInfo() -> str:
         returnString += "\n" + _("legendary install directory not found.")
     return returnString
 
+def ItchInfo() -> str:
+    try:
+        mypath = os.path.expanduser("~/.config/itch/")
+        with open("/usr/share/itch/package.json", "r") as json_file:
+            json_data = json.load(json_file)
+            #print(json_data['version'])
+
+        butler_path = os.path.join(mypath, "broth/butler/versions/")
+        butler_version = [d for d in listdir(butler_path) if isdir(join(butler_path, d))][0]
+        setup_path = os.path.join(mypath, "broth/itch-setup/versions/")
+        setup_version = [d for d in listdir(setup_path) if isdir(join(setup_path, d))][0]
+
+        returnString = f'itch {_("version")}:={json_data["description"]} {json_data["version"]}\n'
+        returnString += f'=butler {str(butler_version)}\n'
+        returnString += f'=itch-setup {str(setup_version)}\n\n'
+
+        conn = sqlite3.connect(os.path.join(mypath, 'db/butler.db'))
+        cursor = conn.execute("SELECT g.id, g.title FROM games g, caves c WHERE g.id = c.game_id AND g.classification='game'")
+        returnString += _("Games")
+        rownum = 0
+        for row in cursor:
+            rownum += 1
+            returnString += "=" + row[1] + "\n"
+        if rownum == 0:
+            returnString += "=" + "(none)" + "\n"
+
+        cursor = conn.execute("SELECT g.id, g.title FROM games g, caves c WHERE g.id = c.game_id AND g.classification='tool'")
+        returnString += "\n" + _("Tools")
+        #print(cursor.rowcount)
+        rownum = 0
+        for row in cursor:
+            rownum += 1
+            returnString += "=" + row[1] + "\n"
+        if rownum == 0:
+            returnString += "=" + "(none)" + "\n"
+
+        conn.close()
+    except sqlite3.OperationalError:
+        returnString += "\n" + _("Itch install directory not found.")
+    return returnString

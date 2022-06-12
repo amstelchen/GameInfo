@@ -6,7 +6,7 @@ from .Version import __appname__, __version__, __author__, __licence__
 from .AppDebug import AppDebug, WaitMessage
 from .Functions import cmdline, PrintAbout, PopulateMenuitems, ReplaceIconname, ListTools
 from .Functions import ParseMachineTags, GetDistributionKind, GetDistributionId, GetDistributionLogoName, GetDistributionLogoImage, GetDesktopLogoImage
-from .Functions import WineInfo, PlayOnLinuxInfo, SteamInfo, ProtonInfo, DOSBoxInfo, LutrisInfo, GOGInfo, ScummVMInfo, EpicGamesInfo
+from .Functions import WineInfo, PlayOnLinuxInfo, SteamInfo, ProtonInfo, DOSBoxInfo, LutrisInfo, GOGInfo, ScummVMInfo, EpicGamesInfo, ItchInfo
 from .Desktop import get_desktop_environment, is_running
 
 AppDebug.debug_print(f'{__appname__} {__version__}')
@@ -26,7 +26,7 @@ menus = file.getElementsByTagName('menu')
 for menu in menus:
     pass
 
-menuPlatforms = ["Tools", "Steam", "Proton", "Wine", "PlayOnLinux", "DOSBox", "Lutris", "GOG", "ScummVM", "Epic Games", "Battle.net"]
+menuPlatforms = ["Tools", "Steam", "Proton", "Wine", "PlayOnLinux", "DOSBox", "Lutris", "GOG", "ScummVM", "Epic Games", "itch.io"]
 menuGameInfo = [_("Help"), _("About")]
 WaitMessage = _("Fetching system info, this can take a second...")
 
@@ -279,6 +279,11 @@ class Application(ttk.Window):
             splitChar = "="
             firstColumnWidth = 250
             secondColumnWidth = 700
+
+        if selection == "itch.io":
+            returnString = ItchInfo()
+            splitChar = "="
+            firstColumnWidth = 300
 
         if selection in ("Battle.net"):
             returnString = str(selection) + " " + _("not yet implemented, sorry.")
