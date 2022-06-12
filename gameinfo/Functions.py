@@ -422,8 +422,9 @@ def LutrisInfo() -> str:
     #for file in onlyfiles:
     #    returnString += ": " + os.path.splitext(file)[0] + "\n"
     #splitChar = ": "
+    mypath = os.path.expanduser("~/.local/share/lutris/")
     try:
-        conn = sqlite3.connect('/home/mic/.local/share/lutris/pga.db')
+        conn = sqlite3.connect(os.path.join(mypath, 'pga.db'))
         cursor = conn.execute("SELECT id, name from games")
         returnString += _("Games")
         for row in cursor:
