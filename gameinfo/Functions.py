@@ -359,7 +359,7 @@ def SteamInfo() -> str:
     return returnString
 
 def ProtonInfo() -> str:
-    returnString = ""
+    returnString = "System-wide Proton install:=\n\n"
     #proton_bin = (cmdline("which proton")).replace('\n','')
     proton_bin = (cmdline("command -v proton")).replace('\n','')
     #print(proton_bin)
@@ -392,6 +392,25 @@ def ProtonInfo() -> str:
             returnString += "=" + str(file) + "\n"
     else:
         returnString += "\n" + _("Steam compatibilitytools install directory not found.")
+    libraryfoldersPath = os.path.expanduser('~/.steam/steam/config/libraryfolders.vdf')
+    try:
+        vdf_content = vdf.parse(open(libraryfoldersPath))
+        returnString += "\nSteam Proton installs:=\n\n"
+        for folder in vdf_content['libraryfolders']:
+            #workaround for Steam on Debian default installations
+            if folder == "contentstatsid":
+                continue
+            folderPath = vdf_content['libraryfolders'][folder]['path']
+            folderPathCommon = os.path.join(folderPath, 'steamapps/common/')
+            AppDebug.debug_print(folderPathCommon)
+            proton_installs = [d for d in listdir(folderPathCommon) if str(d).lower().startswith('proton')]
+            if len(proton_installs) > 0:
+                returnString += folderPath #+ ":="
+                for proton in proton_installs:
+                    returnString += "=" + proton + "\n"
+            AppDebug.debug_print(proton_installs)
+    except FileNotFoundError:
+        returnString += "\n" + libraryfoldersPath + " " + _("not found")
     return returnString
 
 def DOSBoxInfo() -> str:
