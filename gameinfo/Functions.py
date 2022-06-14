@@ -407,7 +407,12 @@ def ProtonInfo() -> str:
             if len(proton_installs) > 0:
                 returnString += folderPath #+ ":="
                 for proton in proton_installs:
-                    returnString += "=" + proton + "\n"
+                    returnString += "=" + proton.ljust(23)
+                    if os.path.exists(join(folderPathCommon, proton, "version")):
+                        with open(join(folderPathCommon, proton, "version"), "r", newline=None) as versionfile:
+                            returnString += f" {versionfile.readline()}"
+                    else:
+                        returnString += "\n"
             AppDebug.debug_print(proton_installs)
     except FileNotFoundError:
         returnString += "\n" + libraryfoldersPath + " " + _("not found")
