@@ -389,7 +389,18 @@ def ProtonInfo() -> str:
     if os.path.exists(mypath):
         onlyfiles = [f for f in listdir(mypath)]
         for file in onlyfiles:
-            returnString += "=" + str(file) + "\n"
+            returnString += "=" + str(file).ljust(23)
+            if os.path.exists(join(mypath, str(file), "compatibilitytool.vdf")):
+                #print(join(mypath, str(file), "compatibilitytool.vdf"))
+                vdf_content = vdf.parse(open(join(mypath, file, "compatibilitytool.vdf")))
+                if str(file) == "proton-ge-custom":
+                    file = "Proton-GE"
+                display_name = vdf_content['compatibilitytools']['compat_tools'][file]['display_name']
+                returnString += display_name + "\n"
+            else:
+                vdf_content = vdf.parse(open(join(mypath, file)))
+                display_name = vdf_content['compatibilitytools']['compat_tools'][Path(file).stem]['display_name']
+                returnString += display_name + "\n"
     else:
         returnString += "\n" + _("Steam compatibilitytools install directory not found.")
     libraryfoldersPath = os.path.expanduser('~/.steam/steam/config/libraryfolders.vdf')
