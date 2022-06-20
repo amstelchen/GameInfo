@@ -571,6 +571,6 @@ def ItchInfo() -> str:
             returnString += "=" + "(none)" + "\n"
 
         conn.close()
-    except sqlite3.OperationalError:
+    except (sqlite3.OperationalError, FileNotFoundError):
         returnString += "\n" + _("Itch install directory not found.")
     return returnString
