@@ -7,23 +7,33 @@ from pefile import PE
 from subprocess import PIPE, Popen, check_output
 #from DllVersionInfo import *
 import hashlib
+import requests
+import py7zr
+import libarchive.public
 
 hasDLCs = True
 hasNoDLCs = False
 
 Official, Unofficial, MainDatafile = 0, 1, 2
 
-AppList = { "38400": ("Fallout", "FALLOUTW.EXE", "FalloutLauncher.exe", hasNoDLCs), 
-            "38410": ("Fallout 2", "fallout2HR.exe", "Fallout2Launcher.exe", hasNoDLCs), 
-            "38420": ("Fallout Tactics", "BOS_HR.exe", "TacticsLauncher.exe", hasNoDLCs), 
-            "22300": ("Fallout 3", "Fallout3.exe", "FalloutLauncherSteam.exe", hasDLCs),
-            "22370": ("Fallout 3 - Game of the Year Edition", "Fallout3.exe", "FalloutLauncherSteam.exe", hasDLCs),
-            "22380": ("Fallout: New Vegas", "FalloutNV.exe", "FalloutNVLauncher.exe", hasDLCs,
-                ["Dead Money", "Honest Hearts", "Old World Blues", "Lonesome Road", "Courier's Stash", "Gun Runners' Arsenal"]),
-            "377160": ("Fallout 4", "Fallout4.exe", "TBD", hasDLCs),
-            "1151340": ("Fallout 76", "Fallout76.exe", "TBD", hasDLCs),
-            "588430": ("Fallout Shelter", "FalloutShelter.exe", "FalloutShelter.exe", hasNoDLCs)
-            }
+AppList = {
+    "38400": ("Fallout", "FALLOUTW.EXE", "FalloutLauncher.exe", hasNoDLCs), 
+    "38410": ("Fallout 2", "fallout2HR.exe", "Fallout2Launcher.exe", hasNoDLCs), 
+    "38420": ("Fallout Tactics", "BOS_HR.exe", "TacticsLauncher.exe", hasNoDLCs), 
+    "22300": ("Fallout 3", "Fallout3.exe", "FalloutLauncherSteam.exe", hasDLCs),
+    "22370": ("Fallout 3 - Game of the Year Edition", "Fallout3.exe", "FalloutLauncherSteam.exe", hasDLCs),
+    "22380": ("Fallout: New Vegas", "FalloutNV.exe", "FalloutNVLauncher.exe", hasDLCs,
+        ["Dead Money", "Honest Hearts", "Old World Blues", "Lonesome Road", "Courier's Stash", "Gun Runners' Arsenal"]),
+    "377160": ("Fallout 4", "Fallout4.exe", "TBD", hasDLCs),
+    "1151340": ("Fallout 76", "Fallout76.exe", "TBD", hasDLCs),
+    "588430": ("Fallout Shelter", "FalloutShelter.exe", "FalloutShelter.exe", hasNoDLCs)
+}
+
+ScriptExtenders = {
+    "FOSE": ["Fallout Script Extender", "1.2b2", "https://fose.silverlock.org/download/fose_v1_2_beta2.7z", "fose_loader.exe"],
+    "NVSE": ["New Vegas Script Extender", "5.1b4", "http://nvse.silverlock.org/download/nvse_5_1_beta4.7z", "nvse_loader.exe"],
+    "F4SE": ["Fallout 4 Script Extender", "0.6.23", "https://f4se.silverlock.org/beta/f4se_0_06_23.7z", "f4se_loader.exe"]
+}
 
 def du(path):
     """disk usage in human readable format (e.g. '2,1GB')"""
@@ -59,6 +69,36 @@ def FalloutDLCs(AppPath, DatafileKind=Official):
     if len(onlyfiles) == 0:
         return ["(none)"]
     return onlyfiles
+
+def FalloutSE(AppPath, ScriptExtenderKey): # -> list():
+    SE = ScriptExtenders[ScriptExtenderKey]
+    if os.path.exists(os.path.join(AppPath, SE[3])):
+        #print(ScriptExtenders[ScriptExtenderKey][1])
+        return SE
+    else:
+        returnText = ["(Not found. Will be installed shortly.)"]
+        url = SE[2]
+        returnText.append("Getting " + url + "and saving as " + SE[3] + ".")
+        request = requests.get(url)  
+        #print(AppPath)
+        print(SE)
+        with open(os.path.join(AppPath, SE[2].split('/')[4]), 'wb') as f:
+            f.write(request.content)
+        #try:
+        #    archive = py7zr.SevenZipFile(os.path.join(AppPath, SE[2].split('/')[4]), mode='r')
+        #    archive.extractall(path=AppPath)
+        #    archive.close()
+        #except py7zr.exceptions.UnsupportedCompressionMethodError:
+        #    pass
+
+        with libarchive.public.file_reader(os.path.join(AppPath, SE[2].split('/')[4])) as e:
+            for entry in e:
+                with open(os.path.join(AppPath, SE[2].split('/')[4], str(entry)), 'wb') as f:
+                    for block in entry.get_blocks():
+                        f.write(block)
+                print(str(entry))
+                returnText.append(str(entry))
+        return returnText
 
 def FalloutInfo():
 
@@ -150,6 +190,20 @@ def FalloutInfo():
                     returnString += "\nMain data file:    " + "\n                   ".join(FalloutDLCs(AppPathData, DatafileKind=MainDatafile))
                     returnString += "\nOfficial DLCs:     " + "\n                   ".join(FalloutDLCs(AppPathData, DatafileKind=Official))
                     returnString += "\nUnofficial DLCs:   " + "\n                   ".join(FalloutDLCs(AppPathData, DatafileKind=Unofficial))
+                ScriptExtenderKey = ""
+                if AppID in ["22300", "22370"]: # FO3
+                    ScriptExtenderKey = "FOSE"
+                if AppID == "22380": # FNV
+                    ScriptExtenderKey = "NVSE"
+                if AppID == "377160": # FO4
+                    ScriptExtenderKey = "F4SE"
+                if ScriptExtenderKey:
+                    SE = FalloutSE(AppPathGame, ScriptExtenderKey)
+                    if len(SE) >= 3: # is not None:
+                        #print(SE)
+                        returnString += "\nScriptExtender:    " + SE[0] + " " + SE[1] + "\n                   " + SE[2] # ".join([se for se for SE])
+                    else:
+                        returnString += "\nScriptExtender:    " + SE[0]
                 returnString += "\n\n"
     #returnString += "_________________________________________\n"
     returnString += f"{str(countApps):>2s} games or apps {bytes2human(sizeApps):>24s}"
