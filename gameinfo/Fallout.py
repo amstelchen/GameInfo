@@ -210,7 +210,7 @@ def FalloutInfo():
                         returnString += "\n  ScriptExtender:=" + SE[0]
                 returnString += "\n\n"
     #returnString += "_________________________________________\n"
-    returnString += f"{str(countApps):>1s} {_('games')}=total size {bytes2human(sizeApps):>6s}"
+    returnString += f"{str(countApps):>1s} games=total size {bytes2human(sizeApps):>6s}"
     return returnString
 
 def main():
