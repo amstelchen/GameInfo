@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "GameInfo"
-version = "1.0.12"
+version = "1.0.13"
 description = "System info tool for gamers"
 authors = ["Michael John <michael.john@gmx.at>"]
 license = "GPL"
@@ -25,6 +25,7 @@ pyrandr = {git = "https://github.com/cakturk/pyrandr.git"}
 #lionshead = {git = "https://github.com/natefoo/lionshead.git"}
 python-pacman = "^0.6.0"
 #python-apt = {path = "python-apt/python_apt-0.7.8-cp310-cp310-linux_x86_64.whl"}
+libarchive = "^0.4.7"
 
 [tool.poetry.dev-dependencies]
 
