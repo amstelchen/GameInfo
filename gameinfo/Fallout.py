@@ -1,7 +1,7 @@
 import os, vdf
 from os import listdir
 from os.path import isfile, join
-from BitsBytes import bytes2human
+from .BitsBytes import bytes2human
 #import pefile
 from pefile import PE
 from subprocess import PIPE, Popen, check_output
@@ -178,18 +178,22 @@ def FalloutInfo():
                         AppVersion += " ✓"
                     else:
                         AppVersion += " !"
-                returnString += f"{AppList[AppID][0]:<18s} AppID {AppID:>7s}, {' ':9s}total size {sizeApp:>5s}," \
-                                f"\n{' ':19s}{(StrVersion + ' ' + AppVersion):<23s} found in {AppList[AppID][1]} " \
-                                f"\n{' ':19s}md5:  {md5(AppPathExe)}" \
-                                f"\n{' ':19s}sha1: {sha1(AppPathExe)}"  # {AppPathExe}")
+                #returnString += f"{AppList[AppID][0]:<18s} AppID {AppID:>7s}, {' ':9s}total size {sizeApp:>5s}," \
+                #                f"\n{' ':19s}{(StrVersion + ' ' + AppVersion):<23s} found in {AppList[AppID][1]} " \
+                #                f"\n{' ':19s}md5:  {md5(AppPathExe)}" \
+                #                f"\n{' ':19s}sha1: {sha1(AppPathExe)}"
+                returnString += f"{AppList[AppID][0]}=AppID {AppID:>7s}, {' ':9s}total size {sizeApp:>5s}," \
+                                f"\n={(StrVersion + ' ' + AppVersion):<23s} found in {AppList[AppID][1]} " \
+                                f"\n=md5:  {md5(AppPathExe)}" \
+                                f"\n=sha1: {sha1(AppPathExe)}"
                 countApps += 1
                 sizeApps += int(dictApps[AppID])
                 # was filtered by AppID.startswith("22") or AppID == "377160" or AppID == "1151340" and  
                 if AppList[AppID][3] == hasDLCs and len(AppPathData) > 0:
                     #print(AppPathData, len(AppPathData))
-                    returnString += "\nMain data file:    " + "\n                   ".join(FalloutDLCs(AppPathData, DatafileKind=MainDatafile))
-                    returnString += "\nOfficial DLCs:     " + "\n                   ".join(FalloutDLCs(AppPathData, DatafileKind=Official))
-                    returnString += "\nUnofficial DLCs:   " + "\n                   ".join(FalloutDLCs(AppPathData, DatafileKind=Unofficial))
+                    returnString += "\n  Main data file:=" + "\n=".join(FalloutDLCs(AppPathData, DatafileKind=MainDatafile))
+                    returnString += "\n  Official DLCs:=" + "\n=".join(FalloutDLCs(AppPathData, DatafileKind=Official))
+                    returnString += "\n  Unofficial DLCs:=" + "\n=".join(FalloutDLCs(AppPathData, DatafileKind=Unofficial))
                 ScriptExtenderKey = ""
                 if AppID in ["22300", "22370"]: # FO3
                     ScriptExtenderKey = "FOSE"
@@ -201,12 +205,12 @@ def FalloutInfo():
                     SE = FalloutSE(AppPathGame, ScriptExtenderKey)
                     if len(SE) >= 3: # is not None:
                         #print(SE)
-                        returnString += "\nScriptExtender:    " + SE[0] + " " + SE[1] + "\n                   " + SE[2] # ".join([se for se for SE])
+                        returnString += "\n  ScriptExtender:=" + SE[0] + " " + SE[1] + "\n=" + SE[2] # ".join([se for se for SE])
                     else:
-                        returnString += "\nScriptExtender:    " + SE[0]
+                        returnString += "\n  ScriptExtender:=" + SE[0]
                 returnString += "\n\n"
     #returnString += "_________________________________________\n"
-    returnString += f"{str(countApps):>2s} games or apps {bytes2human(sizeApps):>24s}"
+    returnString += f"{str(countApps):>1s} {_('games')}=total size {bytes2human(sizeApps):>6s}"
     return returnString
 
 def main():

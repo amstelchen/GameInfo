@@ -8,6 +8,7 @@ from .Functions import cmdline, PrintAbout, PopulateMenuitems, ReplaceIconname, 
 from .Functions import ParseMachineTags, GetDistributionKind, GetDistributionId, GetDistributionLogoName, GetDistributionLogoImage, GetDesktopLogoImage
 from .Functions import WineInfo, PlayOnLinuxInfo, SteamInfo, ProtonInfo, DOSBoxInfo, LutrisInfo, GOGInfo, ScummVMInfo, EpicGamesInfo, ItchInfo
 from .Desktop import get_desktop_environment, is_running
+from .Fallout import FalloutInfo
 
 AppDebug.debug_print(f'{__appname__} {__version__}')
 AppDebug.debug_print(f"DistributionKind: {GetDistributionKind()}")
@@ -27,6 +28,7 @@ for menu in menus:
     pass
 
 menuPlatforms = ["Tools", "Steam", "Proton", "Wine", "PlayOnLinux", "DOSBox", "Lutris", "GOG", "ScummVM", "Epic Games", "itch.io"]
+menuPlugins = [_("Fallout")]
 menuGameInfo = [_("Help"), _("About")]
 WaitMessage = _("Fetching system info, this can take a second...")
 
@@ -288,8 +290,13 @@ class Application(ttk.Window):
         if selection in ("Battle.net"):
             returnString = str(selection) + " " + _("not yet implemented, sorry.")
 
-        if selection in (_("System"), _("Platforms"), "GameInfo"):
+        if selection in (_("System"), _("Platforms"), _("Plugins"), "GameInfo"):
             returnString = _("Please select a sub-category.") + ":"
+
+        if selection == _("Fallout"):
+            returnString = FalloutInfo()
+            splitChar = "="
+            firstColumnWidth = 300
 
         if selection == _("Help"):
             returnString = _("Not yet implemented.")
@@ -452,9 +459,14 @@ class Application(ttk.Window):
 
         m1.add(treeLeft)
 
-        folder2=treeLeft.insert("", cnt, 200, text="GameInfo", open=True) #, values=("23-Jun-17 11:05","File folder",""))
-        for entry in menuGameInfo:
+        folderPlugins=treeLeft.insert("", cnt, 200, text="Plugins", open=True) #, values=("23-Jun-17 11:05","File folder",""))
+        for entry in menuPlugins:
             treeLeft.insert(200, cnt + 1, text=entry) #, values=("23-Jun-17 11:25","TXT file","1 KB"))
+            cnt += 1
+
+        folder2=treeLeft.insert("", cnt, 300, text="GameInfo", open=True) #, values=("23-Jun-17 11:05","File folder",""))
+        for entry in menuGameInfo:
+            treeLeft.insert(300, cnt + 1, text=entry) #, values=("23-Jun-17 11:25","TXT file","1 KB"))
             cnt += 1
 
         m2 = ttk.PanedWindow(m1, orient=ttk.VERTICAL, width=1000,height=self.winfo_height())
