@@ -253,6 +253,7 @@ def DisplayInfoUnused() -> str:
 
 def WineInfo() -> str:
     returnString = f'Wine {_("version")}:={cmdline("wine --version")}\n'
+
     prefixes = ["~/.wine", "~/.wine32", "~/.config/wine/prefixes", "~/.local/share/wineprefixes"]
     for prefix in prefixes:
         returnString += str(prefix) + ":="
@@ -262,7 +263,19 @@ def WineInfo() -> str:
             returnString += _("Yes") + " (" + bytes2human(sumBytesPrefix,format="%(value)3.1f %(symbol)s", symbols="iec") + "B)\n"
         else:
             returnString += _("No") + "\n"
-        #returnString += str(prefix) + ":" + print("Yes") if os.path.isdir(str(prefix)) == True else print("No") + "\n"
+
+    returnString += "\n"
+
+    caches = ["~/.cache/wine", "~/.cache/winetricks"]
+    for cache in caches:
+        returnString += str(cache) + ":="
+        if os.path.isdir(os.path.expanduser(str(cache))):
+            pathToCache = Path(os.path.expanduser(cache))
+            sumBytesCache = sum(f.stat().st_size for f in pathToCache.glob('**/*') if f.is_file())
+            returnString += _("Yes") + " (" + bytes2human(sumBytesCache,format="%(value)3.1f %(symbol)s", symbols="iec") + "B)\n"
+        else:
+            returnString += _("No") + "\n"
+
     return returnString
 
 def PlayOnLinuxInfo() -> str:
