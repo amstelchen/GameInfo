@@ -9,6 +9,7 @@ from .Functions import ParseMachineTags, GetDistributionKind, GetDistributionId,
 from .Functions import WineInfo, PlayOnLinuxInfo, SteamInfo, ProtonInfo, DOSBoxInfo, LutrisInfo, GOGInfo, ScummVMInfo, EpicGamesInfo, ItchInfo
 from .Desktop import get_desktop_environment, is_running
 from .Fallout import FalloutInfo
+from .Doom import DoomInfo
 
 AppDebug.debug_print(f'{__appname__} {__version__}')
 AppDebug.debug_print(f"DistributionKind: {GetDistributionKind()}")
@@ -28,7 +29,7 @@ for menu in menus:
     pass
 
 menuPlatforms = ["Tools", "Steam", "Proton", "Wine", "PlayOnLinux", "DOSBox", "Lutris", "GOG", "ScummVM", "Epic Games", "itch.io"]
-menuPlugins = [_("Fallout")]
+menuPlugins = ["Fallout", "Doom"]
 menuGameInfo = [_("Help"), _("About")]
 WaitMessage = _("Fetching system info, this can take a second...")
 
@@ -297,6 +298,11 @@ class Application(ttk.Window):
             returnString = FalloutInfo()
             splitChar = "="
             firstColumnWidth = 300
+
+        if selection == _("Doom"):
+            returnString = DoomInfo()
+            splitChar = "="
+            firstColumnWidth = 500
 
         if selection == _("Help"):
             returnString = _("Not yet implemented.")

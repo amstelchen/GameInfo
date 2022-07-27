@@ -1,10 +1,12 @@
 import os, vdf
 from os import listdir
 from os.path import isfile, join
-from time import perf_counter
+from time import perf_counter, perf_counter_ns
 
 from pathlib import Path
 import hashlib
+
+from .AppDebug import AppDebug
 
 def md5(fname):
     hash_md5 = hashlib.md5()
@@ -13,6 +15,14 @@ def md5(fname):
             hash_md5.update(chunk)
     return hash_md5.hexdigest()
 
+def wad(fname) -> str:
+    with open(fname, "rb") as f:
+        magic = f.read(4)
+        if magic == b"PK\x03\x04":
+            return "PK34"
+        if magic in [b"PWAD", b"IWAD"]:
+            return magic.decode()
+    return "None"
 
 AppList = {
     "2280": ("Ultimate Doom", "Doom.exe"),
@@ -66,19 +76,19 @@ DoomFiles = {
     "063dccb838f5de359c27d2e294cf4181": [ "Extermintion Day"],
     "fe27485f01019edc29619f826f1c2ea5": [ "Brutal Doom: Hell on Earth Starter Pack"],
     "19bca4ee9a03b7578cbb9f4062631e52": [ "No End in Sight (NEiS)", "", "", "November 20th, 2016"],
-    "4146b6c8743fa4ddcdab678c0ab09986": ["Doom 3", "game00.pk4"],
-    "660964d29a4351b388b3b7492e2d069a": ["Doom 3", "game01.pk4"],
-    "e8ccd6db6e200fac417f19f6cea677f3": ["Doom 3", "game02.pk4"],
-    "cf84eae12beecb61f913acbb800b2d8e": ["Doom 3", "game03.pk4"],
-    "71b8d37b2444d3d86a36fd61783844fe": ["Doom 3", "pak000.pk4", 353159257],
-    "4bc4f3ba04ec2b4f4837be40e840a3c1": ["Doom 3", "pak001.pk4", 229649726],
-    "fa84069e9642ad9aa4b49624150cc345": ["Doom 3", "pak002.pk4", 416937674],
-    "f22d8464997924e4913e467e7d62d5fe": ["Doom 3", "pak003.pk4", 317590154],
-    "38561a3c73f93f2e6fd31abf1d4e9102": ["Doom 3", "pak004.pk4", 237752384],
-    "2afd4ece27d36393b7538d55a345b90d": ["Doom 3", "pak005.pk4"],
-    "a6e7003fa9dcc75073dc02b56399b370": ["Doom 3", "pak006.pk4"],
-    "6319f086f930ec1618ab09b4c20c268c": ["Doom 3", "pak007.pk4"],
-    "28750b7841de9453eb335bad6841a2a5": ["Doom 3", "pak008.pk4"],
+    "4146b6c8743fa4ddcdab678c0ab09986": ["Doom 3", "game00.pk4: gamex86.dll, binary.conf"],
+    "660964d29a4351b388b3b7492e2d069a": ["Doom 3", "game01.pk4: gamex86.so, binary.conf"],
+    "e8ccd6db6e200fac417f19f6cea677f3": ["Doom 3", "game02.pk4: game.dylib, binary.conf"],
+    "cf84eae12beecb61f913acbb800b2d8e": ["Doom 3", "game03.pk4: gamex86.dll, binary.conf"],
+    "71b8d37b2444d3d86a36fd61783844fe": ["Doom 3", "pak000.pk4: miscellaneous files", 353159257],
+    "4bc4f3ba04ec2b4f4837be40e840a3c1": ["Doom 3", "pak001.pk4: dds textures",        229649726],
+    "fa84069e9642ad9aa4b49624150cc345": ["Doom 3", "pak002.pk4: models",              416937674],
+    "f22d8464997924e4913e467e7d62d5fe": ["Doom 3", "pak003.pk4: sound",               317590154],
+    "38561a3c73f93f2e6fd31abf1d4e9102": ["Doom 3", "pak004.pk4: textures",            237752384],
+    "2afd4ece27d36393b7538d55a345b90d": ["Doom 3", "pak005.pk4: miscellaneous files"],
+    "a6e7003fa9dcc75073dc02b56399b370": ["Doom 3", "pak006.pk4: miscellaneous files"],
+    "6319f086f930ec1618ab09b4c20c268c": ["Doom 3", "pak007.pk4: textures, strings, materials, guis, efx"],
+    "28750b7841de9453eb335bad6841a2a5": ["Doom 3", "pak008.pk4: script"],
     "5983f399d825882e4add6008e18f3e69": ["Doom 3: Resurrection of Evil", "game01.pk4"],
     "b37c3ef9f88b2fa692bf8438d0897c98": ["Doom 3: Resurrection of Evil", "game02.pk4"],
     "4f3088e5d279b2bf8583d55e01588a79": ["Doom 3: Resurrection of Evil", "game03.pk4"],
@@ -88,62 +98,68 @@ DoomFiles = {
 allwads = []
 
 def DoomWads(foldersPath):
+    returnString = ""
     allwads = [f for f in foldersPath.glob('**/*.[Wwpp][Aakk][Dd34]') if f.is_file()] #and str(f).lower() in ['wad', 'pk3', 'pk4']]
 
     for file in allwads:    
+        magic = wad(file)
         if file.stat().st_size < 1024*1024*196:
-            timestamp_start = perf_counter()
+            timestamp_start = perf_counter_ns()
             md5sum = md5(file)
-            timestamp_stop = perf_counter()
-            print(f"{md5sum} {file.stat().st_size:>9d} {file.stem + '' + file.suffix:22s} {(timestamp_stop - timestamp_start):1.3f} ", end="")
+            timestamp_stop = perf_counter_ns()
+            #print(f"{magic} {md5sum} {file.stat().st_size:>9d} {file.stem + '' + file.suffix:22s} {(timestamp_stop - timestamp_start):1.3f} ", end="")
+            returnString += f"{magic} {md5sum} {file.stat().st_size:>9d} {file.stem + '' + file.suffix:22s} " # {(timestamp_stop - timestamp_start):1.3f} "
+            AppDebug.debug_print(f'{file}: {(timestamp_stop - timestamp_start) / 1e6:1.3f}ms')
             for checksum, vals in DoomFiles.items():
                 if checksum == md5sum:
-                    print(f"{' '.join(vals)}", end="")
+                    #print(f"{' '.join(vals)}", end="")
+                    returnString += f"={' '.join(vals)}"
         else:
             for checksum, vals in DoomFiles.items():
                 try:
                     if vals[2] == file.stat().st_size:
-                        print(f"{'(skipped, matching by filesize)':32s} {file.stat().st_size:>9d} {file.stem + '' + file.suffix:22s} {'':6s}", end="")
-                        print(f"{vals[0]} {vals[1]}", end="")
+                        #print(f"{'{magic} (skipped, matching by filesize)':32s} {file.stat().st_size:>9d} {file.stem + '' + file.suffix:22s} {'':6s}", end="")
+                        returnString += f"{magic} {'(skipping, matching by filesize)':32s} {file.stat().st_size:>9d} {file.stem + '' + file.suffix:22s} {'':6s}"
+                        #print(f"{vals[0]} {vals[1]}", end="")
+                        returnString += f"={vals[0]} {vals[1]}"
                 except IndexError:
                     pass
-        print("")
+        #print("")
+        returnString += "\n"
+    return returnString
 
+def DoomInfo():
+    foldersPath = Path(os.path.expanduser('~/Spiele'))
+    #print(foldersPath)
+    #DoomWads(foldersPath)
 
-foldersPath = Path(os.path.expanduser('~/Spiele'))
-print(foldersPath)
-DoomWads(foldersPath)
+    foldersPath = Path(os.path.expanduser('~/Downloads'))
+    #print(foldersPath)
+    #DoomWads(foldersPath)
 
-foldersPath = Path(os.path.expanduser('~/Downloads'))
-print(foldersPath)
-DoomWads(foldersPath)
+    foldersPath = Path(os.path.expanduser('~/.config/gzdoom'))
+    #print(foldersPath)
+    #DoomWads(foldersPath)
 
-foldersPath = Path(os.path.expanduser('~/.config/gzdoom'))
-print(foldersPath)
-DoomWads(foldersPath)
-
-libraryfoldersPath = os.path.expanduser('~/.steam/steam/config/libraryfolders.vdf')
-    #try:
-d = vdf.parse(open(libraryfoldersPath))
-    #returnString += "\nSteam library folders:=\n"
-countApps = int(0)
-sizeApps = 0
-for folder in d['libraryfolders']:
-    if folder == "contentstatsid":
-        continue
-    totalSize = int(d['libraryfolders'][folder]['totalsize'])
-    folderPath = d['libraryfolders'][folder]['path']
-    #print(type(d['libraryfolders'][folder]['apps']))
-    #print(folderPath) #, end="")
-    #d['libraryfolders'][folder]['apps'][377160] = "Fallout 4"
-    dictApps = d['libraryfolders'][folder]['apps']
-    #dictApps[377160] = "Fallout 4"
-    for AppID in dictApps:
-        #if AppID in ["9050"]:
-        if AppID in AppList:
-            AppPath = os.path.join(folderPath, "steamapps/common")
-            AppPathGame = os.path.join(AppPath, AppList[AppID][0])
-            #AppPathData = ""
-            print(AppPathGame)
-            foldersPath = Path(AppPathGame)
-            DoomWads(foldersPath)
+    returnString = "" 
+    libraryfoldersPath = os.path.expanduser('~/.steam/steam/config/libraryfolders.vdf')
+        #try:
+    d = vdf.parse(open(libraryfoldersPath))
+        #returnString += "\nSteam library folders:=\n"
+    countApps = int(0)
+    sizeApps = 0
+    for folder in d['libraryfolders']:
+        if folder == "contentstatsid":
+            continue
+        totalSize = int(d['libraryfolders'][folder]['totalsize'])
+        folderPath = d['libraryfolders'][folder]['path']
+        dictApps = d['libraryfolders'][folder]['apps']
+        for AppID in dictApps:
+            if AppID in AppList:
+                AppPath = os.path.join(folderPath, "steamapps/common")
+                AppPathGame = os.path.join(AppPath, AppList[AppID][0])
+                AppDebug.debug_print(AppPathGame)
+                returnString += AppPathGame + "\n"
+                foldersPath = Path(AppPathGame)
+                returnString += DoomWads(foldersPath)
+    return returnString
