@@ -11,6 +11,7 @@ from .Desktop import get_desktop_environment, is_running
 from .Fallout import FalloutInfo
 from .Doom import DoomInfo
 from .Dune import DuneInfo
+from .SteamLogs import SteamLogs
 
 AppDebug.debug_print(f'{__appname__} {__version__}')
 AppDebug.debug_print(f"DistributionKind: {GetDistributionKind()}")
@@ -30,7 +31,7 @@ for menu in menus:
     pass
 
 menuPlatforms = ["Tools", "Steam", "Proton", "Wine", "PlayOnLinux", "DOSBox", "Lutris", "GOG", "ScummVM", "Epic Games", "itch.io"]
-menuPlugins = ["Fallout", "Doom", "Dune"]
+menuPlugins = ["Fallout", "Doom", "Dune", "SteamLogs"]
 menuGameInfo = [_("Help"), _("About")]
 WaitMessage = _("Fetching system info, this can take a second...")
 
@@ -307,6 +308,11 @@ class Application(ttk.Window):
 
         if selection == _("Dune"):
             returnString = DuneInfo()
+            splitChar = "="
+            firstColumnWidth = 500
+
+        if selection == _("SteamLogs"):
+            returnString = SteamLogs()
             splitChar = "="
             firstColumnWidth = 500
 
