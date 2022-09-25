@@ -542,7 +542,7 @@ def EpicGamesInfo() -> str:
         returnString += listGamesAvailable.replace(' (', '=(')
         listGamesInstalled = cmdline("legendary list-installed 2>/dev/null") # | sed '/^$/d'")
         #for line in listGames:
-        returnString += listGamesInstalled.replace(' (', '=(').replace('Platform: Windows | ', '')
+        returnString += listGamesInstalled.replace(' (', '=(').replace('Platform: Windows | ', '').replace('->', '=->')
     else:
         returnString += "\n" + _("legendary install directory not found.")
     return returnString
