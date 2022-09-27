@@ -5,6 +5,8 @@ from datetime import datetime, timezone
 
 from .AppDebug import AppDebug
 
+import gettext
+
 gettext = gettext.translation('gameinfo', localedir=os.path.join(os.path.dirname(__file__), 'locales'))
 gettext.install("gameinfo")
 _ = gettext.gettext
