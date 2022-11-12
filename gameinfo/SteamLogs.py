@@ -5,6 +5,12 @@ from datetime import datetime, timezone
 
 from .AppDebug import AppDebug
 
+import gettext
+
+gettext = gettext.translation('gameinfo', localedir=os.path.join(os.path.dirname(__file__), 'locales'))
+gettext.install("gameinfo")
+_ = gettext.gettext
+
 def SteamLogs() -> str:
     prefixes = ["~/.local/share/Steam", "~/.steam/steam/", "~/.steampath", "~/.steam/bin32/"]
     returnString = "Steam install folders:=\n\n"
