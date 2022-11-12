@@ -169,12 +169,12 @@ def FalloutInfo():
                     if AppVersion == "1.4.0.525":
                         AppVersion += " ✓"
                 if AppID == "377160":
-                    if AppVersion == "1.7.15":
+                    if AppVersion == "1.10.163.0": # latest patch, not listed in https://fallout.fandom.com/wiki/Fallout_4_patches
                         AppVersion += " ✓"
                     else:
                         AppVersion += " !"
                 if AppID == "1151340":
-                    if AppVersion == "1.6.4.60":
+                    if AppVersion == "1.7.1.19": # patch data taken from https://fallout.fandom.com/wiki/Fallout_76_patches
                         AppVersion += " ✓"
                     else:
                         AppVersion += " !"
