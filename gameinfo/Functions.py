@@ -462,6 +462,9 @@ def DOSBoxInfo() -> str:
     return returnString
 
 def LutrisInfo() -> str:
+    sql_others = "SELECT id, runner, name FROM games WHERE runner IS NOT 'steam' AND runner IS NOT '' GROUP BY name ORDER BY runner ASC;"
+    sql_steam  = "SELECT id, runner, name FROM games WHERE runner IS 'steam' ORDER BY name;"
+
     returnString = f'Lutris {_("version")}:={cmdline("lutris --version | sed s/lutris-//;")}\n'
     #returnString += "Lutris " + cmdline("lutris --version | sed 's/lutris-//'; echo")
     #mypath = os.path.expanduser("~/.config/lutris/games/")
@@ -473,10 +476,14 @@ def LutrisInfo() -> str:
     mypath = os.path.expanduser("~/.local/share/lutris/")
     try:
         conn = sqlite3.connect(os.path.join(mypath, 'pga.db'))
-        cursor = conn.execute("SELECT id, name from games")
-        returnString += _("Games")
+        cursor = conn.execute(sql_others)
+        returnString += _("Games (others)")
         for row in cursor:
-            returnString += "=" + row[1] + "\n"
+            returnString += f"={(row[2]):<40}\t\t{ row[1] }\n"
+        cursor = conn.execute(sql_steam)
+        returnString += "\n" + _("Games (Steam)")
+        for row in cursor:
+            returnString += f"={(row[2]):<40}\n"
         conn.close()
     except sqlite3.OperationalError:
         returnString += "\n" + _("Lutris install directory not found.")
