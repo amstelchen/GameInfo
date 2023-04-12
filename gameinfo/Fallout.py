@@ -26,13 +26,17 @@ AppList = {
         ["Dead Money", "Honest Hearts", "Old World Blues", "Lonesome Road", "Courier's Stash", "Gun Runners' Arsenal"]),
     "377160": ("Fallout 4", "Fallout4.exe", "TBD", hasDLCs),
     "1151340": ("Fallout 76", "Fallout76.exe", "TBD", hasDLCs),
-    "588430": ("Fallout Shelter", "FalloutShelter.exe", "FalloutShelter.exe", hasNoDLCs)
+    "588430": ("Fallout Shelter", "FalloutShelter.exe", "FalloutShelter.exe", hasNoDLCs),
+    "489830": ("Skyrim Special Edition", "SkyrimSE.exe", "SkyrimSELauncher.exe", hasDLCs),  # includes Anniversary Edition
+    "22330": ("The Elder Scrolls IV - Oblivion", "Oblivion.exe", "OblivionLauncher.exe", hasDLCs)
 }
 
 ScriptExtenders = {
     "FOSE": ["Fallout Script Extender", "1.2b2", "https://fose.silverlock.org/download/fose_v1_2_beta2.7z", "fose_loader.exe"],
     "NVSE": ["New Vegas Script Extender", "5.1b4", "http://nvse.silverlock.org/download/nvse_5_1_beta4.7z", "nvse_loader.exe"],
-    "F4SE": ["Fallout 4 Script Extender", "0.6.23", "https://f4se.silverlock.org/beta/f4se_0_06_23.7z", "f4se_loader.exe"]
+    "F4SE": ["Fallout 4 Script Extender", "0.6.23", "https://f4se.silverlock.org/beta/f4se_0_06_23.7z", "f4se_loader.exe"],
+    "SKSE": ["Skyrim Script Extender", "2.2.3", "https://skse.silverlock.org/beta/skse64_2_02_03.7z", "skse64_loader.exe"],
+    "OBSE": ["Oblivion Script Extender", "0.2.1", "http://obse.silverlock.org/download/obse_0021.zip", "obse_loader.exe"]
 }
 
 def du(path):
@@ -61,11 +65,14 @@ def cmdline(command):
 def FalloutDLCs(AppPath, DatafileKind=Official):
 
     if DatafileKind == 0:
-        onlyfiles = [f for f in listdir(AppPath) if isfile(join(AppPath, f)) and "esm" in f and " " not in f and "Fallout" not in f and "SeventySix" not in f]
+        onlyfiles = [f for f in listdir(AppPath) if isfile(join(AppPath, f)) and 
+            "esm" in f and " " not in f and "Fallout" not in f and "SeventySix" not in f and "Skyrim" not in f and "Oblivion" not in f]
     if DatafileKind == 1:
-        onlyfiles = [f for f in listdir(AppPath) if isfile(join(AppPath, f)) and ("esm" in f and " " in f or "Patch" in f) or "esp" in f]
+        onlyfiles = [f for f in listdir(AppPath) if isfile(join(AppPath, f)) and 
+            ("esm" in f and " " in f or "Patch" in f) or "esp" in f]
     if DatafileKind == 2:
-        onlyfiles = [f for f in listdir(AppPath) if isfile(join(AppPath, f)) and "esm" in f and ("Fallout" in f or "SeventySix" in f) and "Patch" not in f]
+        onlyfiles = [f for f in listdir(AppPath) if isfile(join(AppPath, f)) 
+            and "esm" in f and ("Fallout" in f or "SeventySix" in f or "Skyrim" in f or "Oblivion" in f) and "Patch" not in f]
     if len(onlyfiles) == 0:
         return ["(none)"]
     return onlyfiles
@@ -103,7 +110,7 @@ def FalloutSE(AppPath, ScriptExtenderKey): # -> list():
 def FalloutInfo():
 
     returnString = "" # f'Fallout {"version"}:={steamCtime} - {lineVersion}\n'
-    libraryfoldersPath = os.path.expanduser('~/.steam/steam/config/libraryfolders.vdf')
+    libraryfoldersPath = os.path.expanduser('~/.steam/steam/config/libraryfolders.vdf')  # -test
     #try:
     d = vdf.parse(open(libraryfoldersPath))
     #returnString += "\nSteam library folders:=\n"
@@ -178,6 +185,12 @@ def FalloutInfo():
                         AppVersion += " ✓"
                     else:
                         AppVersion += " !"
+                if AppID == "489830":
+                    if AppVersion == "1.6.640.0":
+                        AppVersion += " ✓"
+                if AppID == "22330":
+                    if AppVersion == "1.2.0.416":
+                        AppVersion += " ✓"
                 #returnString += f"{AppList[AppID][0]:<18s} AppID {AppID:>7s}, {' ':9s}total size {sizeApp:>5s}," \
                 #                f"\n{' ':19s}{(StrVersion + ' ' + AppVersion):<23s} found in {AppList[AppID][1]} " \
                 #                f"\n{' ':19s}md5:  {md5(AppPathExe)}" \
@@ -201,6 +214,8 @@ def FalloutInfo():
                     ScriptExtenderKey = "NVSE"
                 if AppID == "377160": # FO4
                     ScriptExtenderKey = "F4SE"
+                if AppID == "489830": # SKYRIM
+                    ScriptExtenderKey = "SKSE"
                 if ScriptExtenderKey:
                     SE = FalloutSE(AppPathGame, ScriptExtenderKey)
                     if len(SE) >= 3: # is not None:
