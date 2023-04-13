@@ -9,7 +9,7 @@ from subprocess import PIPE, Popen, check_output
 import hashlib
 import requests
 import py7zr
-import libarchive.public
+#import libarchive.public
 
 hasDLCs = True
 hasNoDLCs = False
@@ -86,6 +86,7 @@ def FalloutSE(AppPath, ScriptExtenderKey): # -> list():
         returnText = ["(Not found. Will be installed shortly.)"]
         url = SE[2]
         returnText.append("Getting " + url + "and saving as " + SE[3] + ".")
+        returnText.append("\nPlease unpack the archive into the game folder.")
         request = requests.get(url)  
         #print(AppPath)
         print(SE)
@@ -98,13 +99,14 @@ def FalloutSE(AppPath, ScriptExtenderKey): # -> list():
         #except py7zr.exceptions.UnsupportedCompressionMethodError:
         #    pass
 
-        with libarchive.public.file_reader(os.path.join(AppPath, SE[2].split('/')[4])) as e:
-            for entry in e:
-                with open(os.path.join(AppPath, SE[2].split('/')[4], str(entry)), 'wb') as f:
-                    for block in entry.get_blocks():
-                        f.write(block)
-                print(str(entry))
-                returnText.append(str(entry))
+        #with libarchive.public.file_reader(os.path.join(AppPath, SE[2].split('/')[4])) as e:
+        #    for entry in e:
+        #        with open(os.path.join(AppPath, SE[2].split('/')[4], str(entry)), 'wb') as f:
+        #            for block in entry.get_blocks():
+        #                f.write(block)
+        #        print(str(entry))
+        #        returnText.append(str(entry))
+
         return returnText
 
 def FalloutInfo():
