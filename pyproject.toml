@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "GameInfo"
-version = "1.0.14-2"
+version = "1.0.15"
 description = "System info tool for gamers"
 authors = ["Michael John <michael.john@gmx.at>"]
 license = "GPL"
@@ -10,7 +10,7 @@ include = ["images/*", "gameinfo/locales/**/LC_MESSAGES/*.mo"]
 GameInfo = 'gameinfo.__main__:main'
 
 [tool.poetry.dependencies]
-python = "^3.7"
+python = "^3.8"
 python-gettext = "^4.0"
 requests = "^2.27.1"
 ttkbootstrap = "^1.7.6"
@@ -26,8 +26,11 @@ importlib-metadata = "^4.11.3"
 python-pacman = "^0.6.0"
 #python-apt = {path = "python-apt/python_apt-0.7.8-cp310-cp310-linux_x86_64.whl"}
 #libarchive = "^0.4.7"
-pefile = "^2022.5.30"
+pefile = "^2023.2.7"
 psutil = "^5.9.1"
+six = "^1.16.0"
+py7zr = "^0.20.5"
+pygobject = "^3.44.1"
 
 [tool.poetry.dev-dependencies]
 
