@@ -69,7 +69,7 @@ class Application(ttk.Window):
         style = ttk.Style()
         style.configure("mystyle.Treeview.Left", highlightthickness=0, bd=0, font=('Sans Regular', 12)) # Modify the font of the body
         style.configure("mystyle.Treeview.Right", highlightthickness=0, bd=0, font=('Monospace', 10)) # Modify the font of the body
-        style.configure("mystyle.Treeview.Heading", font=('Calibri', 13,'bold')) # Modify the font of the headings
+        style.configure("mystyle.Treeview.Right", highlightthickness=0, bd=0, font=('Monospace', 10)) # Modify the font of the body
         style.layout("mystyle.Treeview.Left", [('mystyle.Treeview.Left.treearea', {'sticky': 'nswe'})]) # Remove the borders
         style.layout("mystyle.Treeview.Right", [('mystyle.Treeview.Right.treearea', {'sticky': 'nswe'})]) # Remove the borders
 
@@ -100,7 +100,7 @@ class Application(ttk.Window):
         self.position_center()
 
         self.createWidgets()
-        self.updateWidgets(textPane="Tools") # was "Machine"
+        # self.updateWidgets(textPane="Tools") # was "Machine"
 
     def TreeElementClicked(self, event):
         selectedTreeWidget = event.widget
@@ -226,18 +226,21 @@ class Application(ttk.Window):
         if selection == "Input":
             splitChar = "="
             endString = ""
-            for line in returnString.split("\n"):
-                if len(line) == 0:
-                    break
-                #print(line,flush=True)
-                splitString = line.split(':', maxsplit=1)[1]
-                if "=" in splitString:
-                    endString += splitString.replace('\"', '') + "\n"
-                #if "UNIQ" in splitString:
-                    #splitString = splitString.replace("UNIQ", "\n")
-                if "MODALIAS" in splitString:
-                    endString += "=\n"
-            returnString = endString
+            try:
+                for line in returnString.split("\n"):
+                    if len(line) == 0:
+                        break
+                    #print(line,flush=True)
+                    splitString = line.split(':', maxsplit=1)[1]
+                    if "=" in splitString:
+                        endString += splitString.replace('\"', '') + "\n"
+                    #if "UNIQ" in splitString:
+                        #splitString = splitString.replace("UNIQ", "\n")
+                    if "MODALIAS" in splitString:
+                        endString += "=\n"
+                returnString = endString
+            except IndexError:
+                pass
 
         if selection == "Steam":
             returnString = SteamInfo()
@@ -437,7 +440,7 @@ class Application(ttk.Window):
 
         #self.clear_frame()
 
-        f = ttk.Frame()
+        f = ttk.Frame(master=self)
         f.pack(side=BOTTOM)
 
         b2 = ttk.Button(f, text=_("Refresh"), bootstyle="warning", width=10, command=self.refresh) #self.createWidgets("Distro"))
@@ -505,3 +508,22 @@ class Application(ttk.Window):
         treeRight.tag_configure("oddrow",background='white',foreground='black')
 
         m2.add(treeRight)
+
+        #main_logo = Image.open(os.path.join(os.path.dirname(__file__), "images", "GameInfo.png"))
+        main_logo = ImageTk.PhotoImage(file=os.path.join(os.path.dirname(__file__), "images", "GameInfo.png"))
+        panel_logo = ttk.Label(treeRight, image = main_logo, border=0, padding=0,
+            text=f'{__appname__} {__version__}', compound='top', 
+            background='white', font='Calibri 16') #, style="mystyle.LogoLabel")
+        panel_logo.image = main_logo
+        panel_logo.text = "TODO"
+        x_logo = self.winfo_height() // 2 + 256
+        y_logo = self.winfo_width() // 2 - 256
+        # panel_logo.place(x = 300, y = 200) # , width=256, height=256)
+        # panel_logo.place(x = 300, anchor='center')
+        # panel_logo.place(x=x_logo, y=y_logo, anchor='center')
+        # panel_logo.place(x = treeRight.winfo_width() // 2 - m2.winfo_width())
+        panel_logo.place(x = 150)
+        # self.frame
+
+        #f.add(panel_logo)
+
