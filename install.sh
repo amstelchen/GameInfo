@@ -11,6 +11,10 @@ poedit 2>/dev/null
 sudo cp -v gameinfo/locales/de/LC_MESSAGES/*.mo /usr/share/locale/de/LC_MESSAGES/
 
 poetry build
+
+poetry export --only main -f requirements.txt -o requirements.txt --without-hashes
+poetry export --with dev -f requirements.txt -o requirements-dev.txt --without-hashes
+
 #python setup.py sdist
 #python -m build --wheel --no-isolation
 #updpkgsums
