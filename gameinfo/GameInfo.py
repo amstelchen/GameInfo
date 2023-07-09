@@ -6,7 +6,7 @@ from .Version import __appname__, __version__, __author__, __licence__
 from .AppDebug import AppDebug, WaitMessage
 from .Functions import cmdline, PrintAbout, PopulateMenuitems, ReplaceIconname, ListTools
 from .Functions import ParseMachineTags, GetDistributionKind, GetDistributionId, GetDistributionLogoName, GetDistributionLogoImage, GetDesktopLogoImage
-from .Functions import WineInfo, PlayOnLinuxInfo, SteamInfo, ProtonInfo, DOSBoxInfo, LutrisInfo, GOGInfo, ScummVMInfo, EpicGamesInfo, ItchInfo
+from .Functions import WineInfo, PlayOnLinuxInfo, SteamInfo, ProtonInfo, DOSBoxInfo, LutrisInfo, GOGInfo, ScummVMInfo, EpicGamesInfo, ItchInfo, FlatpakInfo
 from .Desktop import get_desktop_environment, is_running
 from .Fallout import FalloutInfo
 from .Doom import DoomInfo
@@ -30,7 +30,7 @@ menus = file.getElementsByTagName('menu')
 for menu in menus:
     pass
 
-menuPlatforms = ["Tools", "Steam", "Proton", "Wine", "PlayOnLinux", "DOSBox", "Lutris", "GOG", "ScummVM", "Epic Games", "itch.io"]
+menuPlatforms = ["Tools", "Steam", "Proton", "Wine", "PlayOnLinux", "DOSBox", "Lutris", "GOG", "ScummVM", "Epic Games", "itch.io", "Flatpak"]
 menuPlugins = ["Fallout", "Doom", "Dune", "SteamLogs"]
 menuGameInfo = [_("Help"), _("About")]
 WaitMessage = _("Fetching system info, this can take a second...")
@@ -58,7 +58,7 @@ class Application(ttk.Window):
 
     def __init__(self, master=None):
 
-        winSize = (1024, 768)
+        winSize = (1280, 870)
         ttk.Window.__init__(self, master, size=winSize, minsize=winSize, iconphoto = os.path.join(os.path.dirname(__file__), "images", "GameInfo.png"))
 
         self.title(f'{__appname__} {__version__}')
@@ -293,6 +293,11 @@ class Application(ttk.Window):
             splitChar = "="
             firstColumnWidth = 300
 
+        if selection == "Flatpak":
+            returnString = FlatpakInfo()
+            splitChar = "="
+            firstColumnWidth = 1000
+
         if selection in ("Battle.net"):
             returnString = str(selection) + " " + _("not yet implemented, sorry.")
 
@@ -516,14 +521,7 @@ class Application(ttk.Window):
             background='white', font='Calibri 16') #, style="mystyle.LogoLabel")
         panel_logo.image = main_logo
         panel_logo.text = "TODO"
-        x_logo = self.winfo_height() // 2 + 256
-        y_logo = self.winfo_width() // 2 - 256
-        # panel_logo.place(x = 300, y = 200) # , width=256, height=256)
-        # panel_logo.place(x = 300, anchor='center')
-        # panel_logo.place(x=x_logo, y=y_logo, anchor='center')
-        # panel_logo.place(x = treeRight.winfo_width() // 2 - m2.winfo_width())
-        panel_logo.place(x = 150)
-        # self.frame
-
-        #f.add(panel_logo)
+        x_logo = treeRight.winfo_width() // 2 + 256
+        y_logo = self.winfo_height() // 2 - 256 - 100
+        panel_logo.place(x = x_logo, y = y_logo)
 

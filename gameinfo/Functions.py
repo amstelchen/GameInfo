@@ -594,3 +594,30 @@ def ItchInfo() -> str:
     except (sqlite3.OperationalError, FileNotFoundError):
         returnString += "\n" + _("Itch install directory not found.")
     return returnString
+
+def FlatpakInfo() -> str:
+    output = cmdline("flatpak --version | cut -d ' ' -f2")
+    returnString = f'Flatpak {_("version")}:\t\t\t{output}\n'
+
+    folders = ["~/.local/share/flatpak", "~/.var/app", "/var/lib/flatpak", "/etc/flatpak/installations.d"]
+    for folder in folders:
+        returnString += str(folder) + ":="
+        if os.path.isdir(os.path.expanduser(str(folder))):
+            pathToPrefix = Path(os.path.expanduser(folder))
+            sumBytesPrefix = sum(f.stat().st_size for f in pathToPrefix.glob('**/*') if f.is_file() and not f.is_symlink())
+            returnString += _("Yes") + " (" + bytes2human(sumBytesPrefix,format="%(value)3.1f %(symbol)s", symbols="iec") + "B)\n"
+            # returnString += _("Yes") + "\n"
+        else:
+            returnString += _("No") + "\n"
+
+    mypath = os.path.expanduser(folders[0])  # = ~/.local/share/flatpak
+    if os.path.exists(mypath):
+        #returnString += _("Games")
+        #listStatus = cmdline("flatpak list 2>/dev/null")
+        #returnString += listStatus.replace(':', '=')
+        listAppsAvailable = cmdline("flatpak list 2>/dev/null").split('\n') # | sed '/^$/d'")
+        listAppsAvailable = [l.split('\t') for l in listAppsAvailable]
+        returnString += "\n" + tabulate.tabulate(listAppsAvailable, tablefmt="tsv") # .replace('	', '=')
+    else:
+        returnString += "\n" + _("flatpak install directory not found.")
+    return returnString

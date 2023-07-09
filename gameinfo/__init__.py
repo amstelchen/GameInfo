@@ -37,6 +37,7 @@ import vdf
 import time
 
 import shutil
+import tabulate
 
 from pathlib import Path
 
