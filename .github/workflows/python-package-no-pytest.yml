@@ -27,6 +27,7 @@ jobs:
     - name: Install libarchive-dev
       run: |
         # sudo apt-get install -y libarchive-dev
+        # sudo apt-get install -y libgirepository1.0-dev
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
