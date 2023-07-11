@@ -3,7 +3,8 @@
 :heavy_check_mark: Rework TKinter to use <strike>ThemedTk</strike> ttkbootstrap. :tired_face:  
 :heavy_check_mark: Switch from setuptools to poetry (done with v1.0.5).  
 :heavy_check_mark: Add <a href="https://www.flaticon.com/de/kostenlose-icons/computer" title="computer Icons">Computer Icons erstellt von Freepik - Flaticon</a>  
-:white_check_mark: Pop_OS logo is ugly; Fedora and Elementary logos are misplaced  
+:heavy_check_mark: Pop_OS logo is ugly; there are logos in good quality in /usr/share/icons/256x256/
+:white_check_mark: Fedora and Elementary logos are misplaced  
 :white_check_mark: Add new fixes to Troubleshooting section  
 
 #### Tools

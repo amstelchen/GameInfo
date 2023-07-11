@@ -104,6 +104,7 @@ def GetDistributionLogoImage(Logo):
     #    Logo += "-logo"
     try:
         icon_file = Gtk.IconTheme.get_default().lookup_icon(Logo, 256, 0).get_filename()
+        AppDebug.debug_print("DistributionLogo: " + icon_file)
         if os.path.isfile(icon_file):
             if "svg" in icon_file:
                 image_data = cairosvg.svg2png(url=icon_file)
