@@ -42,7 +42,7 @@ import tabulate
 from pathlib import Path
 
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
-import pyrandr as randr
+# import pyrandr as randr
 import typing
 
 from .BitsBytes import bytes2human
