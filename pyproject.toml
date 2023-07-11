@@ -8,6 +8,7 @@ include = ["images/*", "gameinfo/locales/**/LC_MESSAGES/*.mo"]
 
 [tool.poetry.scripts]
 GameInfo = 'gameinfo.__main__:main'
+gameinfo = 'gameinfo.__main__:main'
 
 [tool.poetry.dependencies]
 python = "^3.8"
