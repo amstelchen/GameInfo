@@ -41,7 +41,7 @@
         <toolitem command="?easyeffects" version="easyeffects" />  
         <toolitem command="?discord" version="discord" /> 
         <toolitem command="?twitch" version="twitch-bin" /> 
-        <toolitem command="?OBS" version="obs-studio" /> 
+        <toolitem command="!OBS" version="obs --version" /> 
         <toolitem command="?kdenlive" version="kdenlive" /> 
         <toolitem command="openrgb" version="--version | head -n 1" /> 
         <toolitem command="?corectrl" version="corectrl" /> # --version | sed 's/ /-/'" /> 
