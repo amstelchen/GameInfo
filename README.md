@@ -34,7 +34,7 @@ Planned:
 
 #### Installation
 
-Steps assume that `python` (>= 3.7) and `pip` are already installed.
+Steps assume that `python` (>= 3.8) and `pip` are already installed.
 
 Install dependencies (see sections below)
 
@@ -53,17 +53,17 @@ When completed, run it with:
 
 #### Dependencies
 
-On Debian-based distributions (Mint, Ubuntu, MX, etc.), installation of the packages `tk` and `python3-tk` may be necessary.
+On Debian-based distributions (Mint, Ubuntu, MX, Zorin, Pop!_OS, etc.), installation of the packages `tk`, `python3-tk`, `libcairo2-dev`, and `libgirepository1.0-dev` may be necessary.
 
-    $ sudo apt install python3-tk tk
+    $ sudo apt install python3-tk tk libcairo2-dev libgirepository1.0-dev
 
 On Arch based distributions, only tk needs to be installed.
 
     $ sudo pacman -S tk
 
-On Void Linux, installation of the packages `python3-tkinter` and `python3-gobject` is necessary instead.
+On Void Linux, installation of the packages `python3-tkinter`, `python3-gobject` and others (see below) is necessary instead.
 
-    $ sudo xbps-install python3-tkinter python3-gobject
+    $ sudo xbps-install python3-tkinter python3-gobject libgirepository-devel
 
 Anyways, it often helps to keep your python installation updated:
 
@@ -73,19 +73,19 @@ Anyways, it often helps to keep your python installation updated:
 
 *GameInfo* is tested to work on the following distributions:
 
-- Arch Linux (or any Arch based distribution like Manjaro, ArcoLinux, ... <sup>(1.0.12)</sup>
-- Debian 10 or newer (10.1, 11.3) <sup>(1.0.12)</sup>
-- Ubuntu, Kubuntu, Xubuntu 20.04 or newer, Pop!_OS 20.04 or newer <sup>(1.0.12)</sup>
-- Manjaro 20 <sup>(1.0.12)</sup>
-- Linux Mint 20 or newer <sup>(1.0.12)</sup> (19.3 lacks support for python3.7, only has 3.6.9)
-- MX Linux 19 or newer <sup>(1.0.10)</sup> (19.1 likely needs to run `pip install --upgrade pip setuptools wheel `)
-- Zorin OS 16.1 <sup>(1.0.12-git)</sup> (15.3 lacks support for python3.7, only has 3.6.9, plus misses a lot of libraries)
-- Fedora 32 Workstation or newer <sup>(1.0.12)</sup>
-- Void Linux <sup>(1.0.12)</sup>
-- Garuda Linux <sup>(1.0.12)</sup>
-- openSUSE Tumbleweed and Leap 15.2 or newer <sup>(1.0.12)</sup>
-- Slackware 64 14.2 and 15.0 <sup>(1.0.12)</sup>
-- EndeavourOS <sup>(1.0.12)</sup>
+- Arch Linux (or any Arch based distribution like Manjaro, ArcoLinux, ...) <sup>(1.0.16)</sup>
+- Debian 11 or newer <sup>(1.0.16)</sup> (Debian 10 now unsupported, latest Python 3.7)
+- Ubuntu, Kubuntu, Xubuntu 20.04 or newer, Pop!_OS 20.04 or newer <sup>(1.0.16)</sup>
+- Manjaro 20 <sup>(1.0.16)</sup>
+- Linux Mint 20 or newer <sup>(1.0.16)</sup> (19.3 lacks support for Python 3.7/3.8, only has 3.6.9)
+- MX Linux 21 or newer <sup>(1.0.16)</sup> (19.1 likely needs to run `pip install --upgrade pip setuptools wheel `)
+- Zorin OS 16.2 <sup>(1.0.16)</sup> (15.3 lacks support for Python 3.7, only has 3.6.9, plus misses a lot of libraries)
+- Fedora 37 Workstation or newer <sup>(1.0.16)</sup> (needs some of the libraries above, plus more)
+- Void Linux <sup>(1.0.16)</sup>
+- Garuda Linux <sup>(1.0.16)</sup>
+- openSUSE Tumbleweed and Leap 15.2 or newer <sup>(1.0.16)</sup> (needs some of the libraries above, plus more)
+- Slackware 64 14.2 and 15.0 <sup>(1.0.16)</sup>
+- EndeavourOS <sup>(1.0.16)</sup> (tested since 22.1)
 
 thus, *GameInfo*  supports various package managers, i.e.
 - `pacman/yay` (Arch),
@@ -110,7 +110,7 @@ If you encounter any bugs or incompatibilities, __please report them [here](http
 
 ```
 $ GAMEINFO_DEBUG=1 GameInfo
-2022-06-09 01:42:43.612974 DEBUG: GameInfo 1.0.12
+2022-06-09 01:42:43.612974 DEBUG: GameInfo 1.0.16
 2022-06-09 01:42:43.613849 DEBUG: DistributionId: arch
 2022-06-09 01:42:43.613883 DEBUG: DistributionKind: arch
 2022-06-09 01:42:43.677696 DEBUG: Themes loaded: cosmo flatly litera minty lumen sandstone yeti pulse united morph journal darkly superhero solar cyborg vapor simplex cerculean 
@@ -148,7 +148,7 @@ Set accordingly when using another shell.
 
 (always outdated)
 
-[![https://imgur.com/JgTRGmp.png](https://imgur.com/JgTRGmp.png)](https://imgur.com/JgTRGmp.png)
+[![https://imgur.com/giemgCF.png](https://imgur.com/giemgCF.png)](https://imgur.com/giemgCF.png)
 
 #### Future plans / TODO
 
