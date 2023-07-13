@@ -22,8 +22,8 @@ GameInfo is no a runner, not an emulator, or yet another game library. It simply
 |:heavy_check_mark: steam-cli  |:heavy_check_mark: Twitch |:heavy_check_mark: pipewire  |:heavy_check_mark: CoreCtrl  |
 |:heavy_check_mark: legendary-gl |:heavy_check_mark: obs-studio |:heavy_check_mark: pulseffects  |:heavy_check_mark: cpupower-gui |
 |:heavy_check_mark: truckersmp-cli  |:heavy_check_mark: Kdenlive |:heavy_check_mark: easyeffects*
-|__Graphics__|__Modding__|__Helpers__
-|:heavy_check_mark: dxvk  |:heavy_check_mark: OpenRGB  |:heavy_check_mark: winetricks
+|__Graphics__|__Modding__|__Helpers__|__Containers__|
+|:heavy_check_mark: dxvk  |:heavy_check_mark: OpenRGB  |:heavy_check_mark: winetricks|:heavy_check_mark: Flatpak  |
 |:heavy_check_mark: vkd3d  |:heavy_check_mark:  vibrantLinux |:heavy_check_mark: protontricks
 
 <sub>(*) might replace pulseeffects</sub>
@@ -83,6 +83,7 @@ Anyways, it often helps to keep your python installation updated:
 - Fedora 37 Workstation or newer <sup>(1.0.16)</sup> (needs some of the libraries above, plus more)
 - Void Linux <sup>(1.0.16)</sup>
 - Garuda Linux <sup>(1.0.16)</sup>
+- Artix Linux <sup>(1.0.16)</sup>
 - openSUSE Tumbleweed and Leap 15.2 or newer <sup>(1.0.16)</sup> (needs some of the libraries above, plus more)
 - Slackware 64 14.2 and 15.0 <sup>(1.0.16)</sup>
 - EndeavourOS <sup>(1.0.16)</sup> (tested since 22.1)
@@ -97,7 +98,6 @@ thus, *GameInfo*  supports various package managers, i.e.
 Tests underway:
 
 - Gentoo Linux (my portage is broken currently)
-- Artix Linux (a bug prevents proper display of list entries)
 - Haiku (just for fun, you probably won't play games on Haiku)
 - NixOS 22.05 (probably never going to work)
 

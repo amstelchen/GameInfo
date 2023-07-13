@@ -13,6 +13,7 @@
 :white_check_mark: Provide a hook whether there is an update available for each tool.  
 :white_check_mark: Provide a button to start each tool.  
 :white_check_mark: State whether a specific tools is `GUI` or `CLI`.  
+:white_check_mark: steamcmd: eventually use `stat ~/.steam/steamcmd/linux32/steamcmd | grep Mod | cut -d ' ' -f2,3,4` to gain some speed (this will omit name though)  
 
 #### Distro
 
@@ -87,7 +88,7 @@ Move these into README.md when tested:
 
 #### Other platforms
 
-:white_check_mark: itch.io - coming soon.
+:heavy_check_mark: itch.io - already done.
 :white_check_mark: Battle.net - removed.
 
 #### System requirements
