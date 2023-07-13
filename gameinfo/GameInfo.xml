@@ -36,6 +36,7 @@
         <toolitem command="?pavucontrol" version="pavucontrol" />  
         <toolitem command="pipewire" version="--version | tail -n 1 | cut -f 4 -d ' '" /> 
         <toolitem command="legendary" version="--version | sed '0,/ /s//-/'" /> 
+        <toolitem command="rare" version="--version" /> 
         <toolitem command="?pulseeffects" version="pulseeffects" />  
         <toolitem command="?pulseeffects-legacy" version="pulseeffects-legacy" />  
         <toolitem command="?easyeffects" version="easyeffects" />  
