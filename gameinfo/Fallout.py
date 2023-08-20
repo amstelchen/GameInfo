@@ -8,7 +8,10 @@ from subprocess import PIPE, Popen, check_output
 #from DllVersionInfo import *
 import hashlib
 import requests
-import py7zr
+try:
+    import py7zr
+except ModuleNotFoundError:
+    pass
 #import libarchive.public
 
 hasDLCs = True
