@@ -97,6 +97,7 @@ thus, *GameInfo*  supports various package managers, i.e.
   
 Tests underway:
 
+- FreeBSD 13.1
 - Gentoo Linux (my portage is broken currently)
 - Haiku (just for fun, you probably won't play games on Haiku)
 - NixOS 22.05 (probably never going to work)
@@ -127,6 +128,12 @@ echo "LOGO=slackware-logo" | sudo tee -a /etc/os-release
 wget -O slackware-logo.svg https://upload.wikimedia.org/wikipedia/commons/3/34/Slackware_logo.svg
 sudo mv slackware-logo.svg /usr/share/pixmaps
 ```
+:heavy_check_mark: No distribution logo in FreeBSD:
+```
+echo "LOGO=freebsd-logo" | sudo tee -a /etc/os-release
+wget -O freebsd-logo.png https://secure.gravatar.com/avatar/2257994974dfde8a9f5412eff259cecb?s=256
+sudo mv freebsd-logo.png /usr/local/share/pixmaps
+
 :heavy_check_mark: Similar to Xubuntu:
 ```
 echo LOGO=xubuntu | sudo tee -a /etc/os-release
