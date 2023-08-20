@@ -14,9 +14,12 @@ def PrintAbout() -> str:
     return returnString
 
 def cmdline(command):
-    process = Popen(args=command, stdout=PIPE, stderr=PIPE, shell=True, universal_newlines=True) #text_mode = True
-    #process.text_mode = True
-    return process.communicate()[0]
+    try:
+        process = Popen(args=command, stdout=PIPE, stderr=PIPE, shell=True, universal_newlines=True) #text_mode = True
+        #process.text_mode = True
+        return process.communicate()[0]
+    except UnicodeDecodeError:
+        return "***_Unavailable_***"
 
 def MachineInfo() -> str:
     SystemPath = "/sys/devices/virtual/dmi/id"
