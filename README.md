@@ -133,7 +133,7 @@ sudo mv slackware-logo.svg /usr/share/pixmaps
 echo "LOGO=freebsd-logo" | sudo tee -a /etc/os-release
 wget -O freebsd-logo.png https://secure.gravatar.com/avatar/2257994974dfde8a9f5412eff259cecb?s=256
 sudo mv freebsd-logo.png /usr/local/share/pixmaps
-
+```
 :heavy_check_mark: Similar to Xubuntu:
 ```
 echo LOGO=xubuntu | sudo tee -a /etc/os-release
