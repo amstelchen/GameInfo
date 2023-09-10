@@ -31,7 +31,8 @@ AppList = {
     "1151340": ("Fallout 76", "Fallout76.exe", "TBD", hasDLCs),
     "588430": ("Fallout Shelter", "FalloutShelter.exe", "FalloutShelter.exe", hasNoDLCs),
     "489830": ("Skyrim Special Edition", "SkyrimSE.exe", "SkyrimSELauncher.exe", hasDLCs),  # includes Anniversary Edition
-    "22330": ("The Elder Scrolls IV - Oblivion", "Oblivion.exe", "OblivionLauncher.exe", hasDLCs)
+    "22330": ("The Elder Scrolls IV - Oblivion", "Oblivion.exe", "OblivionLauncher.exe", hasDLCs),
+    "1716740": ("Starfield", "Starfield.exe", "Starfield.exe", hasDLCs)
 }
 
 ScriptExtenders = {
@@ -39,7 +40,9 @@ ScriptExtenders = {
     "NVSE": ["New Vegas Script Extender", "5.1b4", "http://nvse.silverlock.org/download/nvse_5_1_beta4.7z", "nvse_loader.exe"],
     "F4SE": ["Fallout 4 Script Extender", "0.6.23", "https://f4se.silverlock.org/beta/f4se_0_06_23.7z", "f4se_loader.exe"],
     "SKSE": ["Skyrim Script Extender", "2.2.3", "https://skse.silverlock.org/beta/skse64_2_02_03.7z", "skse64_loader.exe"],
-    "OBSE": ["Oblivion Script Extender", "0.2.1", "http://obse.silverlock.org/download/obse_0021.zip", "obse_loader.exe"]
+    "OBSE": ["Oblivion Script Extender", "0.2.1", "http://obse.silverlock.org/download/obse_0021.zip", "obse_loader.exe"],
+    "SFSE": ["Starfield Script Extender", "0.1.0", "https://sfse.silverlock.org/download/sfse_dummy.7z", "sfse_loader.exe"]
+    # https://www.nexusmods.com/starfield/mods/106?tab=files&file_id=996
 }
 
 def du(path):
@@ -67,15 +70,15 @@ def cmdline(command):
 
 def FalloutDLCs(AppPath, DatafileKind=Official):
 
-    if DatafileKind == 0:
+    if DatafileKind == Official:
         onlyfiles = [f for f in listdir(AppPath) if isfile(join(AppPath, f)) and 
-            "esm" in f and " " not in f and "Fallout" not in f and "SeventySix" not in f and "Skyrim" not in f and "Oblivion" not in f]
-    if DatafileKind == 1:
+            "esm" in f and " " not in f and "Fallout" not in f and "SeventySix" not in f and "Skyrim" not in f and "Oblivion" not in f and "Starfield" not in f]
+    if DatafileKind == Unofficial:
         onlyfiles = [f for f in listdir(AppPath) if isfile(join(AppPath, f)) and 
-            ("esm" in f and " " in f or "Patch" in f) or "esp" in f]
-    if DatafileKind == 2:
+            ("esm" in f and " " in f or "Patch" in f and "Patch.ba2" not in f) or "esp" in f]
+    if DatafileKind == MainDatafile:
         onlyfiles = [f for f in listdir(AppPath) if isfile(join(AppPath, f)) 
-            and "esm" in f and ("Fallout" in f or "SeventySix" in f or "Skyrim" in f or "Oblivion" in f) and "Patch" not in f]
+            and "esm" in f and ("Fallout" in f or "SeventySix" in f or "Skyrim" in f or "Oblivion" in f or "Starfield" in f) and "Patch" not in f]
     if len(onlyfiles) == 0:
         return ["(none)"]
     return onlyfiles
@@ -86,13 +89,17 @@ def FalloutSE(AppPath, ScriptExtenderKey): # -> list():
         #print(ScriptExtenders[ScriptExtenderKey][1])
         return SE
     else:
-        returnText = ["(Not found. Will be installed shortly.)"]
+        returnText = ["(Not found locally. Will be installed shortly.)"]
         url = SE[2]
-        returnText.append("Getting " + url + "and saving as " + SE[3] + ".")
-        returnText.append("\nPlease unpack the archive into the game folder.")
-        request = requests.get(url)  
-        #print(AppPath)
-        print(SE)
+        returnText.append(f"\n=Getting {url} and saving as {SE[3]}.")
+        returnText.append("\n=Please unpack the archive into the game folder.")
+        request = requests.get(url)
+        if request.status_code != 200:
+            returnText.pop()
+            returnText.append(f"\n=(Not found ({request.status_code}). Check the website.)")
+            return returnText
+        # print(AppPath)
+        # print(SE)
         with open(os.path.join(AppPath, SE[2].split('/')[4]), 'wb') as f:
             f.write(request.content)
         #try:
@@ -177,7 +184,7 @@ def FalloutInfo():
                 if AppID == "22300":
                     if AppVersion == "1.7.0.4":
                         AppVersion += " ✓"
-                if AppID == "22380":
+                if AppID == "22380":  # Fallout NV
                     if AppVersion == "1.4.0.525":
                         AppVersion += " ✓"
                 if AppID == "377160":
@@ -186,15 +193,18 @@ def FalloutInfo():
                     else:
                         AppVersion += " !"
                 if AppID == "1151340":
-                    if AppVersion == "1.7.1.19": # patch data taken from https://fallout.fandom.com/wiki/Fallout_76_patches
+                    if AppVersion == "1.7.6.7": # patch data taken from https://fallout.fandom.com/wiki/Fallout_76_patches
                         AppVersion += " ✓"
                     else:
                         AppVersion += " !"
-                if AppID == "489830":
+                if AppID == "489830":  # Skyrim SE
                     if AppVersion == "1.6.640.0":
                         AppVersion += " ✓"
-                if AppID == "22330":
+                if AppID == "22330":  # Oblivion
                     if AppVersion == "1.2.0.416":
+                        AppVersion += " ✓"
+                if AppID == "1716740":  # Starfield
+                    if AppVersion == "1.7.23.0":
                         AppVersion += " ✓"
                 #returnString += f"{AppList[AppID][0]:<18s} AppID {AppID:>7s}, {' ':9s}total size {sizeApp:>5s}," \
                 #                f"\n{' ':19s}{(StrVersion + ' ' + AppVersion):<23s} found in {AppList[AppID][1]} " \
@@ -208,7 +218,7 @@ def FalloutInfo():
                 sizeApps += int(dictApps[AppID])
                 # was filtered by AppID.startswith("22") or AppID == "377160" or AppID == "1151340" and  
                 if AppList[AppID][3] == hasDLCs and len(AppPathData) > 0:
-                    #print(AppPathData, len(AppPathData))
+                    # print(AppPathData, len(AppPathData))
                     returnString += "\n  Main data file:=" + "\n=".join(FalloutDLCs(AppPathData, DatafileKind=MainDatafile))
                     returnString += "\n  Official DLCs:=" + "\n=".join(FalloutDLCs(AppPathData, DatafileKind=Official))
                     returnString += "\n  Unofficial DLCs:=" + "\n=".join(FalloutDLCs(AppPathData, DatafileKind=Unofficial))
@@ -221,10 +231,14 @@ def FalloutInfo():
                     ScriptExtenderKey = "F4SE"
                 if AppID == "489830": # SKYRIM
                     ScriptExtenderKey = "SKSE"
+                if AppID == "22330": # OBLIVION
+                    ScriptExtenderKey = "OBSE"
+                if AppID == "1716740": # STARFIELD
+                    ScriptExtenderKey = "SFSE"
                 if ScriptExtenderKey:
                     SE = FalloutSE(AppPathGame, ScriptExtenderKey)
                     if len(SE) >= 3: # is not None:
-                        #print(SE)
+                        # print(SE)
                         returnString += "\n  ScriptExtender:=" + SE[0] + " " + SE[1] + "\n=" + SE[2] # ".join([se for se for SE])
                     else:
                         returnString += "\n  ScriptExtender:=" + SE[0]
