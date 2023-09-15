@@ -1,4 +1,4 @@
-import os, vdf
+import os, vdf, re
 from os import listdir
 from os.path import isfile, join
 from .BitsBytes import bytes2human
@@ -35,14 +35,25 @@ AppList = {
     "1716740": ("Starfield", "Starfield.exe", "Starfield.exe", hasDLCs)
 }
 
+AppVersions = {
+    "22300":   "1.7.0.4",
+    "22380":   "1.4.0.525",   # Fallout NV
+    "377160":  "1.10.163.0",  # latest patch, not listed in https://fallout.fandom.com/wiki/Fallout_4_patches
+    "1151340": "1.7.6.7",     # patch data taken from https://fallout.fandom.com/wiki/Fallout_76_patches
+    "489830":  "1.6.640.0",   # Skyrim SE
+    "22330":   "1.2.0.416",   # Oblivion
+    "1716740": "1.7.29.0",    # Starfield
+    "38400":   "Patchlevel v1.1",  # Fallout
+}
+
 ScriptExtenders = {
     "FOSE": ["Fallout Script Extender", "1.2b2", "https://fose.silverlock.org/download/fose_v1_2_beta2.7z", "fose_loader.exe"],
     "NVSE": ["New Vegas Script Extender", "5.1b4", "http://nvse.silverlock.org/download/nvse_5_1_beta4.7z", "nvse_loader.exe"],
     "F4SE": ["Fallout 4 Script Extender", "0.6.23", "https://f4se.silverlock.org/beta/f4se_0_06_23.7z", "f4se_loader.exe"],
     "SKSE": ["Skyrim Script Extender", "2.2.3", "https://skse.silverlock.org/beta/skse64_2_02_03.7z", "skse64_loader.exe"],
     "OBSE": ["Oblivion Script Extender", "0.2.1", "http://obse.silverlock.org/download/obse_0021.zip", "obse_loader.exe"],
-    "SFSE": ["Starfield Script Extender", "0.1.0", "https://sfse.silverlock.org/download/sfse_dummy.7z", "sfse_loader.exe"]
-    # https://www.nexusmods.com/starfield/mods/106?tab=files&file_id=996
+    "SFSE": ["Starfield Script Extender", "0.1.2", "https://sfse.silverlock.org/download/sfse_0_1_2.7z", "sfse_loader.exe"]
+    # alternatively, https://www.nexusmods.com/starfield/mods/106?tab=files&file_id=996
 }
 
 def du(path):
@@ -91,8 +102,8 @@ def FalloutSE(AppPath, ScriptExtenderKey): # -> list():
     else:
         returnText = ["(Not found locally. Will be installed shortly.)"]
         url = SE[2]
-        returnText.append(f"\n=Getting {url} and saving as {SE[3]}.")
-        returnText.append("\n=Please unpack the archive into the game folder.")
+        # returnText.append(f"\n=Getting {url} and saving as {SE[3]}.")
+        returnText.append(f"\n=Getting {url} and saving in game folder.")
         request = requests.get(url)
         if request.status_code != 200:
             returnText.pop()
@@ -102,19 +113,24 @@ def FalloutSE(AppPath, ScriptExtenderKey): # -> list():
         # print(SE)
         with open(os.path.join(AppPath, SE[2].split('/')[4]), 'wb') as f:
             f.write(request.content)
-        #try:
-        #    archive = py7zr.SevenZipFile(os.path.join(AppPath, SE[2].split('/')[4]), mode='r')
-        #    archive.extractall(path=AppPath)
-        #    archive.close()
-        #except py7zr.exceptions.UnsupportedCompressionMethodError:
-        #    pass
+        try:
+            filter_pattern = re.compile(r'\.(exe|dll)$')
+            with py7zr.SevenZipFile(os.path.join(AppPath, SE[2].split('/')[4]), mode='r') as archive:
+                allfiles = archive.getnames()
+                targets = [f for f in allfiles if filter_pattern.findall(f)]
+                # archive.extractall(path=AppPath)
+                archive.extract(targets=targets)
+                archive.close()
+        except py7zr.exceptions.UnsupportedCompressionMethodError:
+            returnText.append("Could not unpack, please unpack the archive into the game folder manually.")
 
         #with libarchive.public.file_reader(os.path.join(AppPath, SE[2].split('/')[4])) as e:
         #    for entry in e:
-        #        with open(os.path.join(AppPath, SE[2].split('/')[4], str(entry)), 'wb') as f:
-        #            for block in entry.get_blocks():
-        #                f.write(block)
-        #        print(str(entry))
+        #        if entry.size > 0:
+        #            with open(os.path.join(AppPath, str(entry.pathname)), 'wb') as f:
+        #                for block in entry.get_blocks():
+        #                    f.write(block)
+        #            print(str(entry))
         #        returnText.append(str(entry))
 
         return returnText
@@ -168,9 +184,7 @@ def FalloutInfo():
                 AppVersion = cmdline("peres -v '" + AppPathExe + "' | grep 'Product' | sed 's/ //g' | cut -d ':' -f2").strip()
                 if len(AppVersion) == 0:
                     StrVersion = "[Version info missing]"
-                if AppID == "38400":
-                    StrVersion = "Patchlevel v1.1"
-                    AppVersion += " ✓"
+
                 if AppID == "38410":
                     if md5(AppPathExe) == "3347f6d10bb3d7c02d3614bcf406a912":
                         StrVersion = "Version 1.02, High-Res"
@@ -181,35 +195,11 @@ def FalloutInfo():
                         StrVersion = "Version 1.27, Low-Res"
                     if md5(AppPathExe) == "9bfb9cae9474b12db3c06accc29a5b24":
                         StrVersion = "Version 1.27, High-Res"
-                if AppID == "22300":
-                    if AppVersion == "1.7.0.4":
+
+                if AppID in AppVersions.keys():
+                    if AppVersion == AppVersions[AppID]:
                         AppVersion += " ✓"
-                if AppID == "22380":  # Fallout NV
-                    if AppVersion == "1.4.0.525":
-                        AppVersion += " ✓"
-                if AppID == "377160":
-                    if AppVersion == "1.10.163.0": # latest patch, not listed in https://fallout.fandom.com/wiki/Fallout_4_patches
-                        AppVersion += " ✓"
-                    else:
-                        AppVersion += " !"
-                if AppID == "1151340":
-                    if AppVersion == "1.7.6.7": # patch data taken from https://fallout.fandom.com/wiki/Fallout_76_patches
-                        AppVersion += " ✓"
-                    else:
-                        AppVersion += " !"
-                if AppID == "489830":  # Skyrim SE
-                    if AppVersion == "1.6.640.0":
-                        AppVersion += " ✓"
-                if AppID == "22330":  # Oblivion
-                    if AppVersion == "1.2.0.416":
-                        AppVersion += " ✓"
-                if AppID == "1716740":  # Starfield
-                    if AppVersion == "1.7.23.0":
-                        AppVersion += " ✓"
-                #returnString += f"{AppList[AppID][0]:<18s} AppID {AppID:>7s}, {' ':9s}total size {sizeApp:>5s}," \
-                #                f"\n{' ':19s}{(StrVersion + ' ' + AppVersion):<23s} found in {AppList[AppID][1]} " \
-                #                f"\n{' ':19s}md5:  {md5(AppPathExe)}" \
-                #                f"\n{' ':19s}sha1: {sha1(AppPathExe)}"
+                
                 returnString += f"{AppList[AppID][0]}=AppID {AppID:>7s}, {' ':9s}total size {sizeApp:>5s}," \
                                 f"\n={(StrVersion + ' ' + AppVersion):<23s} found in {AppList[AppID][1]} " \
                                 f"\n=md5:  {md5(AppPathExe)}" \
