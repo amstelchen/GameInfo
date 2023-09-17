@@ -68,7 +68,7 @@ def GetDistributionId() -> str:
 
 def GetDistributionKind() -> str:
     DistributionId = GetDistributionId()
-    if DistributionId in ["debian", "ubuntu", "linuxmint", "mint", "pop", "kali", "raspbian", "zorin"]:
+    if DistributionId in ["debian", "ubuntu", "linuxmint", "mint", "pop", "kali", "raspbian", "zorin", "elementary"]:
         return "debian"
     if DistributionId in "arch manjaro garuda endeavouros arcolinux artix".split():
         return "arch"
@@ -101,6 +101,8 @@ def GetDistributionLogoName():
             return "linuxmint-logo"
         if GetDistributionId() == "distributor-logo-Tumbleweed": # opensuse-tumbleweed
             return "xfce4-button-opensuse"
+        if GetDistributionId() == "elementaryos-logo": # elementaryos
+            return "io.elementary.initial-setup"
     
 def GetDistributionLogoImage(Logo):
     #if "logo" not in Logo:
@@ -143,7 +145,7 @@ def GetDesktopLogoImage(Logo):
         Logo = "xfce4-logo"
     try:
         icon_file = Gtk.IconTheme.get_default().lookup_icon(Logo, 32, 0).get_filename()
-        #print(icon_file)
+        AppDebug.debug_print("DesktopLogo: " + icon_file)
         if "svg" in icon_file:
             image_data = cairosvg.svg2png(url=icon_file)
             image = (Image.open(io.BytesIO(image_data)))

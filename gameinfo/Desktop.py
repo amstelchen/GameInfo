@@ -14,7 +14,7 @@ def get_desktop_environment(self):
         if desktop_session is not None: #easier to match if we doesn't have  to deal with caracter cases
             desktop_session = desktop_session.lower()
             if desktop_session in ["gnome","unity", "cinnamon", "mate", "xfce4", "xfce", "lxde", "fluxbox", 
-                                    "blackbox", "openbox", "icewm", "jwm", "afterstep","trinity", "kde", "plasma"]:
+                                    "blackbox", "openbox", "icewm", "jwm", "afterstep","trinity", "kde", "plasma", "pantheon"]:
                 return desktop_session
             ## Special cases ##
             # Canonical sets $DESKTOP_SESSION to Lubuntu rather than LXDE if using LXDE.

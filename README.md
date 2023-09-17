@@ -134,6 +134,12 @@ echo "LOGO=freebsd-logo" | sudo tee -a /etc/os-release
 wget -O freebsd-logo.png https://secure.gravatar.com/avatar/2257994974dfde8a9f5412eff259cecb?s=256
 sudo mv freebsd-logo.png /usr/local/share/pixmaps
 ```
+:heavy_check_mark: No distribution logo in elementary OS:
+```
+echo "LOGO=elementaryos-logo" | sudo tee -a /etc/os-release
+wget -O elementaryos-logo.svg https://elementary.io/images/icons/places/128/distributor-logo.svg
+sudo mv elementaryos-logo.svg /usr/share/pixmaps
+```
 :heavy_check_mark: Similar to Xubuntu:
 ```
 echo LOGO=xubuntu | sudo tee -a /etc/os-release
