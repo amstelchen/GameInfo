@@ -42,7 +42,7 @@ AppVersions = {
     "1151340": "1.7.6.7",     # patch data taken from https://fallout.fandom.com/wiki/Fallout_76_patches
     "489830":  "1.6.640.0",   # Skyrim SE
     "22330":   "1.2.0.416",   # Oblivion
-    "1716740": "1.7.29.0",    # Starfield
+    "1716740": "1.7.36.0",    # Starfield
     "38400":   "Patchlevel v1.1",  # Fallout
 }
 
@@ -52,7 +52,7 @@ ScriptExtenders = {
     "F4SE": ["Fallout 4 Script Extender", "0.6.23", "https://f4se.silverlock.org/beta/f4se_0_06_23.7z", "f4se_loader.exe"],
     "SKSE": ["Skyrim Script Extender", "2.2.3", "https://skse.silverlock.org/beta/skse64_2_02_03.7z", "skse64_loader.exe"],
     "OBSE": ["Oblivion Script Extender", "0.2.1", "http://obse.silverlock.org/download/obse_0021.zip", "obse_loader.exe"],
-    "SFSE": ["Starfield Script Extender", "0.1.2", "https://sfse.silverlock.org/download/sfse_0_1_2.7z", "sfse_loader.exe"]
+    "SFSE": ["Starfield Script Extender", "0.1.5", "https://sfse.silverlock.org/download/sfse_0_1_5.7z", "sfse_loader.exe"]
     # alternatively, https://www.nexusmods.com/starfield/mods/106?tab=files&file_id=996
 }
 

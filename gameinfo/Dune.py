@@ -89,7 +89,7 @@ def DuneInfo():
     #print(foldersPath)
     #DoomWads(foldersPath)
 
-    libraryfoldersPath = os.path.expanduser('~/.steam/steam/config/libraryfolders-test.vdf')
+    libraryfoldersPath = os.path.expanduser('~/.steam/steam/config/libraryfolders.vdf')
         #try:
     d = vdf.parse(open(libraryfoldersPath))
         #returnString += "\nSteam library folders:=\n"
