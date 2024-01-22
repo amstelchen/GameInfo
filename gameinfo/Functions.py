@@ -378,7 +378,7 @@ def SteamInfo() -> str:
     return returnString
 
 def ProtonInfo() -> str:
-    returnString = "System-wide Proton install:=\n\n"
+    returnString = "System-wide Proton install:=\n"
     #proton_bin = (cmdline("which proton")).replace('\n','')
     proton_bin = (cmdline("command -v proton")).replace('\n','')
     #print(proton_bin)
@@ -392,12 +392,12 @@ def ProtonInfo() -> str:
         #returnString += proton_dir
         #print(proton_dir)
     if len(proton_bin) > 0 and len(proton_dir) > 0:
-        proton_ver = cmdline("cat " + proton_dir + " | grep CURRENT_PREFIX_VERSION=")
+        proton_ver = "    " + cmdline("cat " + proton_dir + " | grep CURRENT_PREFIX_VERSION=")
         if len(proton_ver) == 0:
             returnString += "Proton custom executable not found." + "\n"
         else:
-            returnString += "proton_bin:=" + proton_bin + "\n"
-            returnString += "proton_dir (set in " + proton_bin + "):=" + proton_dir +"\n\n"
+            returnString += "    proton_bin:=" + proton_bin + "\n"
+            returnString += "    proton_dir (set in " + proton_bin + "):=" + proton_dir +"\n\n"
             returnString += proton_ver
             #print(proton_ver)
 
@@ -408,7 +408,7 @@ def ProtonInfo() -> str:
     if os.path.exists(mypath):
         onlyfiles = [f for f in listdir(mypath)]
         for file in onlyfiles:
-            returnString += "=" + str(file).ljust(23)
+            returnString += "= " + str(file).ljust(30)
             if os.path.exists(join(mypath, str(file), "compatibilitytool.vdf")):
                 #print(join(mypath, str(file), "compatibilitytool.vdf"))
                 vdf_content = vdf.parse(open(join(mypath, file, "compatibilitytool.vdf")))
@@ -425,7 +425,7 @@ def ProtonInfo() -> str:
     libraryfoldersPath = os.path.expanduser('~/.steam/steam/config/libraryfolders.vdf')
     try:
         vdf_content = vdf.parse(open(libraryfoldersPath))
-        returnString += "\nSteam Proton installs:=\n\n"
+        returnString += "\nSteam Linux Runtime installs:=\n"
         for folder in vdf_content['libraryfolders']:
             #workaround for Steam on Debian default installations
             if folder == "contentstatsid":
@@ -433,17 +433,43 @@ def ProtonInfo() -> str:
             folderPath = vdf_content['libraryfolders'][folder]['path']
             folderPathCommon = os.path.join(folderPath, 'steamapps/common/')
             AppDebug.debug_print(folderPathCommon)
+
+            steam_runtime_installs = [d for d in listdir(folderPathCommon) if str(d).startswith('SteamLinuxRuntime')]
+            if len(steam_runtime_installs) > 0:
+                returnString += "    " + folderPath #+ ":="
+                for steam_runtime in steam_runtime_installs:
+                    returnString += "=" + steam_runtime.ljust(30)
+                    if os.path.exists(join(folderPathCommon, steam_runtime, "VERSIONS.txt")):
+                        with open(join(folderPathCommon, steam_runtime, "VERSIONS.txt"), "r", newline=None) as versionfile:
+                            versionfile.readline()
+                            version = versionfile.readline().split('\t')[1]
+                            returnString += f" {version}\n"
+                    else:
+                        returnString += "\n"
+            AppDebug.debug_print(steam_runtime_installs)
+
+        vdf_content = vdf.parse(open(libraryfoldersPath))
+        returnString += "\nSteam Proton installs:=\n"
+        for folder in vdf_content['libraryfolders']:
+            #workaround for Steam on Debian default installations
+            if folder == "contentstatsid":
+                continue
+            folderPath = vdf_content['libraryfolders'][folder]['path']
+            folderPathCommon = os.path.join(folderPath, 'steamapps/common/')
+            AppDebug.debug_print(folderPathCommon)
+
             proton_installs = [d for d in listdir(folderPathCommon) if str(d).lower().startswith('proton')]
             if len(proton_installs) > 0:
-                returnString += folderPath #+ ":="
+                returnString += "    " + folderPath #+ ":="
                 for proton in proton_installs:
-                    returnString += "=" + proton.ljust(23)
+                    returnString += "=" + proton.ljust(30)
                     if os.path.exists(join(folderPathCommon, proton, "version")):
                         with open(join(folderPathCommon, proton, "version"), "r", newline=None) as versionfile:
                             returnString += f" {versionfile.readline()}"
                     else:
                         returnString += "\n"
             AppDebug.debug_print(proton_installs)
+
     except FileNotFoundError:
         returnString += "\n" + libraryfoldersPath + " " + _("not found")
     return returnString
