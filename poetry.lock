@@ -174,13 +174,13 @@ test = ["flake8", "isort", "pytest"]
 
 [[package]]
 name = "certifi"
-version = "2023.11.17"
+version = "2024.2.2"
 description = "Python package for providing Mozilla's CA Bundle."
 optional = false
 python-versions = ">=3.6"
 files = [
-    {file = "certifi-2023.11.17-py3-none-any.whl", hash = "sha256:e036ab49d5b79556f99cfc2d9320b34cfbe5be05c5871b51de9329f0603b0474"},
-    {file = "certifi-2023.11.17.tar.gz", hash = "sha256:9b469f3a900bf28dc19b8cfbf8019bf47f7fdd1a65a1d4ffb98fc14166beb4d1"},
+    {file = "certifi-2024.2.2-py3-none-any.whl", hash = "sha256:dc383c07b76109f368f6106eee2b593b04a011ea4d55f652c6ca24a754d1cdd1"},
+    {file = "certifi-2024.2.2.tar.gz", hash = "sha256:0569859f95fc761b18b45ef421b1290a0f65f147e92a1e5eb3e635f9a5e4e66f"},
 ]
 
 [[package]]
@@ -693,26 +693,26 @@ test = ["coverage[toml] (>=5.2)", "hypothesis", "pytest (>=6.0)", "pytest-cov"]
 
 [[package]]
 name = "pycairo"
-version = "1.25.1"
+version = "1.26.0"
 description = "Python interface for cairo"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "pycairo-1.25.1-cp310-cp310-win32.whl", hash = "sha256:cacb5c2abbfdfc79c728ab261ff791511e4957b606c660f9b380975b678b728f"},
-    {file = "pycairo-1.25.1-cp310-cp310-win_amd64.whl", hash = "sha256:109ebbeb5bbc510b726fc31251071264dec241e5084d0668f846d7e17e5af8e0"},
-    {file = "pycairo-1.25.1-cp310-cp310-win_arm64.whl", hash = "sha256:b19269a8bf9ab5e3c617f2699bed00977fd02ff304339a233654456c0236f7c6"},
-    {file = "pycairo-1.25.1-cp311-cp311-win32.whl", hash = "sha256:b10e58a3ce41e487aae15050b630742e880d4135cee7a69cee2c0ea2a0b4bd0a"},
-    {file = "pycairo-1.25.1-cp311-cp311-win_amd64.whl", hash = "sha256:fcf5511b05a652a0ef87f626bf26bfc1b796a67f0d1bd40781c62986fb41c356"},
-    {file = "pycairo-1.25.1-cp311-cp311-win_arm64.whl", hash = "sha256:4133ba3ef6d875aa1b16643dc0801846f463b8e78750f5308c41902dfeac5b9a"},
-    {file = "pycairo-1.25.1-cp312-cp312-win32.whl", hash = "sha256:56fee2837a07ecd914f4fbf78ff59445f78becd658fe36125101925dd489eb94"},
-    {file = "pycairo-1.25.1-cp312-cp312-win_amd64.whl", hash = "sha256:fb31eec2c41ec74e23dc0fc9feb4007b4c37f78ec76220ed92530b342e09821a"},
-    {file = "pycairo-1.25.1-cp312-cp312-win_arm64.whl", hash = "sha256:27011d822952d7817130fc17f490de94328590bc8d45bdbca9ec4a47039fca22"},
-    {file = "pycairo-1.25.1-cp38-cp38-win32.whl", hash = "sha256:9a7c5ed92fe87f60e9796777d5255f2df2deeb8ab1e3c296e67a1d8c9790808c"},
-    {file = "pycairo-1.25.1-cp38-cp38-win_amd64.whl", hash = "sha256:48603ad31616140ad6fa097f13086d0ce8f29ead35ad6a215962f3b0496a5a70"},
-    {file = "pycairo-1.25.1-cp39-cp39-win32.whl", hash = "sha256:97666c084e9eb1c08c7fd6d306d153767acdf03c0d80349ec55863cecd4138e0"},
-    {file = "pycairo-1.25.1-cp39-cp39-win_amd64.whl", hash = "sha256:ac5437d140eccd97af12a618cc1ace0d9a85f1269f29e963751949f132828b21"},
-    {file = "pycairo-1.25.1-cp39-cp39-win_arm64.whl", hash = "sha256:bda5d10adbf1f5eba6b524b5a70ccf7f659680b77e691ff94b312f25a6fcc91f"},
-    {file = "pycairo-1.25.1.tar.gz", hash = "sha256:7e2be4fbc3b4536f16db7a11982cbf713e75069a4d73d44fe5a49b68423f5c0c"},
+    {file = "pycairo-1.26.0-cp310-cp310-win32.whl", hash = "sha256:696ba8024d2827e66e088a6e05a3b0aea30d289476bcb2ca47c9670d40900a50"},
+    {file = "pycairo-1.26.0-cp310-cp310-win_amd64.whl", hash = "sha256:b6690a00fb225c19f42d76660e676aba7ae7cb18f3632cb02bce7f0d9b9c3800"},
+    {file = "pycairo-1.26.0-cp310-cp310-win_arm64.whl", hash = "sha256:1d54e28170a5e790269d9db4c195cca5152ff018ba7e330d0ed05d86ccc2ea7d"},
+    {file = "pycairo-1.26.0-cp311-cp311-win32.whl", hash = "sha256:5986b8da3e7de7ab931d7ad527938df38f75d3a3bdea2b515c786c5ca2c5093c"},
+    {file = "pycairo-1.26.0-cp311-cp311-win_amd64.whl", hash = "sha256:d374d9ec6d2f791bf57105d87a9028db1ef2b687848f64a524e447033eae7229"},
+    {file = "pycairo-1.26.0-cp311-cp311-win_arm64.whl", hash = "sha256:20a31af89d92ffd5fc60c08e65ff649f16e18621a14a40dbdb049fc74942d7a9"},
+    {file = "pycairo-1.26.0-cp312-cp312-win32.whl", hash = "sha256:d63929ab5a2f890a333f2f2f51de9f1c9fe20d1bddc982c2ca577b737448d72f"},
+    {file = "pycairo-1.26.0-cp312-cp312-win_amd64.whl", hash = "sha256:8616408ae93de4824a3777ec532ea75643e4bf74e49d601062c0b1788180c962"},
+    {file = "pycairo-1.26.0-cp312-cp312-win_arm64.whl", hash = "sha256:a611e4d82ad8470138bb46d465d47e8db826d9d80b6a520ccd83ee007f2073e4"},
+    {file = "pycairo-1.26.0-cp38-cp38-win32.whl", hash = "sha256:675578bc6d62d15ff8669f264783efc9c8c73e3a6f564b294a70fb45a2f78667"},
+    {file = "pycairo-1.26.0-cp38-cp38-win_amd64.whl", hash = "sha256:aac447b423b33b64119ecdd1ffebf9163b07f5401c5da50c707197efdd1c918a"},
+    {file = "pycairo-1.26.0-cp39-cp39-win32.whl", hash = "sha256:9fa51168010e2dfb45499df071fca2d921893f724646f3454951000a7ad0cabb"},
+    {file = "pycairo-1.26.0-cp39-cp39-win_amd64.whl", hash = "sha256:3e4e18ea03122e60abe3eb611e2849859cc950083ff85d8369328eadf3df63f5"},
+    {file = "pycairo-1.26.0-cp39-cp39-win_arm64.whl", hash = "sha256:a8f3b567ba2ad55624a809823ccf75aff8d768c20216cb5888365f6fc695c1d2"},
+    {file = "pycairo-1.26.0.tar.gz", hash = "sha256:2dddd0a874fbddb21e14acd9b955881ee1dc6e63b9c549a192d613a907f9cbeb"},
 ]
 
 [[package]]
@@ -1111,17 +1111,18 @@ pillow = ">=8.2.0"
 
 [[package]]
 name = "urllib3"
-version = "2.1.0"
+version = "2.2.1"
 description = "HTTP library with thread-safe connection pooling, file post, and more."
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "urllib3-2.1.0-py3-none-any.whl", hash = "sha256:55901e917a5896a349ff771be919f8bd99aff50b79fe58fec595eb37bbc56bb3"},
-    {file = "urllib3-2.1.0.tar.gz", hash = "sha256:df7aa8afb0148fa78488e7899b2c59b5f4ffcfa82e6c54ccb9dd37c1d7b52d54"},
+    {file = "urllib3-2.2.1-py3-none-any.whl", hash = "sha256:450b20ec296a467077128bff42b73080516e71b56ff59a60a02bef2232c4fa9d"},
+    {file = "urllib3-2.2.1.tar.gz", hash = "sha256:d0570876c61ab9e520d776c38acbbb5b05a776d3f9ff98a5c8fd5162a444cf19"},
 ]
 
 [package.extras]
 brotli = ["brotli (>=1.0.9)", "brotlicffi (>=0.8.0)"]
+h2 = ["h2 (>=4,<5)"]
 socks = ["pysocks (>=1.5.6,!=1.5.7,<2.0)"]
 zstd = ["zstandard (>=0.18.0)"]
 

@@ -39,10 +39,10 @@ AppVersions = {
     "22300":   "1.7.0.4",
     "22380":   "1.4.0.525",   # Fallout NV
     "377160":  "1.10.163.0",  # latest patch, not listed in https://fallout.fandom.com/wiki/Fallout_4_patches
-    "1151340": "1.7.6.7",     # patch data taken from https://fallout.fandom.com/wiki/Fallout_76_patches
-    "489830":  "1.6.640.0",   # Skyrim SE
+    "1151340": "1.7.9.7",     # patch data taken from https://fallout.fandom.com/wiki/Fallout_76_patches
+    "489830":  "1.6.1170.0",   # Skyrim SE
     "22330":   "1.2.0.416",   # Oblivion
-    "1716740": "1.7.36.0",    # Starfield
+    "1716740": "1.9.67.0",    # Starfield
     "38400":   "Patchlevel v1.1",  # Fallout
 }
 
