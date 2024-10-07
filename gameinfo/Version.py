@@ -1,5 +1,5 @@
 
-VERSION = "1.0.21"
+VERSION = "1.0.24"
 __appname__ = "GameInfo"
 __version__ = VERSION
 __author__ = "Michael John"
