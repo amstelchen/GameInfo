@@ -588,27 +588,48 @@ def EpicGamesInfo() -> str:
 
 def ItchInfo() -> str:
     try:
-        mypath = os.path.expanduser("~/.config/itch/")
-        with open("/usr/share/itch/package.json", "r") as json_file:
+        path_config = os.path.expanduser("~/.config/itch/")
+        path_runtime = os.path.expanduser("~/.itch/")
+        # with open("/usr/share/itch/package.json", "r") as json_file:
+        with open(os.path.join(path_runtime, "state.json"), "r") as json_file:
             json_data = json.load(json_file)
             #print(json_data['version'])
 
-        butler_path = os.path.join(mypath, "broth/butler/versions/")
+        butler_path = os.path.join(path_config, "broth/butler/versions/")
         butler_version = [d for d in listdir(butler_path) if isdir(join(butler_path, d))][0]
-        setup_path = os.path.join(mypath, "broth/itch-setup/versions/")
+        setup_path = os.path.join(path_config, "broth/itch-setup/versions/")
         setup_version = [d for d in listdir(setup_path) if isdir(join(setup_path, d))][0]
 
-        returnString = f'itch {_("version")}:={json_data["description"]} {json_data["version"]}\n'
+        # returnString = f'itch {_("version")}:={json_data["description"]} {json_data["version"]}\n'
+        returnString = f'itch {_("version")}:=itch {json_data["current"]}\n'
         returnString += f'=butler {str(butler_version)}\n'
         returnString += f'=itch-setup {str(setup_version)}\n\n'
 
-        conn = sqlite3.connect(os.path.join(mypath, 'db/butler.db'))
-        cursor = conn.execute("SELECT g.id, g.title FROM games g, caves c WHERE g.id = c.game_id AND g.classification='game'")
+        conn = sqlite3.connect(os.path.join(path_config, 'db/butler.db'))
+        cursor = conn.execute("SELECT g.id, g.title, g.short_text, g.windows, g.linux, g.osx, g.type \
+            FROM games g, caves c WHERE g.id = c.game_id AND g.classification='game'")
         returnString += _("Games")
+        rows = cursor.fetchall()
+        # 🪟🐧🍏
         rownum = 0
-        for row in cursor:
+        for row in rows:
+            returnString += "="
             rownum += 1
-            returnString += "=" + row[1] + "\n"
+            if row[3] == "all":
+                returnString += "🪟"
+            else: returnString += "  "
+            if row[4] == "all":
+                returnString += "🐧"
+            else: returnString += "  "
+            if row[5] == "all":
+                returnString += "🍏"
+            else: returnString += "  "
+            if row[6] == "html":
+                returnString += "🌐"
+            else: returnString += "  "
+            returnString += f"  {row[1]:<45}{row[2]:<50}"
+            returnString += "\n"
+
         if rownum == 0:
             returnString += "=" + "(none)" + "\n"
 
