@@ -291,7 +291,7 @@ class Application(ttk.Window):
         if selection == "itch.io":
             returnString = ItchInfo()
             splitChar = "="
-            firstColumnWidth = 300
+            firstColumnWidth = 120
 
         if selection == "Flatpak":
             returnString = FlatpakInfo()
