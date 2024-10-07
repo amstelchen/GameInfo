@@ -12,7 +12,7 @@ try:
     import py7zr
 except ModuleNotFoundError:
     pass
-#import libarchive.public
+import libarchive.public
 
 hasDLCs = True
 hasNoDLCs = False
@@ -38,11 +38,11 @@ AppList = {
 AppVersions = {
     "22300":   "1.7.0.4",
     "22380":   "1.4.0.525",   # Fallout NV
-    "377160":  "1.10.163.0",  # latest patch, not listed in https://fallout.fandom.com/wiki/Fallout_4_patches
+    "377160":  "1.10.984.0",  # latest patch, listed in https://fallout.fandom.com/wiki/Fallout_4_patches -> Next-gen update 2, May 13, 2024
     "1151340": "1.7.9.7",     # patch data taken from https://fallout.fandom.com/wiki/Fallout_76_patches
-    "489830":  "1.6.1170.0",   # Skyrim SE
+    "489830":  "1.6.1170.0",  # Skyrim SE
     "22330":   "1.2.0.416",   # Oblivion
-    "1716740": "1.9.67.0",    # Starfield
+    "1716740": "1.14.70.0",    # Starfield, see https://bethesda.net/en/article/QSbsZDsZVAKO6Ft5LEzAh/starfield-september-update-patch-notes -> Shattered Space
     "38400":   "Patchlevel v1.1",  # Fallout
 }
 
@@ -52,7 +52,7 @@ ScriptExtenders = {
     "F4SE": ["Fallout 4 Script Extender", "0.6.23", "https://f4se.silverlock.org/beta/f4se_0_06_23.7z", "f4se_loader.exe"],
     "SKSE": ["Skyrim Script Extender", "2.2.3", "https://skse.silverlock.org/beta/skse64_2_02_03.7z", "skse64_loader.exe"],
     "OBSE": ["Oblivion Script Extender", "0.2.1", "http://obse.silverlock.org/download/obse_0021.zip", "obse_loader.exe"],
-    "SFSE": ["Starfield Script Extender", "0.1.5", "https://sfse.silverlock.org/download/sfse_0_1_5.7z", "sfse_loader.exe"]
+    "SFSE": ["Starfield Script Extender", "0.2.12", "https://sfse.silverlock.org/download/sfse_0_2_12.7z", "sfse_loader.exe"]
     # alternatively, https://www.nexusmods.com/starfield/mods/106?tab=files&file_id=996
 }
 
@@ -122,16 +122,15 @@ def FalloutSE(AppPath, ScriptExtenderKey): # -> list():
                 archive.extract(targets=targets)
                 archive.close()
         except py7zr.exceptions.UnsupportedCompressionMethodError:
-            returnText.append("Could not unpack, please unpack the archive into the game folder manually.")
-
-        #with libarchive.public.file_reader(os.path.join(AppPath, SE[2].split('/')[4])) as e:
-        #    for entry in e:
-        #        if entry.size > 0:
-        #            with open(os.path.join(AppPath, str(entry.pathname)), 'wb') as f:
-        #                for block in entry.get_blocks():
-        #                    f.write(block)
-        #            print(str(entry))
-        #        returnText.append(str(entry))
+            # returnText.append("Could not unpack, please unpack the archive into the game folder manually.")
+            with libarchive.public.file_reader(os.path.join(AppPath, SE[2].split('/')[4])) as e:
+                for entry in e:
+                    if entry.size > 0 and not entry.filetype.IFDIR and ('dll' in entry.pathname or 'exe' in entry.pathname):
+                        with open(os.path.join(AppPath, os.path.basename(entry.pathname)), 'wb') as f:
+                            for block in entry.get_blocks():
+                                f.write(block)
+                        # print(str(entry))
+                        returnText.append(os.path.basename(entry.pathname))
 
         return returnText
 
